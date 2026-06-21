@@ -5,6 +5,7 @@ from typing import Any
 
 from .config import (
     DEFAULT_STATE,
+    LEGACY_DATA_DIR,
     LEGACY_STATE_FILE,
     LEGACY_STEAM_CACHE_FILE,
     STATE_FILE,
@@ -18,6 +19,13 @@ def migrate_legacy_files() -> None:
         (LEGACY_STATE_FILE, STATE_FILE),
         (LEGACY_STEAM_CACHE_FILE, STEAM_CACHE_FILE),
     ]
+
+    if LEGACY_DATA_DIR is not None:
+        migrations.extend([
+            (LEGACY_DATA_DIR / "ghosthunter_state.json", STATE_FILE),
+            (LEGACY_DATA_DIR / "ghosthunter_appcache.json", STEAM_CACHE_FILE),
+        ])
+
     for legacy, current in migrations:
         try:
             if legacy.exists() and not current.exists():

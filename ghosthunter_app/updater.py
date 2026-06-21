@@ -43,7 +43,6 @@ class UpdateManager:
         self.repo_url = GITHUB_REPO_URL
         self.check_url = UPDATE_CHECK_URL
         self.downloads_dir = DOWNLOADS_DIR
-        self.downloads_dir.mkdir(parents=True, exist_ok=True)
 
     def is_configured(self) -> bool:
         return bool(self.repo_url and self.check_url)

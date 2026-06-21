@@ -174,6 +174,25 @@
       box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px rgba(26,199,255,.14);
     }
 
+    .tab.settings-nav {
+      min-width: 140px;
+      background: linear-gradient(90deg, rgba(17,183,223,.12), rgba(162,76,255,.10));
+      border: 1px solid rgba(126,217,255,.14);
+      color: #eef8ff;
+      box-shadow: 0 0 18px rgba(26,199,255,.08), inset 0 1px 0 rgba(255,255,255,.04);
+    }
+
+    .tab.settings-nav:hover {
+      background: linear-gradient(90deg, rgba(17,183,223,.18), rgba(162,76,255,.16));
+      transform: translateY(-1px);
+    }
+
+    .tab.settings-nav.active {
+      background: linear-gradient(90deg, rgba(17,183,223,.22), rgba(162,76,255,.22));
+      color: #ffffff;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px rgba(26,199,255,.14);
+    }
+
     .tab-icon {
       display: inline-flex;
       align-items: center;
@@ -767,6 +786,37 @@
       margin-bottom: 16px;
     }
 
+    .settings-tabs {
+      display: inline-flex;
+      gap: 8px;
+      padding: 8px;
+      margin: 8px 0 16px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.04);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+    }
+
+    .settings-tab {
+      appearance: none;
+      border: 1px solid transparent;
+      background: transparent;
+      color: var(--muted);
+      border-radius: 12px;
+      padding: 10px 14px;
+      font-size: 13px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .settings-tab.active {
+      color: var(--text);
+      background: linear-gradient(90deg, rgba(17,183,223,.16), rgba(162,76,255,.14));
+      border-color: rgba(126,217,255,.12);
+      box-shadow: 0 0 18px rgba(26,199,255,.08);
+    }
+
     .settings-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1328,12 +1378,12 @@
         <div class="brand-icon">👻</div>
         <div>
           <div class="brand-title">Ghost Hunter Pro</div>
-          <div class="brand-sub"><span id="app-version-label">v2.3.4</span> • <span class="desktop">Desktop Mode</span></div>
+          <div class="brand-sub"><span id="app-version-label">v2.3.5</span> • <span class="desktop">Desktop Mode</span></div>
         </div>
       </div>
       <div class="tabs">
         <button class="tab home-nav active" data-action="switch-tab" data-tab="home"><span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M4 11.5 12 5l8 6.5"></path><path d="M7 10.5V19h10v-8.5"></path><path d="M10 19v-4.5h4V19"></path></svg></span>Home</button>
-        <button class="tab" data-action="switch-tab" data-tab="settings"><span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"></path><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1 0 2.8l-.3.3a2 2 0 0 1-2.8 0l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 0 1-2 2h-.5a2 2 0 0 1-2-2v-.2a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 0 1-2.8 0l-.3-.3a2 2 0 0 1 0-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 0 1-2-2v-.5a2 2 0 0 1 2-2h.2a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 0 1 0-2.8l.3-.3a2 2 0 0 1 2.8 0l.1.1a1 1 0 0 0 1.1.2h0a1 1 0 0 0 .6-.9V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v.2a1 1 0 0 0 .6.9h0a1 1 0 0 0 1.1-.2l.1-.1a2 2 0 0 1 2.8 0l.3.3a2 2 0 0 1 0 2.8l-.1.1a1 1 0 0 0-.2 1.1v0a1 1 0 0 0 .9.6H20a2 2 0 0 1 2 2v.5a2 2 0 0 1-2 2h-.2a1 1 0 0 0-.9.6z"></path></svg></span>Settings</button>
+        <button class="tab settings-nav" data-action="switch-tab" data-tab="settings"><span class="tab-icon"><svg viewBox="0 0 24 24"><path d="M12 8.5a3.5 3.5 0 1 0 0 7 3.5 3.5 0 0 0 0-7z"></path><path d="M19.4 15a1 1 0 0 0 .2 1.1l.1.1a2 2 0 0 1 0 2.8l-.3.3a2 2 0 0 1-2.8 0l-.1-.1a1 1 0 0 0-1.1-.2 1 1 0 0 0-.6.9V20a2 2 0 0 1-2 2h-.5a2 2 0 0 1-2-2v-.2a1 1 0 0 0-.6-.9 1 1 0 0 0-1.1.2l-.1.1a2 2 0 0 1-2.8 0l-.3-.3a2 2 0 0 1 0-2.8l.1-.1a1 1 0 0 0 .2-1.1 1 1 0 0 0-.9-.6H4a2 2 0 0 1-2-2v-.5a2 2 0 0 1 2-2h.2a1 1 0 0 0 .9-.6 1 1 0 0 0-.2-1.1l-.1-.1a2 2 0 0 1 0-2.8l.3-.3a2 2 0 0 1 2.8 0l.1.1a1 1 0 0 0 1.1.2h0a1 1 0 0 0 .6-.9V4a2 2 0 0 1 2-2h.5a2 2 0 0 1 2 2v.2a1 1 0 0 0 .6.9h0a1 1 0 0 0 1.1-.2l.1-.1a2 2 0 0 1 2.8 0l.3.3a2 2 0 0 1 0 2.8l-.1.1a1 1 0 0 0-.2 1.1v0a1 1 0 0 0 .9.6H20a2 2 0 0 1 2 2v.5a2 2 0 0 1-2 2h-.2a1 1 0 0 0-.9.6z"></path></svg></span>Settings</button>
       </div>
     </header>
 
@@ -1344,7 +1394,7 @@
     </div>
 
     <footer class="footer">
-      <span id="app-footer-version">Ghost Hunter Pro v2.3.4</span> • Not affiliated with Valve or Steam<br />
+      <span id="app-footer-version">Ghost Hunter Pro v2.3.5</span> • Not affiliated with Valve or Steam<br />
       Paths are generated based on common known locations. Always verify before deleting.
     </footer>
   </div>
@@ -1370,6 +1420,7 @@
       selectedLibraryAppIds: [],
       libraryShowScrollTop: false,
       settingsInfo: null,
+      settingsTab: 'updates',
       updateInfo: null,
       modalGameId: null,
       confirmDialog: null,
@@ -1639,7 +1690,7 @@
     }
 
     function applyVersionLabels() {
-      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3';
+      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.5';
       const top = document.getElementById('app-version-label');
       const footer = document.getElementById('app-footer-version');
       if (top) top.textContent = `v${version}`;
@@ -1995,65 +2046,93 @@
       const info = state.settingsInfo || {};
       const update = state.updateInfo;
       const configured = !!info.configured;
-      let updateBlock = `
-        <div class="settings-note">Settings is now the central place for updates and future maintenance options.</div>
+
+      let updatesTab = `
+        <div class="settings-note">Check for updates, download the installer build, or grab the portable package from releases.</div>
+        <div class="settings-actions">
+          <button class="btn primary" data-action="settings-check-updates">Check for Updates</button>
+          <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+        </div>
       `;
 
       if (update) {
         if (update.ok && update.update_available) {
-          updateBlock = `
-            <div class="settings-note">A newer version is available.\nCurrent: ${escapeHtml(update.current_version || '')}\nLatest: ${escapeHtml(update.latest_version || '')}</div>
+          updatesTab = `
+            <div class="settings-note">Update available\nCurrent: ${escapeHtml(update.current_version || '')}\nLatest: ${escapeHtml(update.latest_version || '')}</div>
             <div class="settings-actions">
               <button class="btn primary" data-action="settings-download-installer" ${update.installer_url ? '' : 'disabled'}>Download Installer Update</button>
               <button class="btn" data-action="settings-download-portable" ${update.portable_url ? '' : 'disabled'}>Download Portable Package</button>
-              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Release Page</button>
+              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
             </div>
             ${update.release_notes ? `<div class="settings-note">${escapeHtml(update.release_notes)}</div>` : ''}
           `;
         } else if (update.ok) {
-          updateBlock = `<div class="settings-note">You are up to date. Current version: ${escapeHtml(update.current_version || info.current_version || '')}</div>`;
+          updatesTab = `
+            <div class="settings-note">You are up to date.\nCurrent version: ${escapeHtml(update.current_version || info.current_version || '')}</div>
+            <div class="settings-actions">
+              <button class="btn primary" data-action="settings-check-updates">Check Again</button>
+              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+            </div>
+          `;
         } else {
-          updateBlock = `<div class="settings-note">${escapeHtml(update.error || 'Update check failed.')}</div>`;
+          updatesTab = `
+            <div class="settings-note">${escapeHtml(update.error || 'Update check failed.')}</div>
+            <div class="settings-actions">
+              <button class="btn primary" data-action="settings-check-updates">Try Again</button>
+            </div>
+          `;
         }
       }
+
+      const buildsTab = `
+        <div class="settings-grid">
+          <div class="settings-item">
+            <div class="settings-label">Installer</div>
+            <div class="settings-value">${escapeHtml(info.installer_name_example || 'Not configured')}</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-label">Portable</div>
+            <div class="settings-value">${escapeHtml(info.portable_name_example || 'Not configured')}</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-label">Executable</div>
+            <div class="settings-value">${escapeHtml(info.exe_name || 'GhostHunterPro.exe')}</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-label">Downloads Folder</div>
+            <div class="settings-value">${escapeHtml(info.downloads_dir || '')}</div>
+          </div>
+        </div>
+      `;
+
+      const aboutTab = `
+        <div class="settings-grid">
+          <div class="settings-item">
+            <div class="settings-label">Current Version</div>
+            <div class="settings-value">${escapeHtml(info.current_version || 'Unknown')}</div>
+          </div>
+          <div class="settings-item">
+            <div class="settings-label">Release Source</div>
+            <div class="settings-value">${configured ? 'GitHub Releases configured' : 'GitHub Releases not configured yet'}</div>
+          </div>
+        </div>
+        ${configured ? '' : `<div class="settings-note">To enable update checks, set UPDATE_REPO_OWNER and UPDATE_REPO_NAME inside ghosthunter_app/config.py.</div>`}
+      `;
+
+      const active = state.settingsTab || 'updates';
+      const content = active === 'builds' ? buildsTab : active === 'about' ? aboutTab : updatesTab;
 
       $settings.innerHTML = `
         <div class="settings-shell">
           <div class="card settings-card">
-            <div class="settings-title">Settings & Updates</div>
-            <div class="settings-sub">Manage release builds, update checks, and future maintenance settings for Ghost Hunter Pro.</div>
-            <div class="settings-grid">
-              <div class="settings-item">
-                <div class="settings-label">Current Version</div>
-                <div class="settings-value">${escapeHtml(info.current_version || 'Unknown')}</div>
-              </div>
-              <div class="settings-item">
-                <div class="settings-label">Executable Name</div>
-                <div class="settings-value">${escapeHtml(info.exe_name || 'GhostHunterPro.exe')}</div>
-              </div>
-              <div class="settings-item">
-                <div class="settings-label">Installer Asset</div>
-                <div class="settings-value">${escapeHtml(info.installer_name_example || 'Not configured')}</div>
-              </div>
-              <div class="settings-item">
-                <div class="settings-label">Portable Asset</div>
-                <div class="settings-value">${escapeHtml(info.portable_name_example || 'Not configured')}</div>
-              </div>
-              <div class="settings-item">
-                <div class="settings-label">Downloads Folder</div>
-                <div class="settings-value">${escapeHtml(info.downloads_dir || '')}</div>
-              </div>
-              <div class="settings-item">
-                <div class="settings-label">GitHub Repo</div>
-                <div class="settings-value">${escapeHtml(info.repo_url || 'Not configured yet')}</div>
-              </div>
+            <div class="settings-title">Settings</div>
+            <div class="settings-sub">Update and release tools for Ghost Hunter Pro.</div>
+            <div class="settings-tabs">
+              <button class="settings-tab ${active === 'updates' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="updates">Updates</button>
+              <button class="settings-tab ${active === 'builds' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="builds">Builds</button>
+              <button class="settings-tab ${active === 'about' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="about">About</button>
             </div>
-            <div class="settings-actions">
-              <button class="btn primary" data-action="settings-check-updates">Check for Updates</button>
-              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases Page</button>
-            </div>
-            ${configured ? '' : `<div class="settings-note">Updater is prepared but not configured yet. Set UPDATE_REPO_OWNER and UPDATE_REPO_NAME inside ghosthunter_app/config.py, then publish releases from GitHub Actions.</div>`}
-            ${updateBlock}
+            ${content}
           </div>
         </div>
       `;
@@ -2165,9 +2244,16 @@
       const target = event.target;
       if (!(target instanceof HTMLElement)) return;
       if (target.id === 'library-filter-input') {
-        state.libraryQuery = target.value;
+        const currentValue = target.value;
+        const caret = typeof target.selectionStart === 'number' ? target.selectionStart : currentValue.length;
+        state.libraryQuery = currentValue;
         renderLibrary();
         renderTabs();
+        const restored = document.getElementById('library-filter-input');
+        if (restored) {
+          restored.focus();
+          try { restored.setSelectionRange(caret, caret); } catch {}
+        }
       }
       if (target.id === 'home-search-input') {
         state.homeQuery = target.value;
@@ -2265,7 +2351,13 @@
           await loadHistory();
           renderHome();
           break;
+        case 'settings-tab':
+          state.settingsTab = actionEl.dataset.settingsTab || 'updates';
+          renderSettings();
+          renderTabs();
+          break;
         case 'settings-check-updates':
+          state.settingsTab = 'updates';
           await refreshUpdateInfo();
           break;
         case 'settings-open-releases':
