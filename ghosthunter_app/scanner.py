@@ -91,6 +91,7 @@ class ScanEngine:
 
         results: list[dict[str, Any]] = []
         seen: set[str] = set()
+        has_appid = bool(str(game.get('appid', '')).strip())
         for template, category, description, uses_appid, uses_game, uses_dev, uses_steamid in cls.HOME_TEMPLATES:
             base = cls.expand_template(template)
             game_names = name_vars if uses_game else [None]
@@ -101,6 +102,8 @@ class ScanEngine:
                 for dev_name in dev_names:
                     path = base
                     if uses_appid:
+                        if not has_appid:
+                            continue
                         path = path.replace("{APPID}", str(game.get("appid", "")))
                     if uses_game and game_name is not None:
                         path = path.replace("{GAME}", game_name)
@@ -170,29 +173,29 @@ class ScanEngine:
     @staticmethod
     def detect_steam_install_path() -> str | None:
         if os.name == "nt":
-            try:
-                import winreg  # type: ignore
-                key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\WOW6432Node\Valve\Steam")
-                path, _ = winreg.QueryValueEx(key, "InstallPath")
-                winreg.CloseKey(key)
-                if os.path.isdir(path):
-                    return path
-            except Exception:
-                pass
-            try:
-                import winreg  # type: ignore
-                key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\Valve\Steam")
-                path, _ = winreg.QueryValueEx(key, "InstallPath")
-                winreg.CloseKey(key)
-                if os.path.isdir(path):
-                    return path
-            except Exception:
-                pass
+            registry_locations = [
+                ("HKEY_LOCAL_MACHINE", r"SOFTWARE\WOW6432Node\Valve\Steam"),
+                ("HKEY_LOCAL_MACHINE", r"SOFTWARE\Valve\Steam"),
+                ("HKEY_CURRENT_USER", r"Software\Valve\Steam"),
+            ]
+            for hive_name, key_path in registry_locations:
+                try:
+                    import winreg  # type: ignore
+                    hive = getattr(winreg, hive_name)
+                    key = winreg.OpenKey(hive, key_path)
+                    path, _ = winreg.QueryValueEx(key, "InstallPath")
+                    winreg.CloseKey(key)
+                    if os.path.isdir(path):
+                        return path
+                except Exception:
+                    continue
         for candidate in [
             r"C:\Program Files (x86)\Steam",
             r"C:\Program Files\Steam",
             r"D:\Steam",
             r"D:\Games\Steam",
+            r"E:\Steam",
+            r"E:\Games\Steam",
         ]:
             if os.path.isdir(candidate):
                 return candidate
@@ -216,6 +219,14 @@ class ScanEngine:
                         libraries.append(path)
             except Exception:
                 pass
+
+        # Fallback common Steam library locations across drives.
+        for drive in "CDEFGHIJKLMNOPQRSTUVWXYZ":
+            for tail in [r"SteamLibrary\steamapps", r"Steam\steamapps", r"Games\Steam\steamapps"]:
+                candidate = f"{drive}:\\{tail}"
+                if os.path.isdir(candidate):
+                    libraries.append(candidate)
+
         seen: set[str] = set()
         result: list[str] = []
         for path in libraries:
@@ -297,6 +308,119 @@ class ScanEngine:
             seen.add(key)
             ordered.append(source)
         return ordered
+
+    @classmethod
+    def discover_installed_games(cls, steam_api) -> dict[str, dict[str, Any]]:
+        catalog: dict[str, dict[str, Any]] = {}
+
+        def add_game(appid: str, name: str, source: str, **extra: Any) -> None:
+            appid = str(appid)
+            if not appid:
+                return
+            entry = catalog.setdefault(appid, {
+                "appid": appid,
+                "name": name,
+                "sources": [],
+                "header_image": extra.get("header_image", ""),
+                "short_description": extra.get("short_description", ""),
+                "developers": extra.get("developers", []),
+                "publishers": extra.get("publishers", []),
+                "local_only": extra.get("local_only", False),
+            })
+            if name and (not entry.get("name") or str(entry.get("name", "")).startswith("Unknown Game")):
+                entry["name"] = name
+            for key in ("header_image", "short_description"):
+                if extra.get(key) and not entry.get(key):
+                    entry[key] = extra[key]
+            for key in ("developers", "publishers"):
+                if extra.get(key) and not entry.get(key):
+                    entry[key] = extra[key]
+            if source not in entry["sources"]:
+                entry["sources"].append(source)
+
+        # Steam manifests from all libraries
+        for steamapps in cls.steam_library_paths():
+            if not os.path.isdir(steamapps):
+                continue
+            try:
+                for file_name in os.listdir(steamapps):
+                    if not (file_name.startswith("appmanifest_") and file_name.endswith(".acf")):
+                        continue
+                    appid = file_name[len("appmanifest_"):-4]
+                    manifest_path = os.path.join(steamapps, file_name)
+                    name = ""
+                    install_dir_name = ""
+                    try:
+                        content = open(manifest_path, 'r', encoding='utf-8', errors='ignore').read()
+                        match = re.search(r'"name"\s+"([^"]+)"', content)
+                        if match:
+                            name = match.group(1)
+                        install_match = re.search(r'"installdir"\s+"([^"]+)"', content)
+                        if install_match:
+                            install_dir_name = install_match.group(1)
+                    except Exception:
+                        pass
+                    final_name = name or install_dir_name or f"Unknown Game ({appid})"
+                    normalized = steam_api.seed_cache_entry(appid, final_name)
+                    add_game(appid, normalized["name"], "Steam", **normalized)
+            except Exception:
+                continue
+
+        # Epic manifests
+        epic_manifests = os.path.join(
+            os.environ.get("PROGRAMDATA", r"C:\ProgramData"),
+            "Epic",
+            "EpicGamesLauncher",
+            "Data",
+            "Manifests",
+        )
+        if os.path.isdir(epic_manifests):
+            try:
+                for name in os.listdir(epic_manifests):
+                    if not name.lower().endswith('.item'):
+                        continue
+                    full = os.path.join(epic_manifests, name)
+                    try:
+                        data = json.loads(open(full, 'r', encoding='utf-8', errors='ignore').read())
+                    except Exception:
+                        continue
+                    display = str(data.get('DisplayName') or '')
+                    install_location = str(data.get('InstallLocation') or '')
+                    if not display or not install_location or not os.path.exists(install_location):
+                        continue
+                    resolved = steam_api.resolve_candidate_name(display)
+                    if resolved:
+                        add_game(str(resolved['appid']), resolved['name'], "Epic", **resolved)
+                    else:
+                        local_id = f"local:{normalize_name(display)}"
+                        add_game(local_id, display, "Epic", local_only=True)
+            except Exception:
+                pass
+
+        # GOG folders
+        gog_roots = [
+            r"C:\GOG Games",
+            r"D:\GOG Games",
+            r"E:\GOG Games",
+        ]
+        for root in gog_roots:
+            if not os.path.isdir(root):
+                continue
+            try:
+                for name in os.listdir(root):
+                    full = os.path.join(root, name)
+                    if not os.path.isdir(full):
+                        continue
+                    resolved = steam_api.resolve_candidate_name(name)
+                    if resolved:
+                        add_game(str(resolved['appid']), resolved['name'], "GOG", **resolved)
+                    else:
+                        local_id = f"local:{normalize_name(name)}"
+                        add_game(local_id, name, "GOG", local_only=True)
+            except Exception:
+                continue
+
+        return catalog
 
     @classmethod
     def build_library_index(cls) -> dict[str, list[dict[str, Any]]]:

@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "Ghost Hunter Pro"
-APP_VERSION = "2.3.6"
+APP_VERSION = "2.3.7"
 APP_TITLE = f"{APP_NAME} v{APP_VERSION}"
 
 if getattr(sys, "frozen", False):
@@ -76,7 +76,7 @@ APP_EXE_NAME = "GhostHunterPro.exe"
 INSTALLER_BASENAME = "GhostHunterPro-Setup"
 PORTABLE_BASENAME = "GhostHunterPro-Portable"
 
-# Fill these when you publish releases on GitHub.
+# GitHub Releases source
 UPDATE_REPO_OWNER = "MarchTheDev"
 UPDATE_REPO_NAME = "GhostHunterPro-GUI"
 

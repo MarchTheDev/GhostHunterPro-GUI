@@ -10,6 +10,7 @@ from .scanner import ScanEngine
 from .steam_api import SteamAPI
 from .storage import StateStore
 from .updater import UpdateManager
+from .utils import normalize_name
 
 
 class Backend:
@@ -17,10 +18,17 @@ class Backend:
         self.state = StateStore()
         self.steam = SteamAPI()
         self.updater = UpdateManager()
+        self._installed_catalog: dict[str, dict[str, Any]] | None = None
 
     def _save(self) -> None:
         self.state.save()
         self.steam.save_cache()
+
+    def _ensure_installed_catalog(self) -> dict[str, dict[str, Any]]:
+        if self._installed_catalog is None:
+            self._installed_catalog = ScanEngine.discover_installed_games(self.steam)
+            self._save()
+        return self._installed_catalog
 
     def ping(self) -> dict[str, Any]:
         return {"ok": True, "desktop": True}
@@ -54,7 +62,63 @@ class Backend:
         return {"ok": True}
 
     def search_suggestions(self, query: str) -> list[dict[str, Any]]:
-        return self.steam.search_suggestions(query)
+        raw = (query or '')
+        clean = raw.strip()
+        clean_norm = normalize_name(clean)
+        catalog = self._ensure_installed_catalog()
+        suggestions: list[dict[str, Any]] = []
+        seen: set[str] = set()
+
+        if clean:
+            def score_installed(item: dict[str, Any]) -> tuple[int, str]:
+                appid = str(item.get('appid', ''))
+                name = str(item.get('name', ''))
+                name_norm = normalize_name(name)
+                if clean == appid:
+                    score = 100
+                elif clean_norm and clean_norm == name_norm:
+                    score = 95
+                elif clean_norm and name_norm.startswith(clean_norm):
+                    score = 85
+                elif clean_norm and clean_norm in name_norm:
+                    score = 70
+                elif clean.lower() in name.lower():
+                    score = 50
+                else:
+                    score = 0
+                return (-score, name.lower())
+
+            ranked = []
+            for item in catalog.values():
+                score_key = score_installed(item)
+                if score_key[0] == 0:
+                    continue
+                ranked.append((score_key, item))
+            ranked.sort(key=lambda pair: pair[0])
+            ranked = [item for _, item in ranked]
+            for item in ranked:
+                appid = str(item.get('appid', ''))
+                if not appid or appid in seen:
+                    continue
+                seen.add(appid)
+                suggestions.append({
+                    'id': int(appid) if appid.isdigit() else appid,
+                    'name': item.get('name', f'Unknown Game ({appid})'),
+                    'tiny_image': item.get('header_image', self.steam.header_image_for_appid(appid) if appid.isdigit() else ''),
+                })
+                if len(suggestions) >= 6:
+                    return suggestions
+
+        remote_matches = self.steam.search_suggestions(clean)
+        for item in remote_matches:
+            appid = str(item.get('id', ''))
+            if not appid or appid in seen:
+                continue
+            seen.add(appid)
+            suggestions.append(item)
+            if len(suggestions) >= 6:
+                break
+        return suggestions[:6]
 
     def set_theme(self, theme_name: str) -> dict[str, Any]:
         self.state.set_theme(theme_name)
@@ -88,9 +152,63 @@ class Backend:
         return self.updater.download_portable_package(url)
 
     def home_search(self, query: str) -> dict[str, Any]:
-        game = self.steam.search_game(query)
+        catalog = self._ensure_installed_catalog()
+        clean_query = (query or "").strip()
+        lowered = clean_query.lower()
+        normalized_query = normalize_name(clean_query)
+
+        game = None
+        if clean_query in catalog:
+            game = catalog[clean_query]
+        else:
+            exact_norm = next(
+                (
+                    item for item in catalog.values()
+                    if normalized_query and normalize_name(str(item.get("name", ""))) == normalized_query
+                ),
+                None,
+            )
+            if exact_norm:
+                game = exact_norm
+            else:
+                exact_plain = next(
+                    (
+                        item for item in catalog.values()
+                        if lowered and lowered == str(item.get("name", "")).lower()
+                    ),
+                    None,
+                )
+                if exact_plain:
+                    game = exact_plain
+                else:
+                    partial_norm = next(
+                        (
+                            item for item in catalog.values()
+                            if normalized_query and normalized_query in normalize_name(str(item.get("name", "")))
+                        ),
+                        None,
+                    )
+                    if partial_norm:
+                        game = partial_norm
+                    else:
+                        partial_plain = next(
+                            (
+                                item for item in catalog.values()
+                                if lowered and lowered in str(item.get("name", "")).lower()
+                            ),
+                            None,
+                        )
+                        if partial_plain:
+                            game = partial_plain
+
+        if not game:
+            game = self.steam.search_game(clean_query)
+
         if not game:
             return {"ok": False, "error": "Game not found. Try a different name or Steam AppID."}
+
+        if not str(game.get('appid', '')).isdigit():
+            game = {**game, 'appid': ''}
 
         candidates = ScanEngine.generate_home_candidates(game)
         resolved: list[dict[str, Any]] = []
@@ -127,12 +245,16 @@ class Backend:
 
     def scan_library(self) -> dict[str, Any]:
         hidden_set = set(self.state.archived_appids())
-        index = ScanEngine.build_library_index()
+        leftover_index = ScanEngine.build_library_index()
+        installed_catalog = self._ensure_installed_catalog()
+        all_appids = sorted(set(leftover_index.keys()) | set(installed_catalog.keys()))
         items: list[dict[str, Any]] = []
 
-        for appid, paths in index.items():
+        for appid in all_appids:
+            paths = list(leftover_index.get(appid, []))
+            installed_info = installed_catalog.get(appid, {"sources": [], "name": f"Unknown Game ({appid})"})
             meta = self.steam.get_app_details(appid) or {
-                "name": f"Unknown Game ({appid})",
+                "name": installed_info.get("name", f"Unknown Game ({appid})"),
                 "appid": appid,
                 "developers": [],
                 "publishers": [],
@@ -140,7 +262,7 @@ class Backend:
                 "short_description": "Not found on Steam Store.",
             }
             paths.sort(key=lambda item: (item["category"], item["path"].lower()))
-            installed_sources = ScanEngine.detect_installed_sources(appid, meta["name"])
+            installed_sources = installed_info.get("sources", []) or ScanEngine.detect_installed_sources(appid, meta["name"])
             items.append({
                 "appid": appid,
                 "name": meta["name"],
@@ -155,6 +277,7 @@ class Backend:
                 "hidden": appid in hidden_set,
                 "installed_sources": installed_sources,
                 "installed": bool(installed_sources),
+                "has_leftovers": bool(paths),
             })
 
         items.sort(key=lambda item: (item["archived"], item["name"].lower()))

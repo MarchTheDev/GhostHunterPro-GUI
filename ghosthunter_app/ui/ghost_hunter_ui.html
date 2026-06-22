@@ -1180,8 +1180,8 @@
 
     .badge-icon svg,
     .archive-fab svg {
-      width: 100%;
-      height: 100%;
+      width: 16px;
+      height: 16px;
       stroke: currentColor;
       fill: none;
       stroke-width: 2;
@@ -1671,7 +1671,7 @@
         <div class="brand-icon">👻</div>
         <div>
           <div class="brand-title">Ghost Hunter Pro</div>
-          <div class="brand-sub"><span id="app-version-label">v2.3.6</span> • <span class="desktop">Desktop Mode</span></div>
+          <div class="brand-sub"><span id="app-version-label">v2.3.7</span> • <span class="desktop">Desktop Mode</span></div>
         </div>
       </div>
       <div class="tabs">
@@ -1687,7 +1687,7 @@
     </div>
 
     <footer class="footer">
-      <span id="app-footer-version">Ghost Hunter Pro v2.3.6</span> • Not affiliated with Valve or Steam<br />
+      <span id="app-footer-version">Ghost Hunter Pro v2.3.7</span> • Not affiliated with Valve or Steam<br />
       Paths are generated based on common known locations. Always verify before deleting.
     </footer>
   </div>
@@ -1704,6 +1704,7 @@
       homeLoading: false,
       homeResult: null,
       homeQuery: '',
+      homeCursor: null,
       homeSuggestions: [],
       homeHistory: [],
       libraryLoading: false,
@@ -1761,6 +1762,17 @@
       $toast.classList.add('show');
       clearTimeout(toast._timer);
       toast._timer = setTimeout(() => $toast.classList.remove('show'), 2200);
+    }
+
+    function restoreHomeInputFocus(caretPos = null) {
+      const desired = typeof caretPos === 'number' ? caretPos : (typeof state.homeCursor === 'number' ? state.homeCursor : String(state.homeQuery || '').length);
+      const input = document.getElementById('home-search-input');
+      if (!input) return;
+      const safePos = Math.max(0, Math.min(desired, input.value.length));
+      if (document.activeElement !== input) {
+        try { input.focus({ preventScroll: true }); } catch { input.focus(); }
+      }
+      try { input.setSelectionRange(safePos, safePos); } catch {}
     }
 
     async function waitForBackend() {
@@ -1962,28 +1974,55 @@
       }
     }
 
-    async function updateSuggestions(query) {
-      const clean = (query || '').trim();
+    function renderHomeSuggestionsOnly() {
+      const wrap = document.querySelector('.search-wrap');
+      if (!wrap) return;
+      let box = document.getElementById('home-suggestions-box');
+      if (!state.homeSuggestions.length) {
+        if (box) box.remove();
+        return;
+      }
+      if (!box) {
+        box = document.createElement('div');
+        box.id = 'home-suggestions-box';
+        box.className = 'suggestions';
+        wrap.appendChild(box);
+      }
+      box.innerHTML = state.homeSuggestions.map(item => `
+        <button class="suggestion" type="button" data-action="pick-suggestion" data-appid="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}">
+          ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">👻</div>` : `<div class="fallback">👻</div>`}
+          <div>
+            <div class="suggestion-title">${escapeHtml(item.name)}</div>
+            <div class="suggestion-sub">AppID: ${escapeHtml(item.id)}</div>
+          </div>
+        </button>
+      `).join('');
+    }
+
+    async function updateSuggestions(query, caretPos = null) {
+      const raw = query == null ? '' : String(query);
+      const clean = raw.trim();
+      const caret = typeof caretPos === 'number' ? caretPos : raw.length;
+      state.homeCursor = caret;
+
       if (clean.length < 2) {
         state.homeSuggestions = [];
-        renderHome();
+        renderHomeSuggestionsOnly();
+        restoreHomeInputFocus(caret);
         return;
       }
       try {
         const suggestions = await apiCall('search_suggestions', clean);
         const currentInput = document.getElementById('home-search-input');
-        const liveValue = (currentInput && currentInput.value ? currentInput.value : state.homeQuery).trim();
-        if (liveValue !== clean) return;
+        const liveValue = currentInput && typeof currentInput.value === 'string' ? currentInput.value : state.homeQuery;
+        if (liveValue !== raw) return;
         state.homeSuggestions = Array.isArray(suggestions) ? suggestions.slice(0, 6) : [];
-        renderHome();
-        const input = document.getElementById('home-search-input');
-        if (input) {
-          input.focus();
-          input.setSelectionRange(clean.length, clean.length);
-        }
+        renderHomeSuggestionsOnly();
+        restoreHomeInputFocus(caret);
       } catch {
         state.homeSuggestions = [];
-        renderHome();
+        renderHomeSuggestionsOnly();
+        restoreHomeInputFocus(caret);
       }
     }
 
@@ -2019,10 +2058,11 @@
       }
       applyVersionLabels();
       applyTheme(state.settingsInfo && state.settingsInfo.theme ? state.settingsInfo.theme : 'neon');
+      restoreHomeInputFocus();
     }
 
     function applyVersionLabels() {
-      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.6';
+      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.7';
       const top = document.getElementById('app-version-label');
       const footer = document.getElementById('app-footer-version');
       if (top) top.textContent = `v${version}`;
@@ -2043,6 +2083,7 @@
       state.homeResult = null;
       state.homeLoading = false;
       state.homeQuery = '';
+      state.homeCursor = null;
       state.homeSuggestions = [];
       renderAll();
     }
@@ -2133,7 +2174,7 @@
               </div>
             </form>
             ${state.homeSuggestions.length ? `
-              <div class="suggestions">
+              <div class="suggestions" id="home-suggestions-box">
                 ${state.homeSuggestions.map(item => `
                   <button class="suggestion" type="button" data-action="pick-suggestion" data-appid="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}">
                     ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">👻</div>` : `<div class="fallback">👻</div>`}
@@ -2182,9 +2223,9 @@
       } else if (!state.libraryLoaded || state.libraryItems.length === 0) {
         content = `
           <div class="empty card">
-            <div class="big">No leftover games found yet</div>
-            <div style="margin-bottom:18px;">Scan your system for known crack leftover folders and app-based traces.</div>
-            <button class="btn primary" data-action="library-scan">👻 Scan for Leftover Games</button>
+            <div class="big">No games found in Library yet</div>
+            <div style="margin-bottom:18px;">Scan your system to gather leftover games and installed games from supported sources.</div>
+            <button class="btn primary" data-action="library-scan">👻 Scan Library</button>
           </div>
         `;
       } else if (filtered.length === 0) {
@@ -2196,7 +2237,7 @@
         `;
       } else {
         content = `
-          <div class="library-meta">${state.libraryFilter === 'hidden' ? `${archivedCount} hidden game${archivedCount === 1 ? '' : 's'}` : `${activeCount} games with leftover files found`}</div>
+          <div class="library-meta">${state.libraryFilter === 'hidden' ? `${archivedCount} hidden game${archivedCount === 1 ? '' : 's'}` : `${activeCount} visible game${activeCount === 1 ? '' : 's'} in library`}</div>
           <div class="library-grid">
             ${filtered.map(item => `
               <article class="game-card ${isLibrarySelected(item.appid) ? 'selected' : ''}">
@@ -2211,7 +2252,7 @@
                   <div class="card-fallback" style="display:${item.header_image ? 'none' : 'grid'}">👻</div>
                   ${item.archived
                     ? `<div class="archive-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg></span>Hidden</div>`
-                    : `<div class="status-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"></path><path d="M8 6h8"></path><path d="M6 6h12l-1 14H7L6 6z"></path><path d="M10 10v6"></path><path d="M14 10v6"></path></svg></span>Leftovers found</div>`}
+                    : item.has_leftovers ? `<div class="status-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"></path><path d="M8 6h8"></path><path d="M6 6h12l-1 14H7L6 6z"></path><path d="M10 10v6"></path><path d="M14 10v6"></path></svg></span>Leftovers found</div>` : item.installed ? `<div class="status-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 9.2 16.5 19 7.5"></path></svg></span>Installed</div>` : ''}
                 </div>
                 <div class="card-body" data-action="open-game" data-appid="${escapeHtml(item.appid)}">
                   <div class="game-title">${escapeHtml(item.name)}</div>
@@ -2401,7 +2442,7 @@
                   <h3 class="modal-title">${escapeHtml(game.name)}</h3>
                   <div class="tags" style="margin-top:12px;">
                     <span class="tag cyan">#${escapeHtml(game.appid)}</span>
-                    <span class="tag red">${game.archived ? 'Hidden' : 'Leftovers found'}</span>
+                    <span class="tag red">${game.archived ? 'Hidden' : game.has_leftovers ? 'Leftovers found' : 'Installed'}</span>
                     ${game.installed ? `<span class="tag legit">Installed: ${escapeHtml((game.installed_sources || []).join(', '))}</span>` : ''}
                     <span class="tag">${game.path_count} path${game.path_count === 1 ? '' : 's'}</span>
                     <span class="tag">${formatSize(game.total_size)}</span>
@@ -2542,7 +2583,6 @@
         <div class="settings-shell">
           <div class="card settings-card">
             <div class="settings-title">Settings</div>
-            <div class="settings-sub">Update and release tools for Ghost Hunter Pro.</div>
             <div class="settings-tabs">
               <button class="settings-tab ${active === 'updates' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="updates">Updates</button>
               <button class="settings-tab ${active === 'themes' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="themes">Themes</button>
@@ -2589,9 +2629,10 @@
 
     async function runHomeSearch() {
       const input = document.getElementById('home-search-input');
-      const query = (input && input.value ? input.value : '').trim();
+      const rawQuery = input && typeof input.value === 'string' ? input.value : '';
+      const query = rawQuery.trim();
       if (!query) return;
-      state.homeQuery = query;
+      state.homeQuery = rawQuery;
       state.homeLoading = true;
       state.homeResult = null;
       state.homeSuggestions = [];
@@ -2674,9 +2715,12 @@
         }
       }
       if (target.id === 'home-search-input') {
-        state.homeQuery = target.value;
+        const currentValue = target.value;
+        const caret = typeof target.selectionStart === 'number' ? target.selectionStart : currentValue.length;
+        state.homeQuery = currentValue;
+        state.homeCursor = caret;
         clearTimeout(suggestionTimer);
-        suggestionTimer = setTimeout(() => updateSuggestions(target.value), 220);
+        suggestionTimer = setTimeout(() => updateSuggestions(currentValue, caret), 220);
       }
     });
 
@@ -2684,7 +2728,7 @@
       const clickedInsideSearch = event.target.closest('.search-wrap');
       if (!clickedInsideSearch && state.homeSuggestions.length) {
         state.homeSuggestions = [];
-        renderHome();
+        renderHomeSuggestionsOnly();
       }
       const actionEl = event.target.closest('[data-action]');
       if (!actionEl) {
@@ -2715,6 +2759,8 @@
           updateLibraryScrollButton();
           if (state.activeTab === 'settings') {
             await refreshUpdateInfo();
+          } else if (state.activeTab === 'home') {
+            restoreHomeInputFocus();
           }
           break;
         case 'library-scan':
