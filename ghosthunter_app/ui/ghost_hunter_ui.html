@@ -15,6 +15,14 @@
       --cyan: #1ac7ff;
       --cyan-2: #0bb2e3;
       --purple: #a24cff;
+      --brand-mid: #6aa7ff;
+      --brand-end: #b883ff;
+      --glow-cyan: rgba(26,199,255,.18);
+      --glow-purple: rgba(162,76,255,.12);
+      --surface-cyan: rgba(17,183,223,.18);
+      --surface-purple: rgba(162,76,255,.16);
+      --surface-cyan-strong: rgba(17,183,223,.24);
+      --surface-purple-strong: rgba(162,76,255,.22);
       --green: #22c76e;
       --red: #ff5b57;
       --shadow: 0 20px 60px rgba(0,0,0,.38);
@@ -32,6 +40,63 @@
         radial-gradient(700px 500px at 50% 20%, rgba(24,163,211,0.08), transparent 75%),
         linear-gradient(180deg, #08101b 0%, #070b14 100%);
       overflow: hidden;
+    }
+
+    body[data-theme="midnight"] {
+      --cyan: #7bd7ff;
+      --cyan-2: #4fb9ff;
+      --purple: #6f8dff;
+      --brand-mid: #7ea8ff;
+      --brand-end: #9cb4ff;
+      --glow-cyan: rgba(79,185,255,.18);
+      --glow-purple: rgba(111,141,255,.12);
+      --surface-cyan: rgba(79,185,255,.16);
+      --surface-purple: rgba(111,141,255,.14);
+      --surface-cyan-strong: rgba(79,185,255,.24);
+      --surface-purple-strong: rgba(111,141,255,.22);
+      --red: #ff6b7a;
+      background:
+        radial-gradient(900px 500px at 50% 40%, rgba(44,81,165,0.16), transparent 70%),
+        radial-gradient(700px 500px at 50% 20%, rgba(45,130,188,0.10), transparent 75%),
+        linear-gradient(180deg, #081019 0%, #09111d 100%);
+    }
+
+    body[data-theme="ember"] {
+      --cyan: #ffb26b;
+      --cyan-2: #ff8a3d;
+      --purple: #ff4d6d;
+      --brand-mid: #ff9a52;
+      --brand-end: #ff6884;
+      --glow-cyan: rgba(255,138,61,.18);
+      --glow-purple: rgba(255,77,109,.12);
+      --surface-cyan: rgba(255,138,61,.16);
+      --surface-purple: rgba(255,77,109,.14);
+      --surface-cyan-strong: rgba(255,138,61,.24);
+      --surface-purple-strong: rgba(255,77,109,.22);
+      --red: #ff5b57;
+      background:
+        radial-gradient(900px 500px at 50% 40%, rgba(150,39,53,0.15), transparent 70%),
+        radial-gradient(700px 500px at 50% 20%, rgba(201,102,29,0.10), transparent 75%),
+        linear-gradient(180deg, #120b0c 0%, #0c0b13 100%);
+    }
+
+    body[data-theme="emerald"] {
+      --cyan: #4fffd1;
+      --cyan-2: #1fd0a6;
+      --purple: #3fbf7c;
+      --brand-mid: #6ef8d6;
+      --brand-end: #66dd9b;
+      --glow-cyan: rgba(31,208,166,.18);
+      --glow-purple: rgba(63,191,124,.12);
+      --surface-cyan: rgba(31,208,166,.16);
+      --surface-purple: rgba(63,191,124,.14);
+      --surface-cyan-strong: rgba(31,208,166,.24);
+      --surface-purple-strong: rgba(63,191,124,.22);
+      --red: #ff6f61;
+      background:
+        radial-gradient(900px 500px at 50% 40%, rgba(27,123,91,0.14), transparent 70%),
+        radial-gradient(700px 500px at 50% 20%, rgba(33,181,126,0.08), transparent 75%),
+        linear-gradient(180deg, #07130f 0%, #07100d 100%);
     }
 
     body::before {
@@ -108,7 +173,7 @@
       font-weight: 800;
       letter-spacing: .2px;
       font-size: 18px;
-      background: linear-gradient(90deg, var(--cyan), #6aa7ff 55%, #b883ff 100%);
+      background: linear-gradient(90deg, var(--cyan), var(--brand-mid) 55%, var(--brand-end) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -132,7 +197,7 @@
       background: rgba(255,255,255,.045);
       border: 1px solid rgba(255,255,255,.08);
       border-radius: 18px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 0 28px rgba(26,199,255,.08);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.03), 0 0 28px var(--glow-cyan);
       backdrop-filter: blur(12px);
     }
 
@@ -157,40 +222,40 @@
 
     .tab.home-nav {
       min-width: 132px;
-      background: linear-gradient(90deg, rgba(17,183,223,.14), rgba(162,76,255,.12));
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
       border: 1px solid rgba(126,217,255,.16);
       color: #eef8ff;
-      box-shadow: 0 0 18px rgba(26,199,255,.08), inset 0 1px 0 rgba(255,255,255,.05);
+      box-shadow: 0 0 18px var(--glow-cyan), inset 0 1px 0 rgba(255,255,255,.05);
     }
 
     .tab.home-nav:hover {
-      background: linear-gradient(90deg, rgba(17,183,223,.2), rgba(162,76,255,.18));
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
       transform: translateY(-1px);
     }
 
     .tab.home-nav.active {
-      background: linear-gradient(90deg, rgba(17,183,223,.24), rgba(162,76,255,.2));
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
       color: #ffffff;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px rgba(26,199,255,.14);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px var(--glow-cyan);
     }
 
     .tab.settings-nav {
       min-width: 140px;
-      background: linear-gradient(90deg, rgba(17,183,223,.12), rgba(162,76,255,.10));
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
       border: 1px solid rgba(126,217,255,.14);
       color: #eef8ff;
-      box-shadow: 0 0 18px rgba(26,199,255,.08), inset 0 1px 0 rgba(255,255,255,.04);
+      box-shadow: 0 0 18px var(--glow-cyan), inset 0 1px 0 rgba(255,255,255,.04);
     }
 
     .tab.settings-nav:hover {
-      background: linear-gradient(90deg, rgba(17,183,223,.18), rgba(162,76,255,.16));
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
       transform: translateY(-1px);
     }
 
     .tab.settings-nav.active {
-      background: linear-gradient(90deg, rgba(17,183,223,.22), rgba(162,76,255,.22));
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
       color: #ffffff;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px rgba(26,199,255,.14);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 24px var(--glow-cyan);
     }
 
     .tab-icon {
@@ -201,11 +266,11 @@
       height: 22px;
       margin-right: 8px;
       vertical-align: -5px;
-      color: #7fd9ff;
-      background: rgba(127,217,255,.10);
-      border: 1px solid rgba(127,217,255,.18);
+      color: var(--cyan);
+      background: color-mix(in srgb, var(--cyan) 12%, transparent);
+      border: 1px solid color-mix(in srgb, var(--cyan) 18%, transparent);
       border-radius: 8px;
-      filter: drop-shadow(0 0 6px rgba(26,199,255,.18));
+      filter: drop-shadow(0 0 6px var(--glow-cyan));
     }
 
     .tab.active .tab-icon {
@@ -218,6 +283,24 @@
       stroke: currentColor;
       fill: none;
       stroke-width: 1.9;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .inline-icon {
+      display: inline-flex;
+      width: 14px;
+      height: 14px;
+      vertical-align: -2px;
+      margin-right: 6px;
+    }
+
+    .inline-icon svg {
+      width: 14px;
+      height: 14px;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
       stroke-linecap: round;
       stroke-linejoin: round;
     }
@@ -255,7 +338,7 @@
     }
 
     .hero h1 span.grad {
-      background: linear-gradient(90deg, var(--cyan), #4b8bff 55%, #9f65ff 100%);
+      background: linear-gradient(90deg, var(--cyan), var(--brand-mid) 55%, var(--brand-end) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -283,18 +366,18 @@
     }
 
     .btn.hero-link {
-      border: 1px solid rgba(26,199,255,.18);
-      background: linear-gradient(90deg, rgba(17,183,223,.18), rgba(162,76,255,.16));
+      border: 1px solid rgba(126,217,255,.18);
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
       color: #eef8ff;
-      box-shadow: 0 0 22px rgba(26,199,255,.12), 0 10px 24px rgba(0,0,0,.18);
+      box-shadow: 0 0 22px var(--glow-cyan), 0 10px 24px rgba(0,0,0,.18);
       font-size: 15px;
       padding: 13px 22px;
       font-weight: 800;
     }
 
     .btn.hero-link:hover {
-      background: linear-gradient(90deg, rgba(17,183,223,.24), rgba(162,76,255,.22));
-      box-shadow: 0 0 28px rgba(26,199,255,.16), 0 12px 28px rgba(0,0,0,.2);
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
+      box-shadow: 0 0 28px var(--glow-cyan), 0 12px 28px rgba(0,0,0,.2);
     }
 
     .search-shell {
@@ -302,8 +385,8 @@
       margin: 0 auto;
       padding: 2px;
       border-radius: 24px;
-      background: linear-gradient(90deg, rgba(17,198,255,.35), rgba(164,76,255,.42));
-      box-shadow: 0 0 40px rgba(36,171,255,.18), 0 0 50px rgba(162,76,255,.12);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--cyan) 38%, transparent), color-mix(in srgb, var(--purple) 42%, transparent));
+      box-shadow: 0 0 40px var(--glow-cyan), 0 0 50px var(--glow-purple);
     }
 
     .search-inner {
@@ -426,10 +509,10 @@
     .btn.pill { border-radius: 14px; }
 
     .btn.filter.active {
-      background: rgba(162,76,255,.18);
-      border-color: rgba(162,76,255,.32);
-      color: #f1dbff;
-      box-shadow: 0 0 0 1px rgba(162,76,255,.16) inset;
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
+      border-color: color-mix(in srgb, var(--cyan) 22%, var(--purple) 10%);
+      color: #f2fbff;
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 12%, transparent) inset, 0 0 18px var(--glow-cyan);
     }
 
     .btn.good {
@@ -793,8 +876,8 @@
       margin: 8px 0 16px;
       border-radius: 16px;
       border: 1px solid rgba(255,255,255,.07);
-      background: rgba(255,255,255,.04);
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--surface-cyan) 60%, transparent), color-mix(in srgb, var(--surface-purple) 55%, transparent));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02), 0 0 16px var(--glow-cyan);
     }
 
     .settings-tab {
@@ -810,17 +893,87 @@
       transition: .16s ease;
     }
 
+    .settings-tab:hover {
+      color: var(--text);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--surface-cyan) 72%, transparent), color-mix(in srgb, var(--surface-purple) 68%, transparent));
+      border-color: color-mix(in srgb, var(--cyan) 12%, transparent);
+    }
+
     .settings-tab.active {
       color: var(--text);
-      background: linear-gradient(90deg, rgba(17,183,223,.16), rgba(162,76,255,.14));
-      border-color: rgba(126,217,255,.12);
-      box-shadow: 0 0 18px rgba(26,199,255,.08);
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
+      border-color: color-mix(in srgb, var(--cyan) 18%, transparent);
+      box-shadow: 0 0 18px var(--glow-cyan);
     }
 
     .settings-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
       gap: 12px;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      gap: 12px;
+    }
+
+    .theme-card {
+      border: 1px solid rgba(255,255,255,.07);
+      border-radius: 16px;
+      padding: 14px;
+      background: rgba(255,255,255,.03);
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .theme-card.active {
+      border-color: color-mix(in srgb, var(--cyan) 18%, transparent);
+      box-shadow: 0 0 20px var(--glow-cyan);
+      background: linear-gradient(90deg, color-mix(in srgb, var(--surface-cyan) 65%, transparent), color-mix(in srgb, var(--surface-purple) 60%, transparent));
+    }
+
+    .theme-card:hover {
+      transform: translateY(-1px);
+      border-color: rgba(255,255,255,.12);
+    }
+
+    .theme-preview {
+      height: 70px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .theme-preview.neon {
+      background: linear-gradient(135deg, #0a1322, #11172a 55%, #2f1d49);
+      box-shadow: inset 0 0 0 1px rgba(26,199,255,.08);
+    }
+
+    .theme-preview.midnight {
+      background: linear-gradient(135deg, #0a1320, #152238 55%, #243f72);
+    }
+
+    .theme-preview.ember {
+      background: linear-gradient(135deg, #160b10, #3b1522 55%, #6a281d);
+    }
+
+    .theme-preview.emerald {
+      background: linear-gradient(135deg, #07130f, #0d261e 55%, #175741);
+    }
+
+    .theme-card-title {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .theme-card-sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
     }
 
     .settings-item {
@@ -903,9 +1056,10 @@
     }
 
     .toolbar-actions .btn.bulk {
-      background: rgba(17,183,223,.12);
-      border-color: rgba(17,183,223,.22);
-      color: #d8f7ff;
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
+      border-color: color-mix(in srgb, var(--cyan) 20%, var(--purple) 8%);
+      color: #e9fbff;
+      box-shadow: 0 0 18px var(--glow-cyan);
     }
 
     .library-meta {
@@ -933,8 +1087,8 @@
     }
 
     .game-card.selected {
-      border-color: rgba(26,199,255,.45);
-      box-shadow: 0 0 0 1px rgba(26,199,255,.18), var(--shadow);
+      border-color: color-mix(in srgb, var(--cyan) 40%, var(--purple) 18%);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 18%, transparent), 0 0 22px var(--glow-cyan), var(--shadow);
     }
 
     .game-card:hover {
@@ -1040,10 +1194,10 @@
       top: 8px;
       right: 8px;
       z-index: 4;
-      width: 38px;
-      height: 38px;
+      width: 34px;
+      height: 34px;
       border: 1px solid rgba(255,255,255,.14);
-      border-radius: 12px;
+      border-radius: 11px;
       background: rgba(7, 11, 20, .96);
       color: #f7fbff;
       cursor: pointer;
@@ -1067,13 +1221,15 @@
     }
 
     .archive-fab.archive {
-      background: linear-gradient(180deg, rgba(95, 57, 178, .98), rgba(71, 40, 137, .98));
-      border-color: rgba(211, 190, 255, .18);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--purple) 78%, black), color-mix(in srgb, var(--purple) 58%, black));
+      border-color: color-mix(in srgb, var(--purple) 18%, white 6%);
+      box-shadow: 0 0 14px var(--glow-purple), 0 10px 18px rgba(0,0,0,.24);
     }
 
     .archive-fab.restore {
-      background: linear-gradient(180deg, rgba(19, 145, 88, .98), rgba(14, 109, 67, .98));
-      border-color: rgba(177, 245, 214, .16);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--cyan) 74%, black), color-mix(in srgb, var(--cyan) 56%, black));
+      border-color: color-mix(in srgb, var(--cyan) 18%, white 6%);
+      box-shadow: 0 0 14px var(--glow-cyan), 0 10px 18px rgba(0,0,0,.24);
     }
 
     .select-fab {
@@ -1164,9 +1320,10 @@
     }
 
     .mini-badge.legit {
-      background: rgba(26,199,255,.12);
-      border-color: rgba(26,199,255,.18);
-      color: #dff7ff;
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
+      border-color: color-mix(in srgb, var(--cyan) 20%, transparent);
+      color: #e9fbff;
+      box-shadow: 0 0 14px var(--glow-cyan);
     }
 
     .modal-overlay {
@@ -1191,6 +1348,142 @@
       box-shadow: 0 32px 90px rgba(0,0,0,.46);
       padding: 18px;
       animation: tvOpen .22s ease-out;
+    }
+
+    .selection-card {
+      width: min(1000px, 100%);
+      max-height: calc(100vh - 56px);
+      overflow: auto;
+      background: rgba(11, 16, 28, .97);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.46);
+      padding: 18px;
+      animation: fadeSoftIn .18s ease-out;
+    }
+
+    @keyframes fadeSoftIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(.99);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .selection-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 16px;
+    }
+
+    .selection-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin: 0 0 8px;
+    }
+
+    .selection-sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+    }
+
+    .selection-actions {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin: 14px 0 18px;
+    }
+
+    .selection-game {
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .selection-game.expanded {
+      border-color: color-mix(in srgb, var(--cyan) 12%, transparent);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--cyan) 10%, transparent);
+    }
+
+    .selection-game-head {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      cursor: pointer;
+      background: rgba(255,255,255,.025);
+    }
+
+    .selection-game-main {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .selection-thumb,
+    .selection-thumb-fallback {
+      width: 54px;
+      height: 54px;
+      border-radius: 14px;
+      object-fit: cover;
+      flex: 0 0 auto;
+      background: rgba(255,255,255,.05);
+      border: 1px solid rgba(255,255,255,.06);
+    }
+
+    .selection-thumb-fallback {
+      display: grid;
+      place-items: center;
+      color: rgba(255,255,255,.35);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .selection-game-title {
+      font-size: 17px;
+      font-weight: 800;
+      margin-bottom: 4px;
+    }
+
+    .selection-game-sub {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .selection-game-actions {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .selection-game-body {
+      padding: 0 16px;
+      border-top: 1px solid transparent;
+      max-height: 0;
+      opacity: 0;
+      overflow: hidden;
+      transform: translateY(-6px);
+      transition: max-height .22s ease, opacity .18s ease, transform .18s ease, padding .18s ease, border-color .18s ease;
+    }
+
+    .selection-game.expanded .selection-game-body {
+      padding: 0 16px 16px;
+      border-top-color: rgba(255,255,255,.05);
+      max-height: 1400px;
+      opacity: 1;
+      transform: translateY(0);
     }
 
     .confirm-title {
@@ -1378,7 +1671,7 @@
         <div class="brand-icon">👻</div>
         <div>
           <div class="brand-title">Ghost Hunter Pro</div>
-          <div class="brand-sub"><span id="app-version-label">v2.3.5</span> • <span class="desktop">Desktop Mode</span></div>
+          <div class="brand-sub"><span id="app-version-label">v2.3.6</span> • <span class="desktop">Desktop Mode</span></div>
         </div>
       </div>
       <div class="tabs">
@@ -1394,13 +1687,14 @@
     </div>
 
     <footer class="footer">
-      <span id="app-footer-version">Ghost Hunter Pro v2.3.5</span> • Not affiliated with Valve or Steam<br />
+      <span id="app-footer-version">Ghost Hunter Pro v2.3.6</span> • Not affiliated with Valve or Steam<br />
       Paths are generated based on common known locations. Always verify before deleting.
     </footer>
   </div>
 
   <div id="modal-overlay" class="modal-overlay"></div>
   <div id="confirm-overlay" class="modal-overlay"></div>
+  <div id="selection-overlay" class="modal-overlay"></div>
   <div id="toast" class="toast"></div>
 
   <script>
@@ -1416,12 +1710,14 @@
       libraryLoaded: false,
       libraryItems: [],
       libraryQuery: '',
-      libraryFilter: 'active',
+      libraryFilter: 'visible',
       selectedLibraryAppIds: [],
       libraryShowScrollTop: false,
       settingsInfo: null,
       settingsTab: 'updates',
       updateInfo: null,
+      bulkReviewOpen: false,
+      bulkExpandedAppIds: [],
       modalGameId: null,
       confirmDialog: null,
     };
@@ -1434,6 +1730,7 @@
     const $settings = document.getElementById('view-settings');
     const $modal = document.getElementById('modal-overlay');
     const $confirm = document.getElementById('confirm-overlay');
+    const $selection = document.getElementById('selection-overlay');
     const $toast = document.getElementById('toast');
 
     function escapeHtml(value) {
@@ -1519,8 +1816,8 @@
     function getFilteredLibraryItems() {
       const query = state.libraryQuery.trim().toLowerCase();
       return state.libraryItems.filter(item => {
-        if (state.libraryFilter === 'active' && item.archived) return false;
-        if (state.libraryFilter === 'archived' && !item.archived) return false;
+        if (state.libraryFilter === 'visible' && item.archived) return false;
+        if (state.libraryFilter === 'hidden' && !item.archived) return false;
         if (!query) return true;
         return item.name.toLowerCase().includes(query) || String(item.appid).includes(query);
       });
@@ -1551,8 +1848,27 @@
       const key = String(appid);
       if (isLibrarySelected(key)) {
         state.selectedLibraryAppIds = state.selectedLibraryAppIds.filter(value => value !== key);
+        state.bulkExpandedAppIds = state.bulkExpandedAppIds.filter(value => value !== key);
       } else {
         state.selectedLibraryAppIds = [...state.selectedLibraryAppIds, key];
+      }
+    }
+
+    function selectedLibraryItems() {
+      const selected = new Set(state.selectedLibraryAppIds.map(String));
+      return state.libraryItems.filter(item => selected.has(String(item.appid)));
+    }
+
+    function isBulkExpanded(appid) {
+      return state.bulkExpandedAppIds.includes(String(appid));
+    }
+
+    function toggleBulkExpanded(appid) {
+      const key = String(appid);
+      if (isBulkExpanded(key)) {
+        state.bulkExpandedAppIds = state.bulkExpandedAppIds.filter(value => value !== key);
+      } else {
+        state.bulkExpandedAppIds = [...state.bulkExpandedAppIds, key];
       }
     }
 
@@ -1680,6 +1996,21 @@
       }
     }
 
+    function applyTheme(themeName) {
+      document.body.dataset.theme = themeName || 'neon';
+    }
+
+    async function setTheme(themeName) {
+      const response = await apiCall('set_theme', themeName);
+      if (response && response.ok) {
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.theme = response.theme;
+        applyTheme(response.theme);
+        renderSettings();
+        renderTabs();
+      }
+    }
+
     async function loadSettingsInfo() {
       try {
         state.settingsInfo = await apiCall('get_settings_info');
@@ -1687,10 +2018,11 @@
         state.settingsInfo = null;
       }
       applyVersionLabels();
+      applyTheme(state.settingsInfo && state.settingsInfo.theme ? state.settingsInfo.theme : 'neon');
     }
 
     function applyVersionLabels() {
-      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.5';
+      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.6';
       const top = document.getElementById('app-version-label');
       const footer = document.getElementById('app-footer-version');
       if (top) top.textContent = `v${version}`;
@@ -1864,27 +2196,27 @@
         `;
       } else {
         content = `
-          <div class="library-meta">${state.libraryFilter === 'archived' ? `${archivedCount} archived game${archivedCount === 1 ? '' : 's'}` : `${activeCount} games with leftover files found`}</div>
+          <div class="library-meta">${state.libraryFilter === 'hidden' ? `${archivedCount} hidden game${archivedCount === 1 ? '' : 's'}` : `${activeCount} games with leftover files found`}</div>
           <div class="library-grid">
             ${filtered.map(item => `
               <article class="game-card ${isLibrarySelected(item.appid) ? 'selected' : ''}">
                 <button class="select-fab ${isLibrarySelected(item.appid) ? 'active' : ''}" title="${isLibrarySelected(item.appid) ? 'Deselect this game' : 'Select this game'}" data-action="toggle-select-game" data-appid="${escapeHtml(item.appid)}">${isLibrarySelected(item.appid)
                   ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5 9.2 16.5 19 7.5"></path></svg>`
                   : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14"></path><path d="M5 12h14"></path></svg>`}</button>
-                <button class="archive-fab ${item.archived ? 'restore' : 'archive'}" title="${item.archived ? 'Restore this game' : 'Archive this game'}" data-action="toggle-archive" data-appid="${escapeHtml(item.appid)}" data-archived="${item.archived ? '1' : '0'}">${item.archived
-                  ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10 5 14l4 4"></path><path d="M5 14h9a5 5 0 0 0 0-10h-1"></path></svg>`
-                  : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16"></path><path d="M6 7.5V19h12V7.5"></path><path d="M9 11.5h6"></path><path d="M9 4.5h6l1 3H8l1-3z"></path></svg>`}</button>
+                <button class="archive-fab ${item.archived ? 'restore' : 'archive'}" title="${item.archived ? 'Show this game' : 'Hide this game'}" data-action="toggle-archive" data-appid="${escapeHtml(item.appid)}" data-archived="${item.archived ? '1' : '0'}">${item.archived
+                  ? `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle></svg>`
+                  : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg>`}</button>
                 <div class="card-media" data-action="open-game" data-appid="${escapeHtml(item.appid)}">
                   ${item.header_image ? `<img src="${escapeHtml(item.header_image)}" alt="" onerror="this.remove(); this.parentElement.querySelector('.card-fallback').style.display='grid';" />` : ''}
                   <div class="card-fallback" style="display:${item.header_image ? 'none' : 'grid'}">👻</div>
                   ${item.archived
-                    ? `<div class="archive-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7.5h16"></path><path d="M6 7.5V19h12V7.5"></path><path d="M9 4.5h6l1 3H8l1-3z"></path></svg></span>Archived</div>`
+                    ? `<div class="archive-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg></span>Hidden</div>`
                     : `<div class="status-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"></path><path d="M8 6h8"></path><path d="M6 6h12l-1 14H7L6 6z"></path><path d="M10 10v6"></path><path d="M14 10v6"></path></svg></span>Leftovers found</div>`}
                 </div>
                 <div class="card-body" data-action="open-game" data-appid="${escapeHtml(item.appid)}">
                   <div class="game-title">${escapeHtml(item.name)}</div>
                   <div class="game-sub">AppID: ${escapeHtml(item.appid)}</div>
-                  ${item.legit_owned ? `<div class="game-flags"><span class="mini-badge legit">Steam copy detected</span></div>` : ''}
+                  ${item.installed ? `<div class="game-flags"><span class="mini-badge legit">Installed: ${escapeHtml((item.installed_sources || []).join(', '))}</span></div>` : ''}
                 </div>
               </article>
             `).join('')}
@@ -1904,8 +2236,8 @@
               <input id="library-filter-input" value="${escapeHtml(state.libraryQuery)}" placeholder="Filter games by name or AppID..." />
             </label>
             <div class="toolbar-actions">
-              <button class="btn filter ${state.libraryFilter === 'active' ? 'active' : ''}" data-action="library-filter" data-filter="active">👁 Show Active (${activeCount})</button>
-              <button class="btn filter ${state.libraryFilter === 'archived' ? 'active' : ''}" data-action="library-filter" data-filter="archived">🗃 Archive (${archivedCount})</button>
+              <button class="btn filter ${state.libraryFilter === 'visible' ? 'active' : ''}" data-action="library-filter" data-filter="visible">👁 Show Visible (${activeCount})</button>
+              <button class="btn filter ${state.libraryFilter === 'hidden' ? 'active' : ''}" data-action="library-filter" data-filter="hidden"><span class="inline-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg></span>Hidden (${archivedCount})</button>
               <button class="btn bulk" data-action="library-delete-selected" ${bulkCount ? '' : 'disabled'}>🧹 Delete Selected (${bulkCount})</button>
               <button class="btn" data-action="library-rescan" ${state.libraryLoading ? 'disabled' : ''}>↻ Rescan</button>
             </div>
@@ -1943,6 +2275,78 @@
             <button class="btn" data-action="confirm-cancel">${escapeHtml(dialog.cancelText || 'Cancel')}</button>
             <button class="btn primary" data-action="confirm-ok">${escapeHtml(dialog.confirmText || 'Confirm')}</button>
           </div>
+        </div>
+      `;
+    }
+
+    function renderSelectionReview() {
+      if (!state.bulkReviewOpen) {
+        $selection.classList.remove('show');
+        $selection.innerHTML = '';
+        return;
+      }
+      const items = selectedLibraryItems();
+      if (!items.length) {
+        state.bulkReviewOpen = false;
+        renderSelectionReview();
+        return;
+      }
+      $selection.classList.add('show');
+      $selection.innerHTML = `
+        <div class="selection-card card" role="dialog" aria-modal="true">
+          <div class="selection-head">
+            <div>
+              <h3 class="selection-title">Selected Games</h3>
+              <div class="selection-sub">Review the games you selected, remove any by mistake, expand them to inspect paths, and decide whether to delete one game at a time or everything at once.</div>
+            </div>
+            <button class="modal-close" data-action="close-selection-review">✕</button>
+          </div>
+          <div class="selection-actions">
+            <button class="btn primary" data-action="selection-delete-all">Delete All Selected</button>
+            <button class="btn" data-action="selection-clear-all">Clear Selection</button>
+          </div>
+          ${items.map(item => `
+            <div class="selection-game ${isBulkExpanded(item.appid) ? 'expanded' : ''}" data-selection-game-id="${escapeHtml(item.appid)}">
+              <div class="selection-game-head" data-action="toggle-selection-expand" data-appid="${escapeHtml(item.appid)}">
+                <div class="selection-game-main">
+                  ${item.header_image ? `<img class="selection-thumb" src="${escapeHtml(item.header_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="selection-thumb-fallback" style="display:none">👻</div>` : `<div class="selection-thumb-fallback">👻</div>`}
+                  <div>
+                    <div class="selection-game-title">${escapeHtml(item.name)}</div>
+                    <div class="selection-game-sub">AppID: ${escapeHtml(item.appid)} • ${item.path_count} path${item.path_count === 1 ? '' : 's'} • ${formatSize(item.total_size)}</div>
+                  </div>
+                </div>
+                <div class="selection-game-actions">
+                  <button class="tiny-btn" data-action="selection-remove-game" data-appid="${escapeHtml(item.appid)}">Unselect</button>
+                  <button class="tiny-btn danger" data-action="selection-delete-game" data-appid="${escapeHtml(item.appid)}">Delete Files</button>
+                </div>
+              </div>
+              <div class="selection-game-body">
+                ${groupedPaths(item.paths || []).map(([category, paths]) => `
+                  <div class="path-section" style="margin-top:14px;">
+                    <div class="path-section-head">
+                      <span>${categoryIcon(category)} ${escapeHtml(category)}</span>
+                      <span>${paths.length} item${paths.length === 1 ? '' : 's'}</span>
+                    </div>
+                    ${paths.map((path, index) => `
+                      <div class="path-row">
+                        <input class="check selection-path-check" type="checkbox" checked data-path="${escapeHtml(path.path)}" id="selection-${escapeHtml(item.appid)}-${index}" />
+                        <div>
+                          <div>${escapeHtml(path.description || '')}</div>
+                          <div class="path-desc">${formatSize(path.size)}</div>
+                          <code class="path-code">${escapeHtml(path.path)}</code>
+                        </div>
+                        <div class="path-actions">
+                          <button class="tiny-btn" data-action="open-path" data-path="${escapeHtml(path.path)}">Open Path</button>
+                          <button class="tiny-btn" data-action="copy-path" data-path="${escapeHtml(path.path)}">Copy</button>
+                          <button class="tiny-btn danger" data-action="delete-path" data-path="${escapeHtml(path.path)}">Delete</button>
+                        </div>
+                      </div>
+                    `).join('')}
+                  </div>
+                `).join('')}
+              </div>
+            </div>
+          `).join('')}
         </div>
       `;
     }
@@ -1997,8 +2401,8 @@
                   <h3 class="modal-title">${escapeHtml(game.name)}</h3>
                   <div class="tags" style="margin-top:12px;">
                     <span class="tag cyan">#${escapeHtml(game.appid)}</span>
-                    <span class="tag red">${game.archived ? 'Archived' : 'Leftovers found'}</span>
-                    ${game.legit_owned ? `<span class="tag legit">Steam copy detected</span>` : ''}
+                    <span class="tag red">${game.archived ? 'Hidden' : 'Leftovers found'}</span>
+                    ${game.installed ? `<span class="tag legit">Installed: ${escapeHtml((game.installed_sources || []).join(', '))}</span>` : ''}
                     <span class="tag">${game.path_count} path${game.path_count === 1 ? '' : 's'}</span>
                     <span class="tag">${formatSize(game.total_size)}</span>
                   </div>
@@ -2009,7 +2413,7 @@
                 <button class="btn" data-action="open-steamdb" data-appid="${escapeHtml(game.appid)}">Open on SteamDB</button>
                 <button class="btn primary" data-action="modal-delete-all" data-appid="${escapeHtml(game.appid)}">Delete All</button>
                 <button class="btn" data-action="modal-delete-selected" data-appid="${escapeHtml(game.appid)}">Delete Selected</button>
-                <button class="btn ${game.archived ? 'good' : ''}" data-action="toggle-archive" data-appid="${escapeHtml(game.appid)}" data-archived="${game.archived ? '1' : '0'}">${game.archived ? 'Restore from Archive' : 'Archive this Game'}</button>
+                <button class="btn ${game.archived ? 'good' : ''}" data-action="toggle-archive" data-appid="${escapeHtml(game.appid)}" data-archived="${game.archived ? '1' : '0'}">${game.archived ? 'Show this Game' : 'Hide this Game'}</button>
               </div>
             </div>
           </div>
@@ -2105,6 +2509,18 @@
         </div>
       `;
 
+      const themeTab = `
+        <div class="theme-grid">
+          ${(info.theme_options || []).map(theme => `
+            <button class="theme-card ${info.theme === theme.id ? 'active' : ''}" data-action="set-theme" data-theme-id="${escapeHtml(theme.id)}">
+              <div class="theme-preview ${escapeHtml(theme.id)}"></div>
+              <div class="theme-card-title">${escapeHtml(theme.label)}</div>
+              <div class="theme-card-sub">${escapeHtml(theme.description || '')}</div>
+            </button>
+          `).join('')}
+        </div>
+      `;
+
       const aboutTab = `
         <div class="settings-grid">
           <div class="settings-item">
@@ -2112,15 +2528,15 @@
             <div class="settings-value">${escapeHtml(info.current_version || 'Unknown')}</div>
           </div>
           <div class="settings-item">
-            <div class="settings-label">Release Source</div>
-            <div class="settings-value">${configured ? 'GitHub Releases configured' : 'GitHub Releases not configured yet'}</div>
+            <div class="settings-label">Updates</div>
+            <div class="settings-value">${configured ? 'Configured' : 'Not configured yet'}</div>
           </div>
         </div>
-        ${configured ? '' : `<div class="settings-note">To enable update checks, set UPDATE_REPO_OWNER and UPDATE_REPO_NAME inside ghosthunter_app/config.py.</div>`}
+        ${configured ? '' : `<div class="settings-note">Add your GitHub owner and repo inside config.py when you are ready to enable release checks.</div>`}
       `;
 
       const active = state.settingsTab || 'updates';
-      const content = active === 'builds' ? buildsTab : active === 'about' ? aboutTab : updatesTab;
+      const content = active === 'builds' ? buildsTab : active === 'themes' ? themeTab : active === 'about' ? aboutTab : updatesTab;
 
       $settings.innerHTML = `
         <div class="settings-shell">
@@ -2129,6 +2545,7 @@
             <div class="settings-sub">Update and release tools for Ghost Hunter Pro.</div>
             <div class="settings-tabs">
               <button class="settings-tab ${active === 'updates' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="updates">Updates</button>
+              <button class="settings-tab ${active === 'themes' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="themes">Themes</button>
               <button class="settings-tab ${active === 'builds' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="builds">Builds</button>
               <button class="settings-tab ${active === 'about' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="about">About</button>
             </div>
@@ -2144,6 +2561,7 @@
       renderSettings();
       renderTabs();
       renderModal();
+      renderSelectionReview();
       renderConfirm();
     }
 
@@ -2229,7 +2647,7 @@
           renderModal();
         }
       } catch {
-        toast('Archive action failed');
+        toast('Hide/show action failed');
       }
     }
 
@@ -2277,6 +2695,10 @@
         if (event.target === $confirm) {
           settleConfirm(false);
         }
+        if (event.target === $selection) {
+          state.bulkReviewOpen = false;
+          renderSelectionReview();
+        }
         return;
       }
       const action = actionEl.dataset.action;
@@ -2300,7 +2722,7 @@
           await refreshLibrary();
           break;
         case 'library-filter':
-          state.libraryFilter = actionEl.dataset.filter || 'active';
+          state.libraryFilter = actionEl.dataset.filter || 'visible';
           renderLibrary();
           renderTabs();
           break;
@@ -2310,18 +2732,62 @@
           renderTabs();
           updateLibraryScrollButton();
           break;
-        case 'library-delete-selected': {
-          const selectedPaths = collectSelectedLibraryPaths();
-          state.selectedLibraryAppIds = [];
-          await deletePaths(selectedPaths, { refreshLibrary: true });
-          renderLibrary();
-          renderTabs();
-          updateLibraryScrollButton();
+        case 'library-delete-selected':
+          state.bulkReviewOpen = true;
+          renderSelectionReview();
           break;
-        }
         case 'library-scroll-top': {
           const libraryView = document.getElementById('view-library');
           if (libraryView) libraryView.scrollTo({ top: 0, behavior: 'smooth' });
+          break;
+        }
+        case 'close-selection-review':
+          state.bulkReviewOpen = false;
+          renderSelectionReview();
+          break;
+        case 'selection-clear-all':
+          state.selectedLibraryAppIds = [];
+          state.bulkExpandedAppIds = [];
+          state.bulkReviewOpen = false;
+          renderLibrary();
+          renderSelectionReview();
+          renderTabs();
+          break;
+        case 'selection-remove-game':
+          toggleLibrarySelection(actionEl.dataset.appid || '');
+          renderLibrary();
+          renderSelectionReview();
+          renderTabs();
+          break;
+        case 'toggle-selection-expand': {
+          const appid = actionEl.dataset.appid || '';
+          toggleBulkExpanded(appid);
+          const container = actionEl.closest('.selection-game');
+          if (container) {
+            container.classList.toggle('expanded', isBulkExpanded(appid));
+          }
+          break;
+        }
+        case 'selection-delete-game': {
+          const game = state.libraryItems.find(item => String(item.appid) === String(actionEl.dataset.appid));
+          if (game) {
+            await deletePaths((game.paths || []).map(path => path.path), { refreshLibrary: true });
+            toggleLibrarySelection(actionEl.dataset.appid || '');
+            renderLibrary();
+            renderSelectionReview();
+            renderTabs();
+          }
+          break;
+        }
+        case 'selection-delete-all': {
+          const selectedPaths = collectSelectedLibraryPaths();
+          state.selectedLibraryAppIds = [];
+          state.bulkExpandedAppIds = [];
+          state.bulkReviewOpen = false;
+          await deletePaths(selectedPaths, { refreshLibrary: true });
+          renderLibrary();
+          renderSelectionReview();
+          renderTabs();
           break;
         }
         case 'open-game':
@@ -2355,6 +2821,9 @@
           state.settingsTab = actionEl.dataset.settingsTab || 'updates';
           renderSettings();
           renderTabs();
+          break;
+        case 'set-theme':
+          await setTheme(actionEl.dataset.themeId || 'neon');
           break;
         case 'settings-check-updates':
           state.settingsTab = 'updates';

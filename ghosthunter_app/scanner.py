@@ -1,10 +1,12 @@
 from __future__ import annotations
 
 import glob
+import json
 import os
+import re
 from typing import Any
 
-from .utils import get_name_variations, path_size
+from .utils import get_name_variations, normalize_name, path_size
 
 
 class ScanEngine:
@@ -197,6 +199,106 @@ class ScanEngine:
         return None
 
     @classmethod
+    def steam_library_paths(cls) -> list[str]:
+        steam_dir = cls.detect_steam_install_path() or cls.expand_template("{STEAM}")
+        libraries: list[str] = []
+        steamapps = os.path.join(steam_dir, "steamapps")
+        if os.path.isdir(steamapps):
+            libraries.append(steamapps)
+        libraryfolders = os.path.join(steamapps, "libraryfolders.vdf")
+        if os.path.isfile(libraryfolders):
+            try:
+                text = open(libraryfolders, "r", encoding="utf-8", errors="ignore").read()
+                for match in re.finditer(r'"path"\s+"([^"]+)"', text):
+                    raw = match.group(1).replace('\\\\', '\\')
+                    path = os.path.join(raw, "steamapps")
+                    if os.path.isdir(path):
+                        libraries.append(path)
+            except Exception:
+                pass
+        seen: set[str] = set()
+        result: list[str] = []
+        for path in libraries:
+            norm = os.path.normcase(os.path.normpath(path))
+            if norm in seen:
+                continue
+            seen.add(norm)
+            result.append(path)
+        return result
+
+    @staticmethod
+    def _name_matches(candidate: str, game_name: str) -> bool:
+        cand = normalize_name(candidate)
+        game = normalize_name(game_name)
+        if not cand or not game:
+            return False
+        return cand == game or cand in game or game in cand
+
+    @classmethod
+    def detect_installed_sources(cls, appid: str, game_name: str) -> list[str]:
+        sources: list[str] = []
+
+        for steamapps in cls.steam_library_paths():
+            manifest = os.path.join(steamapps, f"appmanifest_{appid}.acf")
+            if os.path.isfile(manifest):
+                sources.append("Steam")
+                break
+
+        epic_manifests = os.path.join(
+            os.environ.get("PROGRAMDATA", r"C:\ProgramData"),
+            "Epic",
+            "EpicGamesLauncher",
+            "Data",
+            "Manifests",
+        )
+        if os.path.isdir(epic_manifests):
+            try:
+                for name in os.listdir(epic_manifests):
+                    if not name.lower().endswith('.item'):
+                        continue
+                    full = os.path.join(epic_manifests, name)
+                    try:
+                        data = json.loads(open(full, 'r', encoding='utf-8', errors='ignore').read())
+                    except Exception:
+                        continue
+                    display = str(data.get('DisplayName') or '')
+                    install_location = str(data.get('InstallLocation') or '')
+                    if install_location and os.path.exists(install_location) and cls._name_matches(display, game_name):
+                        sources.append("Epic")
+                        break
+            except Exception:
+                pass
+
+        gog_roots = [
+            r"C:\GOG Games",
+            r"D:\GOG Games",
+            r"E:\GOG Games",
+        ]
+        for root in gog_roots:
+            if not os.path.isdir(root):
+                continue
+            try:
+                for name in os.listdir(root):
+                    full = os.path.join(root, name)
+                    if os.path.isdir(full) and cls._name_matches(name, game_name):
+                        sources.append("GOG")
+                        raise StopIteration
+            except StopIteration:
+                break
+            except Exception:
+                continue
+
+        seen: set[str] = set()
+        ordered: list[str] = []
+        for source in sources:
+            key = source.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            ordered.append(source)
+        return ordered
+
+    @classmethod
     def build_library_index(cls) -> dict[str, list[dict[str, Any]]]:
         index: dict[str, list[dict[str, Any]]] = {}
 
@@ -297,5 +399,23 @@ class ScanEngine:
                             add_path(appid, app_full, category, description, risk)
             except Exception:
                 continue
+
+        # Also scan additional Steam libraries (other drives) for installed-data folders.
+        for steamapps in cls.steam_library_paths():
+            extra_dirs = [
+                (os.path.join(steamapps, "shadercache"), "Steam Shader Cache", "Compiled shader cache", "safe"),
+                (os.path.join(steamapps, "workshop", "content"), "Steam Workshop", "Workshop content", "safe"),
+                (os.path.join(steamapps, "compatdata"), "Steam CompatData", "Compatibility / Proton data", "safe"),
+            ]
+            for scan_dir, category, description, risk in extra_dirs:
+                if not os.path.isdir(scan_dir):
+                    continue
+                try:
+                    for appid in os.listdir(scan_dir):
+                        app_full = os.path.join(scan_dir, appid)
+                        if appid.isdigit() and os.path.exists(app_full):
+                            add_path(appid, app_full, category, description, risk)
+                except Exception:
+                    continue
 
         return index

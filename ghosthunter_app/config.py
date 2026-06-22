@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 APP_NAME = "Ghost Hunter Pro"
-APP_VERSION = "2.3.5"
+APP_VERSION = "2.3.6"
 APP_TITLE = f"{APP_NAME} v{APP_VERSION}"
 
 if getattr(sys, "frozen", False):
@@ -92,4 +92,5 @@ UPDATE_CHECK_URL = (
 DEFAULT_STATE = {
     "archived_appids": [],
     "search_history": [],
+    "theme": "neon",
 }

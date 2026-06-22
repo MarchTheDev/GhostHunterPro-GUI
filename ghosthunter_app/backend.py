@@ -56,8 +56,21 @@ class Backend:
     def search_suggestions(self, query: str) -> list[dict[str, Any]]:
         return self.steam.search_suggestions(query)
 
+    def set_theme(self, theme_name: str) -> dict[str, Any]:
+        self.state.set_theme(theme_name)
+        self._save()
+        return {"ok": True, "theme": self.state.theme()}
+
     def get_settings_info(self) -> dict[str, Any]:
-        return self.updater.get_settings_payload()
+        payload = self.updater.get_settings_payload()
+        payload["theme"] = self.state.theme()
+        payload["theme_options"] = [
+            {"id": "neon", "label": "Neon", "description": "Classic cyan and purple look."},
+            {"id": "midnight", "label": "Midnight", "description": "Cool blue and steel accents."},
+            {"id": "ember", "label": "Ember", "description": "Warm orange and crimson accents."},
+            {"id": "emerald", "label": "Emerald", "description": "Green highlights with a darker base."},
+        ]
+        return payload
 
     def check_for_updates(self) -> dict[str, Any]:
         return self.updater.check_for_updates()
@@ -113,7 +126,7 @@ class Backend:
         }
 
     def scan_library(self) -> dict[str, Any]:
-        archived_set = set(self.state.archived_appids())
+        hidden_set = set(self.state.archived_appids())
         index = ScanEngine.build_library_index()
         items: list[dict[str, Any]] = []
 
@@ -127,7 +140,7 @@ class Backend:
                 "short_description": "Not found on Steam Store.",
             }
             paths.sort(key=lambda item: (item["category"], item["path"].lower()))
-            legit_owned = any(str(path.get("category", "")).startswith("Steam ") for path in paths)
+            installed_sources = ScanEngine.detect_installed_sources(appid, meta["name"])
             items.append({
                 "appid": appid,
                 "name": meta["name"],
@@ -138,8 +151,10 @@ class Backend:
                 "paths": paths,
                 "path_count": len(paths),
                 "total_size": sum(path.get("size", 0) for path in paths),
-                "archived": appid in archived_set,
-                "legit_owned": legit_owned,
+                "archived": appid in hidden_set,
+                "hidden": appid in hidden_set,
+                "installed_sources": installed_sources,
+                "installed": bool(installed_sources),
             })
 
         items.sort(key=lambda item: (item["archived"], item["name"].lower()))

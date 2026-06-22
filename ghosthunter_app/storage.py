@@ -42,6 +42,8 @@ class StateStore:
             self.data["archived_appids"] = []
         if not isinstance(self.data.get("search_history"), list):
             self.data["search_history"] = []
+        if not isinstance(self.data.get("theme"), str):
+            self.data["theme"] = "neon"
 
     def save(self) -> None:
         safe_write_json(STATE_FILE, self.data)
@@ -78,4 +80,11 @@ class StateStore:
 
     def clear_history(self) -> None:
         self.data["search_history"] = []
+        self.save()
+
+    def theme(self) -> str:
+        return str(self.data.get("theme", "neon"))
+
+    def set_theme(self, theme_name: str) -> None:
+        self.data["theme"] = str(theme_name or "neon")
         self.save()

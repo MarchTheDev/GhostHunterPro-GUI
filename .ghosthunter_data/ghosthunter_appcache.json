@@ -2308,5 +2308,89 @@
     ],
     "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/4121170/803663dce78da494e9d061cf6652ade566b96331/header.jpg?t=1781141362",
     "short_description": "After noticing bone-chilling similarities to an episode of Fears to Fathom, Tessa and Marcus decide to share their own experience. Scratch Creek is an exclusively online co-op experience."
+  },
+  "292140": {
+    "name": "FINAL FANTASY® XIII-2",
+    "appid": "292140",
+    "developers": [
+      "Square Enix"
+    ],
+    "publishers": [
+      "Square Enix"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/292140/header.jpg?t=1775177243",
+    "short_description": "It is no longer about facing destiny. Create a new future and change the world! Now enhanced for Windows PC."
+  },
+  "410340": {
+    "name": "Liftoff®: FPV Drone Racing",
+    "appid": "410340",
+    "developers": [
+      "LuGus Studios"
+    ],
+    "publishers": [
+      "LuGus Studios"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/410340/header.jpg?t=1781526881",
+    "short_description": "Liftoff® is a drone simulator that translates the rush of first-person view drone flight to the digital world. Join the biggest community for virtual FPV racing and freestyle!"
+  },
+  "3844970": {
+    "name": "Burglin' Gnomes",
+    "appid": "3844970",
+    "developers": [
+      "Fobri"
+    ],
+    "publishers": [
+      "Fobri"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3844970/d6127e4eabda23e1d1c727a1875e6b6cb0e634ae/header.jpg?t=1781100001",
+    "short_description": "An online Co-op game about breaking into houses and causing havoc as a tiny gnome. Avoid danger, repurpose stolen household items, and complete tasks to meet the High-Gnome’s demands. Craft equipment and upgrade your home to make your missions easier and more successful."
+  },
+  "1591680": {
+    "name": "Open Mod 2025",
+    "appid": "1591680",
+    "developers": [
+      "Hyper Gamey"
+    ],
+    "publishers": [
+      "Hyper Gamey"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/1591680/header.jpg?t=1755521140",
+    "short_description": "Open Mod is an entirely free to play, niche, tactical, extreme hardcore first person shooter with immersive aspects that may not have been seen before."
+  },
+  "2325290": {
+    "name": "Sky: Children of the Light",
+    "appid": "2325290",
+    "developers": [
+      "thatgamecompany"
+    ],
+    "publishers": [
+      "thatgamecompany"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2325290/b479dd9cf274688a27fad74b74cc9d0b00082cfb/header.jpg?t=1779837720",
+    "short_description": "A breathtaking open-world adventure awaits! Explore magical realms, restore lost light, and form wordless bonds with players worldwide. Complete quests and solve puzzles in seasonal events that celebrate kindness, discovery, and heartfelt connection."
+  },
+  "2707900": {
+    "name": "NIGHT-RUNNERS™ PROLOGUE",
+    "appid": "2707900",
+    "developers": [
+      "PLANET JEM"
+    ],
+    "publishers": [
+      "PLANET JEM"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/2707900/header.jpg?t=1708958635",
+    "short_description": "Descend into the underworld of Japanese street racing. Set between 1990-2009, join the local street racing crews in their battle for territory control. Explore the real location open world(s), compete in wager races, battle other crews and upgrade your vehicles with detailed car customization."
+  },
+  "3711720": {
+    "name": "Formula Legends Demo",
+    "appid": "3711720",
+    "developers": [
+      "3DClouds"
+    ],
+    "publishers": [
+      "3DClouds"
+    ],
+    "header_image": "https://shared.akamai.steamstatic.com/store_item_assets/steam/apps/3711720/70cf7773ef2d4cfd9dc54392e6516dfeb4323375/header.jpg?t=1762523234",
+    "short_description": ""
   }
 }
