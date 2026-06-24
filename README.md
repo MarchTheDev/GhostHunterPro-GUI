@@ -32,9 +32,11 @@ There you can download:
 - other release files depending on platform
 
 ## Notes
+- **The software might get flagged as a virus, it's a false positive. This is caused from the fact that it looks inside folders such appdata and has the function of deleting files.**
 - Always review paths before deleting anything.
 - Some actions may work better when run with Administrator permissions.
 - The app may detect both cracked leftovers and legitimate Steam-owned traces depending on where files are stored.
+
 
 ## License
 This project is licensed under the GNU GPL v3 License. See the [LICENSE](LICENSE.txt) file for details.
@@ -44,7 +46,4 @@ TheMarch88 with the contribution of nxllvxxd
 
 
 # NEWS
-
 The Atkinson font isn't working and will be fixed in next update.
-
-The software might get flagged by the anti virus, i'm working on fixing this problem, nothing malicious is getting spread in this project.
