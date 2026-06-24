@@ -1,4 +1,4 @@
 /build_exe.bat
 /.vs/
 /build_release.bat
-/.ghosthunter_data/
+/_pycache_/
