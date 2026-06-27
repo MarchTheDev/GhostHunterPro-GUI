@@ -1,4 +1,5 @@
-# Ghost Hunter Pro
+# Ghost Hunter Pro 
+## Don't be scared of ghosts, hunt them.
 
 Ghost Hunter Pro is a desktop tool that helps you find and clean leftover game files.
 
