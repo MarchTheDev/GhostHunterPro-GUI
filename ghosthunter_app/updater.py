@@ -10,7 +10,9 @@ from pathlib import Path
 from typing import Any
 
 from .config import (
+    APP_CREATOR,
     APP_EXE_NAME,
+    APP_NAME,
     APP_VERSION,
     DOWNLOADS_DIR,
     GITHUB_REPO_URL,
@@ -49,6 +51,8 @@ class UpdateManager:
 
     def get_settings_payload(self) -> dict[str, Any]:
         return {
+            "app_name": APP_NAME,
+            "creator": APP_CREATOR,
             "current_version": self.current_version,
             "repo_url": self.repo_url,
             "check_url": self.check_url,

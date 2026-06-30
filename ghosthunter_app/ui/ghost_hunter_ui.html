@@ -62,6 +62,148 @@
       --app-font-stack: Inter, Segoe UI, system-ui, -apple-system, sans-serif;
     }
 
+
+
+    .lucide-icon {
+      width: 1em;
+      height: 1em;
+      stroke: currentColor;
+      fill: none;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      vertical-align: -0.15em;
+    }
+
+    .icon-inline {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 7px;
+    }
+
+    .preset-modal-card {
+      width: min(440px, 100%);
+      background: rgba(11, 16, 28, .97);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 22px;
+      box-shadow: 0 32px 90px rgba(0,0,0,.46), 0 0 26px var(--glow-cyan);
+      padding: 18px;
+      animation: tvOpen .22s ease-out;
+    }
+
+    .preset-modal-input {
+      width: 100%;
+      height: 46px;
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 14px;
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+      padding: 0 13px;
+      outline: none;
+      font-size: 15px;
+      font-weight: 800;
+    }
+
+    .preset-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .preset-card {
+      position: relative;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 16px;
+      background: rgba(255,255,255,.035);
+      padding: 10px;
+      color: var(--text);
+      text-align: left;
+      cursor: pointer;
+      transition: .16s ease;
+    }
+
+    .preset-card:hover {
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--cyan) 20%, transparent);
+      box-shadow: 0 0 16px var(--glow-cyan);
+    }
+
+    .preset-card-preview {
+      height: 54px;
+      border-radius: 12px;
+      margin-bottom: 9px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: linear-gradient(135deg, #0a1322, var(--preset-color), color-mix(in srgb, var(--preset-color) 65%, #fb7185));
+    }
+
+    .preset-card-name {
+      font-size: 13px;
+      font-weight: 900;
+      padding-right: 26px;
+    }
+
+    .preset-delete {
+      position: absolute;
+      right: 8px;
+      bottom: 8px;
+      width: 25px;
+      height: 25px;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 9px;
+      background: rgba(255,91,87,.16);
+      color: #ffd8d6;
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+    }
+
+    .custom-edit-btn {
+      margin-top: 12px;
+      width: 100%;
+      justify-content: center;
+      color: #fff;
+      border-color: color-mix(in srgb, var(--cyan) 34%, transparent);
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
+      box-shadow: 0 0 20px var(--glow-cyan), inset 0 0 0 1px rgba(255,255,255,.05);
+    }
+
+    .custom-edit-btn:hover {
+      box-shadow: 0 0 28px var(--glow-cyan), 0 0 18px var(--glow-purple), inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .custom-theme-modal-card {
+      width: min(900px, 100%);
+      max-height: calc(100vh - 56px);
+      overflow: auto;
+      background: rgba(11, 16, 28, .96);
+      border: 1px solid rgba(255,255,255,.09);
+      border-radius: 24px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.45), 0 0 30px var(--glow-cyan);
+      animation: tvOpen .24s ease-out;
+    }
+
+    .custom-theme-modal-head {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px;
+      border-bottom: 1px solid rgba(255,255,255,.06);
+      background: linear-gradient(180deg, rgba(11,16,28,.98), rgba(11,16,28,.92));
+      backdrop-filter: blur(12px);
+    }
+
+    .custom-theme-modal-body {
+      padding: 18px;
+      display: grid;
+      gap: 16px;
+    }
+
     * { box-sizing: border-box; }
     html, body { height: 100%; }
 
@@ -101,6 +243,45 @@
         linear-gradient(180deg, #081019 0%, #09111d 100%);
     }
 
+
+
+    body[data-theme="rubellite"] {
+      --cyan: #ff4b75;
+      --cyan-2: #660011;
+      --purple: #b3133b;
+      --brand-mid: #a30f32;
+      --brand-end: #ff4b75;
+      --glow-cyan: rgba(102,0,17,.30);
+      --glow-purple: rgba(179,19,59,.18);
+      --surface-cyan: rgba(102,0,17,.22);
+      --surface-purple: rgba(179,19,59,.18);
+      --surface-cyan-strong: rgba(102,0,17,.32);
+      --surface-purple-strong: rgba(179,19,59,.28);
+      --red: #ff5f8f;
+      background:
+        radial-gradient(900px 500px at 50% 40%, rgba(102,0,17,0.26), transparent 70%),
+        radial-gradient(700px 500px at 50% 20%, rgba(179,19,59,0.12), transparent 75%),
+        linear-gradient(180deg, #110817 0%, #090712 100%);
+    }
+
+    body[data-theme="custom"] {
+      --cyan: var(--custom-accent, #d946ef);
+      --cyan-2: var(--custom-accent, #d946ef);
+      --purple: var(--custom-accent-2, #fb7185);
+      --brand-mid: var(--custom-accent, #d946ef);
+      --brand-end: var(--custom-accent-2, #fb7185);
+      --glow-cyan: color-mix(in srgb, var(--custom-accent, #d946ef) 22%, transparent);
+      --glow-purple: color-mix(in srgb, var(--custom-accent-2, #fb7185) 16%, transparent);
+      --surface-cyan: color-mix(in srgb, var(--custom-accent, #d946ef) 17%, transparent);
+      --surface-purple: color-mix(in srgb, var(--custom-accent-2, #fb7185) 15%, transparent);
+      --surface-cyan-strong: color-mix(in srgb, var(--custom-accent, #d946ef) 26%, transparent);
+      --surface-purple-strong: color-mix(in srgb, var(--custom-accent-2, #fb7185) 22%, transparent);
+      background:
+        radial-gradient(900px 500px at 50% 40%, color-mix(in srgb, var(--custom-accent, #d946ef) 16%, transparent), transparent 70%),
+        radial-gradient(700px 500px at 50% 20%, color-mix(in srgb, var(--custom-accent-2, #fb7185) 10%, transparent), transparent 75%),
+        linear-gradient(180deg, #080b14 0%, #070812 100%);
+    }
+
     body[data-theme="ember"] {
       --cyan: #ffb26b;
       --cyan-2: #ff8a3d;
@@ -122,6 +303,28 @@
 
     body[data-font="inter"] {
       --app-font-stack: Inter, Segoe UI, system-ui, -apple-system, sans-serif;
+    }
+
+
+
+    body[data-font="system"] {
+      --app-font-stack: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body[data-font="dm-mono"] {
+      --app-font-stack: "DM Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+    }
+
+    body[data-font="trebuchet"] {
+      --app-font-stack: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    }
+
+    body[data-font="georgia"] {
+      --app-font-stack: Georgia, Cambria, "Times New Roman", serif;
+    }
+
+    body[data-font="mono"] {
+      --app-font-stack: "Cascadia Mono", "JetBrains Mono", "Fira Code", Consolas, ui-monospace, monospace;
     }
 
     body[data-font="roboto-slab"] {
@@ -592,6 +795,8 @@
       max-width: 980px;
       margin: 28px auto 0;
       padding: 18px 18px 20px;
+      border-color: color-mix(in srgb, var(--cyan) 24%, transparent);
+      box-shadow: 0 0 34px var(--glow-cyan), var(--shadow);
     }
 
     .history-head {
@@ -914,6 +1119,76 @@
       margin-bottom: 8px;
     }
 
+
+    .settings-hero {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 18px;
+      margin-bottom: 16px;
+      padding: 18px;
+      border-radius: 20px;
+      background:
+        radial-gradient(circle at 18% 20%, var(--glow-cyan), transparent 45%),
+        linear-gradient(135deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+      border: 1px solid rgba(255,255,255,.08);
+    }
+
+    .settings-kicker {
+      color: var(--cyan);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      font-weight: 900;
+      margin-bottom: 6px;
+    }
+
+    .settings-hero-title {
+      font-size: 26px;
+      font-weight: 950;
+      margin-bottom: 6px;
+    }
+
+    .settings-hero-sub {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.6;
+      max-width: 620px;
+    }
+
+    .settings-version-pill {
+      white-space: nowrap;
+      padding: 10px 13px;
+      border-radius: 999px;
+      background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple));
+      border: 1px solid color-mix(in srgb, var(--cyan) 18%, transparent);
+      color: #effbff;
+      font-size: 13px;
+      font-weight: 900;
+      box-shadow: 0 0 18px var(--glow-cyan);
+    }
+
+    .settings-panel {
+      padding: 16px;
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.025);
+    }
+
+    .settings-panel-title {
+      font-size: 17px;
+      font-weight: 900;
+      margin-bottom: 6px;
+      color: #eef7ff;
+    }
+
+    .settings-panel-sub {
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+      margin-bottom: 14px;
+    }
+
     .settings-sub {
       color: var(--muted);
       line-height: 1.6;
@@ -985,6 +1260,29 @@
       text-align: left;
       cursor: pointer;
       transition: .16s ease;
+      min-height: 188px;
+      display: flex;
+      flex-direction: column;
+      justify-content: stretch;
+      overflow: hidden;
+    }
+
+
+
+    .theme-card-main {
+      appearance: none;
+      border: 0;
+      background: transparent;
+      color: inherit;
+      text-align: left;
+      padding: 0;
+      width: 100%;
+      cursor: pointer;
+      flex: 1 1 auto;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      font: inherit;
     }
 
     .theme-card.active {
@@ -999,10 +1297,16 @@
     }
 
     .theme-preview {
-      height: 70px;
+      display: block;
+      width: 100%;
+      height: 72px;
+      min-height: 72px;
+      max-height: 72px;
       border-radius: 12px;
       margin-bottom: 12px;
       border: 1px solid rgba(255,255,255,.06);
+      flex: 0 0 72px;
+      box-sizing: border-box;
     }
 
     .theme-preview.neon {
@@ -1012,6 +1316,14 @@
 
     .theme-preview.midnight {
       background: linear-gradient(135deg, #0a1320, #152238 55%, #243f72);
+    }
+
+    .theme-preview.rubellite {
+      background: linear-gradient(135deg, #13040a, #660011 55%, #b3133b);
+    }
+
+    .theme-preview.custom {
+      background: linear-gradient(135deg, #0a1322, var(--custom-accent, #d946ef) 58%, var(--custom-accent-2, #fb7185));
     }
 
     .theme-preview.ember {
@@ -1032,6 +1344,58 @@
       color: var(--muted);
       font-size: 13px;
       line-height: 1.5;
+    }
+
+
+
+    .custom-theme-controls {
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.07);
+      background: rgba(255,255,255,.03);
+      display: grid;
+      gap: 12px;
+      animation: fadeSoftIn .16s ease-out;
+    }
+
+    .custom-theme-row {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .custom-theme-row input[type="color"] {
+      width: 54px;
+      height: 42px;
+      padding: 2px;
+      border: 1px solid rgba(255,255,255,.12);
+      border-radius: 12px;
+      background: rgba(255,255,255,.06);
+      cursor: pointer;
+    }
+
+    .hex-input {
+      width: 130px;
+      height: 42px;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 12px;
+      background: rgba(0,0,0,.18);
+      color: var(--text);
+      padding: 0 12px;
+      outline: none;
+      font-weight: 800;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+
+    .custom-color-preview {
+      width: 100%;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: linear-gradient(90deg, var(--custom-accent, #d946ef), var(--custom-accent-2, #fb7185));
+      box-shadow: 0 0 18px color-mix(in srgb, var(--custom-accent, #d946ef) 24%, transparent);
     }
 
     .font-card {
@@ -1073,6 +1437,28 @@
 
     .font-preview.inter {
       font-family: Inter, Segoe UI, system-ui, -apple-system, sans-serif;
+    }
+
+    .font-preview.system {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    .font-preview.dm-mono {
+      font-family: "DM Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+      font-size: 21px;
+    }
+
+    .font-preview.trebuchet {
+      font-family: "Trebuchet MS", "Segoe UI", system-ui, sans-serif;
+    }
+
+    .font-preview.georgia {
+      font-family: Georgia, Cambria, "Times New Roman", serif;
+    }
+
+    .font-preview.mono {
+      font-family: "Cascadia Mono", Consolas, ui-monospace, monospace;
+      font-size: 21px;
     }
 
     .font-preview.roboto-slab {
@@ -1167,6 +1553,30 @@
     }
 
     .search-inline input::placeholder { color: #6f7b91; }
+
+
+    .search-clear-btn {
+      appearance: none;
+      border: 0;
+      width: 28px;
+      height: 28px;
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      background: rgba(255,255,255,.06);
+      color: #aebbd0;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 900;
+      line-height: 1;
+      transition: .16s ease;
+    }
+
+    .search-clear-btn:hover {
+      color: #fff;
+      background: rgba(255,255,255,.11);
+      transform: scale(1.03);
+    }
 
     .toolbar-actions {
       display: flex;
@@ -1459,6 +1869,16 @@
 
     .modal-overlay.show { display: flex; }
 
+
+    .modal-overlay.closing {
+      display: flex;
+      animation: overlayFadeOut .18s ease-in forwards;
+    }
+
+    .modal-overlay.closing .modal-card {
+      animation: tvClose .18s ease-in forwards;
+    }
+
     .confirm-card {
       width: min(460px, 100%);
       background: rgba(11, 16, 28, .97);
@@ -1479,6 +1899,13 @@
       box-shadow: 0 40px 100px rgba(0,0,0,.46);
       padding: 18px;
       animation: fadeSoftIn .18s ease-out;
+    }
+
+
+
+    @keyframes overlayFadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
     }
 
     @keyframes fadeSoftIn {
@@ -1645,6 +2072,13 @@
       0% { opacity: 0; transform: scaleX(.96) scaleY(.06); filter: brightness(1.25); }
       55% { opacity: 1; transform: scaleX(1.02) scaleY(.18); }
       100% { opacity: 1; transform: scaleX(1) scaleY(1); }
+    }
+
+
+    @keyframes tvClose {
+      0% { opacity: 1; transform: scaleX(1) scaleY(1); }
+      45% { opacity: 1; transform: scaleX(1.02) scaleY(.18); filter: brightness(1.18); }
+      100% { opacity: 0; transform: scaleX(.96) scaleY(.04); filter: brightness(1.35); }
     }
 
     .modal-top {
@@ -1844,7 +2278,7 @@
   <div class="app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-icon">👻</div>
+        <div class="brand-icon"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10h.01"></path><path d="M15 10h.01"></path><path d="M12 2a8 8 0 0 0-8 8v10l2.4-1.8L8.8 20l2.4-1.8L13.6 20l2.4-1.8L18.4 20V10a8 8 0 0 0-8-8Z"></path></svg></div>
         <div>
           <div class="brand-title">Ghost Hunter Pro</div>
           <div class="brand-sub"><span id="app-version-label">v2.3.8</span> • <span class="desktop">Desktop Mode</span></div>
@@ -1871,6 +2305,8 @@
   <div id="modal-overlay" class="modal-overlay"></div>
   <div id="confirm-overlay" class="modal-overlay"></div>
   <div id="selection-overlay" class="modal-overlay"></div>
+  <div id="preset-overlay" class="modal-overlay"></div>
+  <div id="custom-theme-overlay" class="modal-overlay"></div>
   <div id="toast" class="toast"></div>
   <div id="update-notice-root"></div>
 
@@ -1892,13 +2328,17 @@
       selectedLibraryAppIds: [],
       libraryShowScrollTop: false,
       settingsInfo: null,
-      settingsTab: 'updates',
+      settingsTab: 'about',
       updateInfo: null,
       updateNotice: null,
       bulkReviewOpen: false,
       bulkExpandedAppIds: [],
       modalGameId: null,
+      modalClosing: false,
       confirmDialog: null,
+      presetDialogOpen: false,
+      presetName: '',
+      customThemeEditorOpen: false,
     };
 
     let suggestionTimer = null;
@@ -1910,8 +2350,33 @@
     const $modal = document.getElementById('modal-overlay');
     const $confirm = document.getElementById('confirm-overlay');
     const $selection = document.getElementById('selection-overlay');
+    const $preset = document.getElementById('preset-overlay');
+    const $customTheme = document.getElementById('custom-theme-overlay');
     const $toast = document.getElementById('toast');
     const $updateNotice = document.getElementById('update-notice-root');
+
+    const iconPaths = {
+      ghost: '<path d="M9 10h.01"></path><path d="M15 10h.01"></path><path d="M12 2a8 8 0 0 0-8 8v10l2.4-1.8L8.8 20l2.4-1.8L13.6 20l2.4-1.8L18.4 20V10a8 8 0 0 0-8-8Z"></path>',
+      gamepad: '<line x1="6" x2="10" y1="12" y2="12"></line><line x1="8" x2="8" y1="10" y2="14"></line><line x1="15" x2="15.01" y1="13" y2="13"></line><line x1="18" x2="18.01" y1="11" y2="11"></line><rect width="20" height="12" x="2" y="6" rx="2"></rect>',
+      trash: '<path d="M3 6h18"></path><path d="M8 6V4h8v2"></path><path d="m19 6-1 14H6L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path>',
+      x: '<path d="M18 6 6 18"></path><path d="m6 6 12 12"></path>',
+      search: '<circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path>',
+      eye: '<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z"></path><circle cx="12" cy="12" r="3"></circle>',
+      sparkles: '<path d="m12 3-1.9 5.8L4 11l6.1 2.2L12 19l1.9-5.8L20 11l-6.1-2.2Z"></path>',
+      rotate: '<path d="M21 12a9 9 0 1 1-3-6.7"></path><path d="M21 3v6h-6"></path>',
+      library: '<path d="m16 6 4 14"></path><path d="M12 6v14"></path><path d="M8 8v12"></path><path d="M4 4v16"></path>',
+      folder: '<path d="M20 20a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7l-2-2H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2Z"></path>',
+      save: '<path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z"></path><path d="M17 21v-8H7v8"></path><path d="M7 3v5h8"></path>',
+      settings: '<path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8Z"></path><path d="M2 12h2"></path><path d="M20 12h2"></path><path d="m4.9 4.9 1.4 1.4"></path><path d="m17.7 17.7 1.4 1.4"></path><path d="M12 2v2"></path><path d="M12 20v2"></path>',
+      file: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z"></path><path d="M14 2v6h6"></path>',
+      target: '<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="6"></circle><circle cx="12" cy="12" r="2"></circle>',
+      monitor: '<rect width="20" height="14" x="2" y="3" rx="2"></rect><path d="M8 21h8"></path><path d="M12 17v4"></path>',
+      palette: '<circle cx="13.5" cy="6.5" r=".5"></circle><circle cx="17.5" cy="10.5" r=".5"></circle><circle cx="8.5" cy="7.5" r=".5"></circle><circle cx="6.5" cy="12.5" r=".5"></circle><path d="M12 2C6.5 2 2 6 2 11.5S6.5 22 12 22h1.5a2.5 2.5 0 0 0 0-5H12a2 2 0 0 1 0-4h3.5A6.5 6.5 0 0 0 22 6.5C22 4 17.5 2 12 2Z"></path>'
+    };
+
+    function icon(name, className = 'lucide-icon') {
+      return `<svg class="${className}" viewBox="0 0 24 24" aria-hidden="true">${iconPaths[name] || iconPaths.folder}</svg>`;
+    }
 
     function escapeHtml(value) {
       return String(value ?? '').replace(/[&<>"']/g, char => ({
@@ -1985,13 +2450,16 @@
     }
 
     function categoryIcon(category) {
-      if (category.startsWith('Crack Leftovers')) return '🔍';
-      if (category.startsWith('Steam ')) return '🎯';
-      if (category === 'NVIDIA') return '🎮';
-      if (category === 'Documents' || category === 'Public Documents') return '📄';
-      if (category === 'Saved Games') return '💾';
-      if (category === 'Temp Files') return '🗑';
-      return '📁';
+      if (category.startsWith('Crack Leftovers')) return icon('search');
+      if (category.startsWith('Steam ')) return icon('target');
+      if (category === 'Save Files') return icon('save');
+      if (category === 'Config Files') return icon('settings');
+      if (category === 'Save & Config Files') return icon('save');
+      if (category === 'NVIDIA') return icon('monitor');
+      if (category === 'Documents' || category === 'Public Documents') return icon('file');
+      if (category === 'Saved Games') return icon('save');
+      if (category === 'Temp Files') return icon('trash');
+      return icon('folder');
     }
 
     function groupedPaths(paths) {
@@ -2179,7 +2647,7 @@
       }
       box.innerHTML = state.homeSuggestions.map(item => `
         <button class="suggestion" type="button" tabindex="-1" data-action="pick-suggestion" data-appid="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}">
-          ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">👻</div>` : `<div class="fallback">👻</div>`}
+          ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">${icon('ghost')}</div>` : `<div class="fallback">${icon('ghost')}</div>`}
           <div>
             <div class="suggestion-title">${escapeHtml(item.name)}</div>
             <div class="suggestion-sub">AppID: ${escapeHtml(item.id)}</div>
@@ -2224,7 +2692,34 @@
       }
     }
 
+    function normalizeHexColor(value, fallback = '#d946ef') {
+      let raw = String(value || '').trim();
+      if (!raw) return fallback;
+      if (!raw.startsWith('#')) raw = `#${raw}`;
+      if (/^#[0-9a-fA-F]{3}$/.test(raw)) {
+        raw = '#' + raw.slice(1).split('').map(char => char + char).join('');
+      }
+      return /^#[0-9a-fA-F]{6}$/.test(raw) ? raw.toLowerCase() : fallback;
+    }
+
+    function shiftHexColor(hex, amount = 34) {
+      const value = normalizeHexColor(hex).slice(1);
+      const channels = [0, 2, 4].map(index => parseInt(value.slice(index, index + 2), 16));
+      const shifted = channels.map((channel, index) => {
+        const delta = index === 0 ? amount : index === 1 ? -Math.round(amount / 3) : Math.round(amount / 2);
+        return Math.max(0, Math.min(255, channel + delta));
+      });
+      return '#' + shifted.map(channel => channel.toString(16).padStart(2, '0')).join('');
+    }
+
+    function applyCustomThemeColor(color) {
+      const accent = normalizeHexColor(color);
+      document.body.style.setProperty('--custom-accent', accent);
+      document.body.style.setProperty('--custom-accent-2', shiftHexColor(accent));
+    }
+
     function applyTheme(themeName) {
+      applyCustomThemeColor(state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef');
       document.body.dataset.theme = themeName || 'neon';
     }
 
@@ -2251,6 +2746,62 @@
         applyFont(response.font);
         renderSettings();
         renderTabs();
+      }
+    }
+
+    async function setCustomThemeColor(color, options = {}) {
+      const normalized = normalizeHexColor(color);
+      try {
+        const response = await apiCall('set_custom_theme_color', normalized);
+        if (!response.ok) throw new Error(response.error || 'Invalid color');
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.custom_theme_color = response.custom_theme_color;
+        state.settingsInfo.theme = response.theme || 'custom';
+        applyCustomThemeColor(response.custom_theme_color);
+        applyTheme(response.theme || 'custom');
+        if (options.render !== false) {
+          renderSettings();
+          renderTabs();
+        }
+        if (state.customThemeEditorOpen) {
+          renderCustomThemeEditor();
+        }
+      } catch (error) {
+        toast(error.message || 'Could not set custom color');
+      }
+    }
+
+    async function saveCustomThemePreset(name, color) {
+      try {
+        const response = await apiCall('save_custom_theme_preset', name, color);
+        if (!response.ok) throw new Error(response.error || 'Could not save preset');
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.custom_theme_color = response.custom_theme_color;
+        state.settingsInfo.custom_theme_presets = response.custom_theme_presets || [];
+        state.settingsInfo.theme = response.theme || 'custom';
+        state.presetDialogOpen = false;
+        state.presetName = '';
+        applyCustomThemeColor(response.custom_theme_color);
+        applyTheme(response.theme || 'custom');
+        renderAll();
+        toast('Theme preset saved');
+      } catch (error) {
+        toast(error.message || 'Could not save preset');
+      }
+    }
+
+    async function deleteCustomThemePreset(name) {
+      try {
+        const response = await apiCall('delete_custom_theme_preset', name);
+        if (!response.ok) throw new Error(response.error || 'Could not delete preset');
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.custom_theme_presets = response.custom_theme_presets || [];
+        renderSettings();
+        renderTabs();
+        if (state.customThemeEditorOpen) renderCustomThemeEditor();
+        toast('Theme preset deleted');
+      } catch (error) {
+        toast(error.message || 'Could not delete preset');
       }
     }
 
@@ -2319,13 +2870,13 @@
         <div class="history-card card">
           <div class="history-head">
             <div class="history-title">Recent Hunts</div>
-            <button class="history-clear" data-action="clear-history">🗑 Clear History</button>
+            <button class="history-clear" data-action="clear-history">${icon('trash')} Clear History</button>
           </div>
           <div class="history-list">
             ${state.homeHistory.map(item => `
               <div class="history-pill">
                 <button class="history-open" data-action="history-search" data-appid="${escapeHtml(item.appid)}" data-name="${escapeHtml(item.name)}">
-                  <span class="history-icon">👻</span>
+                  <span class="history-icon">${icon('ghost')}</span>
                   <span>${escapeHtml(item.name)}</span>
                 </button>
                 <button class="history-remove" title="Remove from history" data-action="history-remove" data-appid="${escapeHtml(item.appid)}">✕</button>
@@ -2348,7 +2899,7 @@
                   ${(result.game.developers || []).length ? `<span class="tag purple">${escapeHtml(result.game.developers[0])}</span>` : ''}
                   ${(result.game.publishers || []).length ? `<span class="tag orange">${escapeHtml(result.game.publishers[0])}</span>` : ''}
                 </div>
-                <div class="summary-line">${result.paths.length} leftover path(s) found • ${formatSize(result.total_size)}</div>
+                <div class="summary-line">${result.paths.length} path(s) found • ${formatSize(result.total_size)}</div>
                 <div class="summary-line" style="margin-top:8px;">${escapeHtml(result.game.short_description || '')}</div>
                 <div class="modal-actions" style="margin-top:16px;">
                   <button class="btn" data-action="open-steamdb" data-appid="${escapeHtml(result.game.appid)}">Open on SteamDB</button>
@@ -2393,7 +2944,7 @@
           <div class="search-wrap">
             <form class="search-shell" id="home-search-form">
               <div class="search-inner">
-                <div class="search-icon">🎮</div>
+                <div class="search-icon">${icon('gamepad')}</div>
                 <input class="search-input" id="home-search-input" autocomplete="off" value="${escapeHtml(state.homeQuery)}" placeholder="Enter game name or Steam AppID..." />
                 <button class="btn primary pill" type="submit" ${state.homeLoading ? 'disabled' : ''}>${state.homeLoading ? 'Scanning...' : 'Hunt'}</button>
               </div>
@@ -2402,7 +2953,7 @@
               <div class="suggestions" id="home-suggestions-box">
                 ${state.homeSuggestions.map(item => `
                   <button class="suggestion" type="button" tabindex="-1" data-action="pick-suggestion" data-appid="${escapeHtml(item.id)}" data-name="${escapeHtml(item.name)}">
-                    ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">👻</div>` : `<div class="fallback">👻</div>`}
+                    ${item.tiny_image ? `<img src="${escapeHtml(item.tiny_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="fallback" style="display:none">${icon('ghost')}</div>` : `<div class="fallback">${icon('ghost')}</div>`}
                     <div>
                       <div class="suggestion-title">${escapeHtml(item.name)}</div>
                       <div class="suggestion-sub">AppID: ${escapeHtml(item.id)}</div>
@@ -2450,7 +3001,7 @@
           <div class="empty card">
             <div class="big">No games found in Library yet</div>
             <div style="margin-bottom:18px;">Scan your system to gather leftover games and installed games from supported sources.</div>
-            <button class="btn primary" data-action="library-scan">👻 Scan Library</button>
+            <button class="btn primary" data-action="library-scan">${icon('ghost')} Scan Library</button>
           </div>
         `;
       } else if (filtered.length === 0) {
@@ -2474,7 +3025,7 @@
                   : `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg>`}</button>
                 <div class="card-media" data-action="open-game" data-appid="${escapeHtml(item.appid)}">
                   ${item.header_image ? `<img src="${escapeHtml(item.header_image)}" alt="" onerror="this.remove(); this.parentElement.querySelector('.card-fallback').style.display='grid';" />` : ''}
-                  <div class="card-fallback" style="display:${item.header_image ? 'none' : 'grid'}">👻</div>
+                  <div class="card-fallback" style="display:${item.header_image ? 'none' : 'grid'}">${icon('ghost')}</div>
                   ${item.archived
                     ? `<div class="archive-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg></span>Hidden</div>`
                     : item.has_leftovers ? `<div class="status-badge"><span class="badge-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 3h6"></path><path d="M8 6h8"></path><path d="M6 6h12l-1 14H7L6 6z"></path><path d="M10 10v6"></path><path d="M14 10v6"></path></svg></span>Leftovers found</div>` : ''}
@@ -2493,19 +3044,20 @@
       $library.innerHTML = `
         <div class="library-shell">
           <div class="library-header">
-            <div class="library-pill">▥ Leftover Library</div>
+            <div class="library-pill">${icon('library')} Leftover Library</div>
             <div class="library-sub">Scan your system for known crack leftover folders and see which games<br />left traces behind.</div>
           </div>
           <div class="toolbar">
             <label class="search-inline">
-              <span style="color:#75839c;">⌕</span>
+              <span style="color:#75839c;">${icon('search')}</span>
               <input id="library-filter-input" value="${escapeHtml(state.libraryQuery)}" placeholder="Filter games by name or AppID..." />
+              ${state.libraryQuery ? `<button class="search-clear-btn" type="button" data-action="library-clear-search" title="Clear search" aria-label="Clear library search">✕</button>` : ''}
             </label>
             <div class="toolbar-actions">
-              <button class="btn filter ${state.libraryFilter === 'visible' ? 'active' : ''}" data-action="library-filter" data-filter="visible">👁 Show Visible (${activeCount})</button>
+              <button class="btn filter ${state.libraryFilter === 'visible' ? 'active' : ''}" data-action="library-filter" data-filter="visible">${icon('eye')} Show Visible (${activeCount})</button>
               <button class="btn filter ${state.libraryFilter === 'hidden' ? 'active' : ''}" data-action="library-filter" data-filter="hidden"><span class="inline-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3l18 18"></path><path d="M10.6 10.7a2.5 2.5 0 0 0 3.3 3.3"></path><path d="M9.9 5.1A10.8 10.8 0 0 1 12 4.9c5 0 8.7 3.2 10 7.1a10.9 10.9 0 0 1-4 5.4"></path><path d="M6.6 6.7A11.5 11.5 0 0 0 2 12c1.3 3.9 5 7.1 10 7.1 1.9 0 3.6-.4 5.1-1.1"></path></svg></span>Hidden (${archivedCount})</button>
-              <button class="btn bulk" data-action="library-delete-selected" ${bulkCount ? '' : 'disabled'}>🧹 Delete Selected (${bulkCount})</button>
-              <button class="btn" data-action="library-rescan" ${state.libraryLoading ? 'disabled' : ''}>↻ Rescan</button>
+              <button class="btn bulk" data-action="library-delete-selected" ${bulkCount ? '' : 'disabled'}>${icon('sparkles')} Delete Selected (${bulkCount})</button>
+              <button class="btn" data-action="library-rescan" ${state.libraryLoading ? 'disabled' : ''}>${icon('rotate')} Rescan</button>
             </div>
           </div>
           ${content}
@@ -2523,6 +3075,81 @@
       document.getElementById('view-home').classList.toggle('active', state.activeTab === 'home');
       document.getElementById('view-library').classList.toggle('active', state.activeTab === 'library');
       document.getElementById('view-settings').classList.toggle('active', state.activeTab === 'settings');
+    }
+
+    function customThemeEditorHtml() {
+      const info = state.settingsInfo || {};
+      return `
+        <div class="custom-theme-controls" style="margin-top:0;">
+          <div class="settings-section-title" style="margin-bottom:0;">Accent Color</div>
+          <div class="settings-panel-sub" style="margin-bottom:0;">Pick a color or type a hex code. Changes apply instantly to the Custom theme.</div>
+          <div class="custom-color-preview"></div>
+          <div class="custom-theme-row">
+            <input type="color" value="${escapeHtml(normalizeHexColor(info.custom_theme_color || '#d946ef'))}" data-action="custom-theme-color-input" aria-label="Custom theme color" />
+            <input class="hex-input" value="${escapeHtml(normalizeHexColor(info.custom_theme_color || '#d946ef'))}" data-action="custom-theme-hex-input" maxlength="7" aria-label="Custom theme hex color" />
+            <button class="settings-tab active" type="button" data-action="open-preset-dialog">Save Preset</button>
+          </div>
+        </div>
+        <div class="custom-theme-controls" style="margin-top:0;">
+          <div class="settings-section-title" style="margin-bottom:0;">Saved Presets</div>
+          ${(info.custom_theme_presets || []).length ? `<div class="preset-list">
+            ${(info.custom_theme_presets || []).map(preset => `<div class="preset-card" style="--preset-color:${escapeHtml(preset.color)}"><button class="theme-card-main" data-action="load-theme-preset" data-color="${escapeHtml(preset.color)}"><div class="preset-card-preview"></div><div class="preset-card-name">${escapeHtml(preset.name)}</div></button><button class="preset-delete" data-action="delete-theme-preset" data-preset-name="${escapeHtml(preset.name)}" title="Delete preset">${icon('x')}</button></div>`).join('')}
+          </div>` : `<div class="settings-panel-sub" style="margin-bottom:0;">No saved presets yet. Choose a color and click Save Preset.</div>`}
+        </div>
+      `;
+    }
+
+    function renderCustomThemeEditor() {
+      if (!state.customThemeEditorOpen) {
+        $customTheme.classList.remove('show');
+        $customTheme.innerHTML = '';
+        return;
+      }
+      const info = state.settingsInfo || {};
+      const color = normalizeHexColor(info.custom_theme_color || '#d946ef');
+      $customTheme.classList.add('show');
+      $customTheme.innerHTML = `
+        <div class="custom-theme-modal-card card" role="dialog" aria-modal="true">
+          <div class="custom-theme-modal-head">
+            <div>
+              <h3 class="selection-title" style="margin-bottom:6px;">Custom Theme Editor</h3>
+              <div class="selection-sub">Fine-tune your accent color, save named presets, and reload or delete saved themes.</div>
+            </div>
+            <button class="modal-close" data-action="close-custom-theme-editor">${icon('x')}</button>
+          </div>
+          <div class="custom-theme-modal-body">
+            <div class="theme-preview custom" style="height:120px; min-height:120px; max-height:120px; flex-basis:120px;"></div>
+            <div class="settings-note">Current custom color: ${escapeHtml(color)}</div>
+            ${customThemeEditorHtml()}
+          </div>
+        </div>
+      `;
+    }
+
+    function renderPresetDialog() {
+      if (!state.presetDialogOpen) {
+        $preset.classList.remove('show');
+        $preset.innerHTML = '';
+        return;
+      }
+      const color = state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef';
+      $preset.classList.add('show');
+      $preset.innerHTML = `
+        <div class="preset-modal-card card" role="dialog" aria-modal="true">
+          <h3 class="confirm-title">Save Custom Theme Preset</h3>
+          <div class="confirm-text">Give this color preset a name so you can reuse it later.
+Current color: ${escapeHtml(color)}</div>
+          <input class="preset-modal-input" id="preset-name-input" value="${escapeHtml(state.presetName || '')}" placeholder="Preset name, e.g. Ruby Night" />
+          <div class="confirm-actions" style="margin-top:16px;">
+            <button class="btn" data-action="preset-cancel">Cancel</button>
+            <button class="btn primary" data-action="preset-save-confirm">Save Preset</button>
+          </div>
+        </div>
+      `;
+      setTimeout(() => {
+        const input = document.getElementById('preset-name-input');
+        if (input) input.focus();
+      }, 0);
     }
 
     function renderConfirm() {
@@ -2601,7 +3228,7 @@
             <div class="selection-game ${isBulkExpanded(item.appid) ? 'expanded' : ''}" data-selection-game-id="${escapeHtml(item.appid)}">
               <div class="selection-game-head" data-action="toggle-selection-expand" data-appid="${escapeHtml(item.appid)}">
                 <div class="selection-game-main">
-                  ${item.header_image ? `<img class="selection-thumb" src="${escapeHtml(item.header_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="selection-thumb-fallback" style="display:none">👻</div>` : `<div class="selection-thumb-fallback">👻</div>`}
+                  ${item.header_image ? `<img class="selection-thumb" src="${escapeHtml(item.header_image)}" alt="" onerror="this.style.display='none'; this.nextElementSibling.style.display='grid';" /><div class="selection-thumb-fallback" style="display:none">${icon('ghost')}</div>` : `<div class="selection-thumb-fallback">${icon('ghost')}</div>`}
                   <div>
                     <div class="selection-game-title">${escapeHtml(item.name)}</div>
                     <div class="selection-game-sub">AppID: ${escapeHtml(item.appid)} • ${item.path_count} path${item.path_count === 1 ? '' : 's'} • ${formatSize(item.total_size)}</div>
@@ -2669,10 +3296,23 @@
       }
     }
 
+    function closeModalAnimated() {
+      if (!state.modalGameId || state.modalClosing) return;
+      state.modalClosing = true;
+      renderModal();
+      setTimeout(() => {
+        state.modalGameId = null;
+        state.modalClosing = false;
+        renderModal();
+      }, 190);
+    }
+
     function renderModal() {
       if (!state.modalGameId) {
-        $modal.classList.remove('show');
-        $modal.innerHTML = '';
+        if (!state.modalClosing) {
+          $modal.classList.remove('show', 'closing');
+          $modal.innerHTML = '';
+        }
         return;
       }
       const game = state.libraryItems.find(item => String(item.appid) === String(state.modalGameId));
@@ -2683,6 +3323,7 @@
       }
       const groups = groupedPaths(game.paths || []);
       $modal.classList.add('show');
+      $modal.classList.toggle('closing', !!state.modalClosing);
       $modal.innerHTML = `
         <div class="modal-card card" role="dialog" aria-modal="true">
           <div class="modal-top">
@@ -2742,119 +3383,147 @@
       const info = state.settingsInfo || {};
       const update = state.updateInfo;
       const configured = !!info.configured;
+      const appName = info.app_name || 'Ghost Hunter Pro';
+      const creator = info.creator || 'TheMarch88';
+      const active = state.settingsTab || 'about';
+
+      let updatesStatus = 'Ready to check for updates.';
+      if (update) {
+        if (update.ok && update.update_available) updatesStatus = `Update available: ${update.latest_version || 'new version'}`;
+        else if (update.ok) updatesStatus = 'You are up to date.';
+        else updatesStatus = update.error || 'Update check failed.';
+      }
 
       let updatesTab = `
-        <div class="settings-note">Check for updates, download the installer build, or grab the portable package from releases.</div>
-        <div class="settings-actions">
-          <button class="btn primary" data-action="settings-check-updates">Check for Updates</button>
-          <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+        <div class="settings-panel">
+          <div class="settings-panel-title">Update Center</div>
+          <div class="settings-panel-sub">Check GitHub Releases for a newer installer or portable package. Updates are never installed silently.</div>
+          <div class="settings-note">${escapeHtml(updatesStatus)}</div>
+          <div class="settings-actions">
+            <button class="btn primary" data-action="settings-check-updates">Check for Updates</button>
+            <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+          </div>
         </div>
       `;
 
       if (update) {
         if (update.ok && update.update_available) {
           updatesTab = `
-            <div class="settings-note">Update available\nCurrent: ${escapeHtml(update.current_version || '')}\nLatest: ${escapeHtml(update.latest_version || '')}</div>
-            <div class="settings-actions">
-              <button class="btn primary" data-action="settings-download-installer" ${update.installer_url ? '' : 'disabled'}>Download Installer Update</button>
-              <button class="btn" data-action="settings-download-portable" ${update.portable_url ? '' : 'disabled'}>Download Portable Package</button>
-              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+            <div class="settings-panel">
+              <div class="settings-panel-title">Update Available</div>
+              <div class="settings-panel-sub">A newer build is available. Download the installer for normal installs or the portable package for self-contained copies.</div>
+              <div class="settings-note">Current: ${escapeHtml(update.current_version || '')}\nLatest: ${escapeHtml(update.latest_version || '')}</div>
+              <div class="settings-actions">
+                <button class="btn primary" data-action="settings-download-installer" ${update.installer_url ? '' : 'disabled'}>Download Installer Update</button>
+                <button class="btn" data-action="settings-download-portable" ${update.portable_url ? '' : 'disabled'}>Download Portable Package</button>
+                <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+              </div>
+              ${update.release_notes ? `<div class="settings-note">${escapeHtml(update.release_notes)}</div>` : ''}
             </div>
-            ${update.release_notes ? `<div class="settings-note">${escapeHtml(update.release_notes)}</div>` : ''}
           `;
         } else if (update.ok) {
           updatesTab = `
-            <div class="settings-note">You are up to date.\nCurrent version: ${escapeHtml(update.current_version || info.current_version || '')}</div>
-            <div class="settings-actions">
-              <button class="btn primary" data-action="settings-check-updates">Check Again</button>
-              <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+            <div class="settings-panel">
+              <div class="settings-panel-title">You are up to date</div>
+              <div class="settings-panel-sub">Your current build matches the latest release found on GitHub.</div>
+              <div class="settings-note">Current version: ${escapeHtml(update.current_version || info.current_version || '')}</div>
+              <div class="settings-actions">
+                <button class="btn primary" data-action="settings-check-updates">Check Again</button>
+                <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+              </div>
             </div>
           `;
         } else {
           updatesTab = `
-            <div class="settings-note">${escapeHtml(update.error || 'Update check failed.')}</div>
-            <div class="settings-actions">
-              <button class="btn primary" data-action="settings-check-updates">Try Again</button>
+            <div class="settings-panel">
+              <div class="settings-panel-title">Update check failed</div>
+              <div class="settings-panel-sub">Ghost Hunter Pro could not reach the release source. You can try again or check releases manually.</div>
+              <div class="settings-note">${escapeHtml(update.error || 'Update check failed.')}</div>
+              <div class="settings-actions">
+                <button class="btn primary" data-action="settings-check-updates">Try Again</button>
+                <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
+              </div>
             </div>
           `;
         }
       }
 
-      const buildsTab = `
-        <div class="settings-grid">
-          <div class="settings-item">
-            <div class="settings-label">Installer</div>
-            <div class="settings-value">${escapeHtml(info.installer_name_example || 'Not configured')}</div>
-          </div>
-          <div class="settings-item">
-            <div class="settings-label">Portable</div>
-            <div class="settings-value">${escapeHtml(info.portable_name_example || 'Not configured')}</div>
-          </div>
-          <div class="settings-item">
-            <div class="settings-label">Executable</div>
-            <div class="settings-value">${escapeHtml(info.exe_name || 'GhostHunterPro.exe')}</div>
-          </div>
-          <div class="settings-item">
-            <div class="settings-label">Downloads Folder</div>
-            <div class="settings-value">${escapeHtml(info.downloads_dir || '')}</div>
-          </div>
-        </div>
-      `;
-
       const uiTab = `
-        <div class="settings-sub">Customize how Ghost Hunter Pro looks across the whole app.</div>
-        <div class="settings-section">
-          <div class="settings-section-title">Themes</div>
-          <div class="theme-grid">
-            ${(info.theme_options || []).map(theme => `
-              <button class="theme-card ${info.theme === theme.id ? 'active' : ''}" data-action="set-theme" data-theme-id="${escapeHtml(theme.id)}">
-                <div class="theme-preview ${escapeHtml(theme.id)}"></div>
-                <div class="theme-card-title">${escapeHtml(theme.label)}</div>
-                <div class="theme-card-sub">${escapeHtml(theme.description || '')}</div>
-              </button>
-            `).join('')}
+        <div class="settings-panel">
+          <div class="settings-panel-title">Appearance</div>
+          <div class="settings-panel-sub">Choose a theme and font style. These settings apply across Home, Library, modals, and Settings.</div>
+          <div class="settings-section">
+            <div class="settings-section-title">Themes</div>
+            <div class="theme-grid">
+              ${(info.theme_options || []).map(theme => `
+                <div class="theme-card ${info.theme === theme.id ? 'active' : ''}">
+                  <button class="theme-card-main" data-action="set-theme" data-theme-id="${escapeHtml(theme.id)}">
+                    <div class="theme-preview ${escapeHtml(theme.id)}"></div>
+                    <div class="theme-card-title">${escapeHtml(theme.label)}</div>
+                    <div class="theme-card-sub">${escapeHtml(theme.description || '')}</div>
+                  </button>
+                  ${theme.id === 'custom' ? `<button class="settings-tab custom-edit-btn" type="button" data-action="open-custom-theme-editor">Edit Custom Theme</button>` : ''}
+                </div>
+              `).join('')}
+            </div>
           </div>
-        </div>
-        <div class="settings-section">
-          <div class="settings-section-title">Fonts</div>
-          <div class="font-grid">
-            ${(info.font_options || []).map(font => `
-              <button class="font-card ${info.font === font.id ? 'active' : ''}" data-action="set-font" data-font-id="${escapeHtml(font.id)}">
-                <div class="font-preview ${escapeHtml(font.id)}">Ghost Hunter Pro</div>
-                <div class="theme-card-title">${escapeHtml(font.label)}</div>
-                <div class="theme-card-sub">${escapeHtml(font.description || '')}</div>
-              </button>
-            `).join('')}
+          <div class="settings-section">
+            <div class="settings-section-title">Fonts</div>
+            <div class="font-grid">
+              ${(info.font_options || []).map(font => `
+                <button class="font-card ${info.font === font.id ? 'active' : ''}" data-action="set-font" data-font-id="${escapeHtml(font.id)}">
+                  <div class="font-preview ${escapeHtml(font.id)}">Ghost Hunter Pro</div>
+                  <div class="theme-card-title">${escapeHtml(font.label)}</div>
+                  <div class="theme-card-sub">${escapeHtml(font.description || '')}</div>
+                </button>
+              `).join('')}
+            </div>
           </div>
         </div>
       `;
 
       const aboutTab = `
-        <div class="settings-grid">
-          <div class="settings-item">
-            <div class="settings-label">Current Version</div>
-            <div class="settings-value">${escapeHtml(info.current_version || 'Unknown')}</div>
+        <div class="settings-panel">
+          <div class="settings-panel-title">About ${escapeHtml(appName)}</div>
+          <div class="settings-panel-sub">A desktop cleanup assistant for finding game leftovers, save/config folders, and supported store traces. Always review paths before deleting.</div>
+          <div class="settings-grid">
+            <div class="settings-item">
+              <div class="settings-label">Version</div>
+              <div class="settings-value">v${escapeHtml(info.current_version || 'Unknown')}</div>
+            </div>
+            <div class="settings-item">
+              <div class="settings-label">Creator</div>
+              <div class="settings-value">${escapeHtml(creator)}</div>
+            </div>
+            <div class="settings-item">
+              <div class="settings-label">Release Source</div>
+              <div class="settings-value">${configured ? 'GitHub Releases configured' : 'Not configured'}</div>
+            </div>
           </div>
-          <div class="settings-item">
-            <div class="settings-label">Updates</div>
-            <div class="settings-value">${configured ? 'Configured' : 'Not configured yet'}</div>
+          <div class="settings-actions">
+            <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Project Releases</button>
           </div>
+          <div class="settings-note">${escapeHtml(appName)} is not affiliated with Valve, Steam, Epic Games, GOG, or any game publisher. It only reports paths it can verify from known rules, installed data, or confirmed local locations.</div>
         </div>
-        ${configured ? '' : `<div class="settings-note">Add your GitHub owner and repo inside config.py when you are ready to enable release checks.</div>`}
       `;
 
-      const active = state.settingsTab || 'updates';
-      const content = active === 'builds' ? buildsTab : active === 'ui' ? uiTab : active === 'about' ? aboutTab : updatesTab;
+      const content = active === 'ui' ? uiTab : active === 'about' ? aboutTab : updatesTab;
 
       $settings.innerHTML = `
         <div class="settings-shell">
           <div class="card settings-card">
-            <div class="settings-title">Settings</div>
+            <div class="settings-hero">
+              <div>
+                <div class="settings-kicker">Settings</div>
+                <div class="settings-hero-title">Control Center</div>
+                <div class="settings-hero-sub">Manage updates, appearance, build information, and app details for ${escapeHtml(appName)}.</div>
+              </div>
+              <div class="settings-version-pill">v${escapeHtml(info.current_version || 'Unknown')}</div>
+            </div>
             <div class="settings-tabs">
-              <button class="settings-tab ${active === 'updates' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="updates">Updates</button>
-              <button class="settings-tab ${active === 'ui' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="ui">UI</button>
-              <button class="settings-tab ${active === 'builds' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="builds">Builds</button>
               <button class="settings-tab ${active === 'about' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="about">About</button>
+              <button class="settings-tab ${active === 'ui' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="ui">Appearance</button>
+              <button class="settings-tab ${active === 'updates' ? 'active' : ''}" data-action="settings-tab" data-settings-tab="updates">Updates</button>
             </div>
             ${content}
           </div>
@@ -2870,6 +3539,8 @@
       renderModal();
       renderSelectionReview();
       renderConfirm();
+      renderPresetDialog();
+      renderCustomThemeEditor();
       renderUpdateNotice();
     }
 
@@ -2999,6 +3670,31 @@
         clearTimeout(suggestionTimer);
         suggestionTimer = setTimeout(() => updateSuggestions(currentValue, caret), 220);
       }
+      if (target.dataset.action === 'custom-theme-color-input') {
+        const color = normalizeHexColor(target.value);
+        const hex = document.querySelector('[data-action="custom-theme-hex-input"]');
+        if (hex) hex.value = color;
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.custom_theme_color = color;
+        state.settingsInfo.theme = 'custom';
+        applyCustomThemeColor(color);
+        applyTheme('custom');
+        setCustomThemeColor(color, { render: false });
+      }
+      if (target.dataset.action === 'custom-theme-hex-input') {
+        const raw = String(target.value || '').trim();
+        applyCustomThemeColor(raw);
+        if (/^#?[0-9a-fA-F]{3}$/.test(raw) || /^#?[0-9a-fA-F]{6}$/.test(raw)) {
+          const color = normalizeHexColor(raw);
+          const picker = document.querySelector('[data-action="custom-theme-color-input"]');
+          if (picker) picker.value = color;
+          if (!state.settingsInfo) state.settingsInfo = {};
+          state.settingsInfo.custom_theme_color = color;
+          state.settingsInfo.theme = 'custom';
+          applyTheme('custom');
+          setCustomThemeColor(color, { render: false });
+        }
+      }
     });
 
     document.addEventListener('click', async event => {
@@ -3010,8 +3706,7 @@
       const actionEl = event.target.closest('[data-action]');
       if (!actionEl) {
         if (event.target === $modal) {
-          state.modalGameId = null;
-          renderModal();
+          closeModalAnimated();
         }
         if (event.target === $confirm) {
           settleConfirm(false);
@@ -3019,6 +3714,14 @@
         if (event.target === $selection) {
           state.bulkReviewOpen = false;
           renderSelectionReview();
+        }
+        if (event.target === $preset) {
+          state.presetDialogOpen = false;
+          renderPresetDialog();
+        }
+        if (event.target === $customTheme) {
+          state.customThemeEditorOpen = false;
+          renderCustomThemeEditor();
         }
         return;
       }
@@ -3050,6 +3753,11 @@
           break;
         case 'library-filter':
           state.libraryFilter = actionEl.dataset.filter || 'visible';
+          renderLibrary();
+          renderTabs();
+          break;
+        case 'library-clear-search':
+          state.libraryQuery = '';
           renderLibrary();
           renderTabs();
           break;
@@ -3118,12 +3826,12 @@
           break;
         }
         case 'open-game':
+          state.modalClosing = false;
           state.modalGameId = actionEl.dataset.appid || null;
           renderModal();
           break;
         case 'close-modal':
-          state.modalGameId = null;
-          renderModal();
+          closeModalAnimated();
           break;
         case 'open-steamdb':
           await openSteamDB(actionEl.dataset.appid);
@@ -3151,6 +3859,36 @@
           break;
         case 'set-theme':
           await setTheme(actionEl.dataset.themeId || 'neon');
+          break;
+        case 'open-preset-dialog':
+          state.presetName = '';
+          state.presetDialogOpen = true;
+          renderPresetDialog();
+          break;
+        case 'preset-cancel':
+          state.presetDialogOpen = false;
+          state.presetName = '';
+          renderPresetDialog();
+          break;
+        case 'preset-save-confirm': {
+          const nameInput = document.getElementById('preset-name-input');
+          const color = state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef';
+          await saveCustomThemePreset(nameInput && nameInput.value ? nameInput.value : 'Custom Theme', color);
+          break;
+        }
+        case 'load-theme-preset':
+          await setCustomThemeColor(actionEl.dataset.color || '#d946ef');
+          break;
+        case 'delete-theme-preset':
+          await deleteCustomThemePreset(actionEl.dataset.presetName || '');
+          break;
+        case 'open-custom-theme-editor':
+          state.customThemeEditorOpen = true;
+          renderCustomThemeEditor();
+          break;
+        case 'close-custom-theme-editor':
+          state.customThemeEditorOpen = false;
+          renderCustomThemeEditor();
           break;
         case 'set-font':
           await setFont(actionEl.dataset.fontId || 'inter');

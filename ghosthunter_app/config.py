@@ -7,6 +7,7 @@ from pathlib import Path
 
 APP_NAME = "Ghost Hunter Pro"
 APP_VERSION = "2.3.8"
+APP_CREATOR = "TheMarch88"
 APP_TITLE = f"{APP_NAME} v{APP_VERSION}"
 
 if getattr(sys, "frozen", False):
@@ -59,6 +60,7 @@ if os.name == "nt":
 
 STATE_FILE = DATA_DIR / "ghosthunter_state.json"
 STEAM_CACHE_FILE = DATA_DIR / "ghosthunter_appcache.json"
+PCGW_CACHE_FILE = DATA_DIR / "ghosthunter_pcgw_cache.json"
 LOG_FILE = DATA_DIR / "ghosthunter_debug.log"
 
 LEGACY_STATE_FILE = Path.home() / ".ghost_hunter_state.json"
@@ -94,4 +96,6 @@ DEFAULT_STATE = {
     "search_history": [],
     "theme": "neon",
     "font": "inter",
+    "custom_theme_color": "#d946ef",
+    "custom_theme_presets": [],
 }

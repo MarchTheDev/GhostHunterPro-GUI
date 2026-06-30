@@ -12,7 +12,7 @@ from .utils import get_name_variations, normalize_name, path_size
 
 class ScanEngine:
     HOME_TEMPLATES = [
-        ("{APPDATA}\\{GAME}", "AppData (Roaming)", "Game config / save data", False, True, False, False),
+        ("{APPDATA}\\{GAME}", "AppData (Roaming)", "Save/config folder", False, True, False, False),
         ("{APPDATA}\\{DEV}\\{GAME}", "AppData (Roaming)", "Developer-organized game data", False, True, True, False),
         ("{LOCAL}\\{GAME}", "AppData (Local)", "Local cache / settings", False, True, False, False),
         ("{LOCAL}\\{DEV}\\{GAME}", "AppData (Local)", "Developer-organized local data", False, True, True, False),

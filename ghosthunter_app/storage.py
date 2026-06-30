@@ -46,6 +46,10 @@ class StateStore:
             self.data["theme"] = "neon"
         if not isinstance(self.data.get("font"), str):
             self.data["font"] = "inter"
+        if not isinstance(self.data.get("custom_theme_color"), str):
+            self.data["custom_theme_color"] = "#d946ef"
+        if not isinstance(self.data.get("custom_theme_presets"), list):
+            self.data["custom_theme_presets"] = []
 
     def save(self) -> None:
         safe_write_json(STATE_FILE, self.data)
@@ -96,4 +100,41 @@ class StateStore:
 
     def set_font(self, font_name: str) -> None:
         self.data["font"] = str(font_name or "inter")
+        self.save()
+
+    def custom_theme_color(self) -> str:
+        return str(self.data.get("custom_theme_color", "#d946ef"))
+
+    def set_custom_theme_color(self, color: str) -> None:
+        self.data["custom_theme_color"] = str(color or "#d946ef")
+        self.save()
+
+    def custom_theme_presets(self) -> list[dict[str, str]]:
+        presets = self.data.get("custom_theme_presets", [])
+        if not isinstance(presets, list):
+            return []
+        result: list[dict[str, str]] = []
+        for item in presets:
+            if not isinstance(item, dict):
+                continue
+            name = str(item.get("name", "")).strip()
+            color = str(item.get("color", "")).strip()
+            if name and color:
+                result.append({"name": name, "color": color})
+        return result
+
+    def add_custom_theme_preset(self, name: str, color: str) -> None:
+        clean_name = str(name or "Custom Theme").strip()[:40] or "Custom Theme"
+        clean_color = str(color or "#d946ef").strip()
+        presets = [item for item in self.custom_theme_presets() if item.get("name", "").lower() != clean_name.lower()]
+        presets.insert(0, {"name": clean_name, "color": clean_color})
+        self.data["custom_theme_presets"] = presets[:12]
+        self.save()
+
+    def delete_custom_theme_preset(self, name: str) -> None:
+        clean_name = str(name or "").strip().lower()
+        self.data["custom_theme_presets"] = [
+            item for item in self.custom_theme_presets()
+            if item.get("name", "").lower() != clean_name
+        ]
         self.save()
