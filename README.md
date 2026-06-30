@@ -1,4 +1,5 @@
-# Ghost Hunter Pro
+# Ghost Hunter Pro 
+## Don't be scared of ghosts, hunt them.
 
 Ghost Hunter Pro is a desktop tool that helps you find and clean leftover game files.
 
@@ -46,4 +47,4 @@ TheMarch88 with the contribution of nxllvxxd
 
 
 # NEWS
-The Atkinson font isn't working and will be fixed in next update.
+Fonts still are broken for 3.1 at the moment, will fix soon
