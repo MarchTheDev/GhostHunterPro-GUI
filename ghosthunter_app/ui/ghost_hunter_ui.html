@@ -2873,6 +2873,32 @@
       return '#' + shifted.map(channel => channel.toString(16).padStart(2, '0')).join('');
     }
 
+    function applyCustomThemeColor(color) {
+      const accent = normalizeHexColor(color);
+      document.body.style.setProperty('--custom-accent', accent);
+      document.body.style.setProperty('--custom-accent-2', shiftHexColor(accent));
+    }
+
+    function normalizeHexColor(value, fallback = '#d946ef') {
+      let raw = String(value || '').trim();
+      if (!raw) return fallback;
+      if (!raw.startsWith('#')) raw = `#${raw}`;
+      if (/^#[0-9a-fA-F]{3}$/.test(raw)) {
+        raw = '#' + raw.slice(1).split('').map(char => char + char).join('');
+      }
+      return /^#[0-9a-fA-F]{6}$/.test(raw) ? raw.toLowerCase() : fallback;
+    }
+
+    function shiftHexColor(hex, amount = 34) {
+      const value = normalizeHexColor(hex).slice(1);
+      const channels = [0, 2, 4].map(index => parseInt(value.slice(index, index + 2), 16));
+      const shifted = channels.map((channel, index) => {
+        const delta = index === 0 ? amount : index === 1 ? -Math.round(amount / 3) : Math.round(amount / 2);
+        return Math.max(0, Math.min(255, channel + delta));
+      });
+      return '#' + shifted.map(channel => channel.toString(16).padStart(2, '0')).join('');
+    }
+
     function applyCustomThemeColor(color, color2 = null, useSecond = null) {
       const accent = normalizeHexColor(color);
       const secondEnabled = useSecond === null

@@ -623,12 +623,12 @@ class SaveScanner:
         expanded = cls.expand_vars(pattern)
         matches: list[str] = []
         for candidate in [expanded, *cls._virtualized_candidates(expanded)]:
-            try:
+        try:
                 if any(ch in candidate for ch in "*?"):
                     matches.extend(glob.glob(candidate))
                 elif os.path.exists(candidate):
                     matches.append(candidate)
-            except Exception:
+        except Exception:
                 continue
         for match in matches:
             entry = cls._path_entry(match, category, description, source)
@@ -829,20 +829,26 @@ class SaveScanner:
         cleaned = cls._strip_wiki_markup(text)
         if not cls._looks_like_windows_save_path(cleaned):
             return []
+        section_match = re.search(
+            r"(=+\s*Game data\s*=+.*?)(?:\n=+\s*(?:Video|Input|Audio|Network|Issues|Other information|System requirements)\s*=+|\Z)",
+            wikitext,
+            flags=re.I | re.S,
+        )
+        section = section_match.group(1) if section_match else wikitext
         results: list[tuple[str, str]] = []
         pattern = re.compile(
             r"(?:\{(?:APPDATA|LOCAL|LOCALLOW|DOCS|USERPROFILE|SAVEDGAMES|PROGRAMDATA|STEAM|HOME)\}|%[A-Z_]+%|<(?:home|winAppData|winLocalAppData|winLocalAppDataLow|winDocuments|winPublic|winProgramData|steam)>|[A-Z]:[\\/])[^|\n\r}]*",
-            flags=re.I,
-        )
+                flags=re.I,
+            )
         for match in pattern.finditer(cleaned):
             candidate = cls._clean_path_candidate(match.group(0))
             candidate = re.split(r"\s{2,}|\t|</td>|</tr>", candidate)[0].strip()
             if len(candidate) < 5 or not cls._looks_like_windows_save_path(candidate):
-                continue
+                    continue
             low = f"{context} {cleaned} {candidate}".lower()
             is_config = any(token in low for token in ("config", "configuration", "settings", ".ini", ".cfg"))
             kind = "Config Files" if is_config else "Save Files"
-            results.append((candidate, kind))
+                results.append((candidate, kind))
         return results
 
     @staticmethod
@@ -1213,7 +1219,7 @@ class SaveScanner:
                     # separate game card.
                     candidate_name = str(pattern_rule.get("name") or cls._name_from_candidate_path(match))
                 else:
-                    candidate_name = cls._name_from_candidate_path(match)
+                candidate_name = cls._name_from_candidate_path(match)
                     cleaned_candidate_name = cls._clean_saved_games_name(candidate_name)
                     if kind.startswith("savedgames") and cleaned_candidate_name != candidate_name:
                         # Backup folders such as "Game-old" are part of the same

@@ -1,4 +1,5 @@
-# Ghost Hunter Pro
+# Ghost Hunter Pro 
+## Don't be scared of ghosts, hunt them.
 
 Ghost Hunter Pro is a desktop tool that helps you find and clean leftover game files.
 
@@ -46,4 +47,8 @@ TheMarch88 with the contribution of nxllvxxd
 
 
 # NEWS
-The Atkinson font isn't working and will be fixed in next update.
+Now Ghost Hunter Pro is at its 3.0 version, i'm really thankfull for all the supporters that keep up themselves updated and still use this tool.
+
+I also have to announce that we got added to FMHY, i gotta thank all of you but more specifically Chill that suggested the app to be added in first place. Thank you!
+
+I decided to remove from the title of this software the word "GUI" since it's true that the original concept of the app was a CLI but we came a long way so i would prefer to treat it as a separate thing at this point. 
