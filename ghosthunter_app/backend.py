@@ -27,11 +27,13 @@ class Backend:
     FONT_OPTIONS = [
         {"id": "inter", "label": "Inter", "description": "Modern UI default with clean spacing."},
         {"id": "system", "label": "System UI", "description": "Uses the native Windows/system interface font."},
-        {"id": "dm-mono", "label": "DM Mono", "description": "A crisp developer-style monospace font stack."},
+        {"id": "dm-mono", "label": "DM Mono", "description": "Rounded mono style with softer spacing."},
         {"id": "trebuchet", "label": "Trebuchet MS", "description": "Rounded and friendly without needing bundled font files."},
         {"id": "georgia", "label": "Georgia", "description": "Elegant serif option with strong readability."},
-        {"id": "mono", "label": "JetBrains-style Mono", "description": "A technical monospace look using local system monospace fonts."},
+        {"id": "mono", "label": "JetBrains-style Mono", "description": "Sharper developer-style monospace stack."},
         {"id": "roboto-slab", "label": "Roboto Slab", "description": "A sharper slab-serif look for the whole app."},
+        {"id": "roboto-condensed", "label": "Roboto Condensed", "description": "Narrower, compact interface style."},
+        {"id": "fraktur", "label": "Fraktur", "description": "Decorative gothic display style."},
         {"id": "atkinson-hyperlegible", "label": "Atkinson Hyperlegible", "description": "Built for readability with clearer character shapes."},
     ]
 
@@ -165,28 +167,49 @@ class Backend:
             return None
         return "#" + hex_part.lower()
 
-    def set_custom_theme_color(self, color: str) -> dict[str, Any]:
+    def set_custom_theme_color(self, color: str, color2: str | None = None, use_second: bool | None = None) -> dict[str, Any]:
         value = self._normalize_hex_color(color)
         if not value:
             return {"ok": False, "error": "Use a valid hex color like #d946ef."}
         self.state.set_custom_theme_color(value)
-        self.state.set_theme("custom")
-        self._save()
-        return {"ok": True, "theme": self.state.theme(), "custom_theme_color": self.state.custom_theme_color()}
-
-    def save_custom_theme_preset(self, name: str, color: str) -> dict[str, Any]:
-        value = self._normalize_hex_color(color)
-        if not value:
-            return {"ok": False, "error": "Use a valid hex color like #d946ef."}
-        clean_name = str(name or "Custom Theme").strip()[:40] or "Custom Theme"
-        self.state.add_custom_theme_preset(clean_name, value)
-        self.state.set_custom_theme_color(value)
+        if color2 is not None:
+            value2 = self._normalize_hex_color(color2)
+            if not value2:
+                return {"ok": False, "error": "Use a valid second hex color like #fb7185."}
+            self.state.set_custom_theme_color_2(value2)
+        if use_second is not None:
+            self.state.set_custom_theme_use_second_color(bool(use_second))
         self.state.set_theme("custom")
         self._save()
         return {
             "ok": True,
             "theme": self.state.theme(),
             "custom_theme_color": self.state.custom_theme_color(),
+            "custom_theme_color_2": self.state.custom_theme_color_2(),
+            "custom_theme_use_second_color": self.state.custom_theme_use_second_color(),
+        }
+
+    def save_custom_theme_preset(self, name: str, color: str, color2: str | None = None, use_second: bool | None = None) -> dict[str, Any]:
+        value = self._normalize_hex_color(color)
+        if not value:
+            return {"ok": False, "error": "Use a valid hex color like #d946ef."}
+        value2 = self._normalize_hex_color(color2 or self.state.custom_theme_color_2())
+        if not value2:
+            return {"ok": False, "error": "Use a valid second hex color like #fb7185."}
+        second_enabled = self.state.custom_theme_use_second_color() if use_second is None else bool(use_second)
+        clean_name = str(name or "Custom Theme").strip()[:40] or "Custom Theme"
+        self.state.add_custom_theme_preset(clean_name, value, value2, second_enabled)
+        self.state.set_custom_theme_color(value)
+        self.state.set_custom_theme_color_2(value2)
+        self.state.set_custom_theme_use_second_color(second_enabled)
+        self.state.set_theme("custom")
+        self._save()
+        return {
+            "ok": True,
+            "theme": self.state.theme(),
+            "custom_theme_color": self.state.custom_theme_color(),
+            "custom_theme_color_2": self.state.custom_theme_color_2(),
+            "custom_theme_use_second_color": self.state.custom_theme_use_second_color(),
             "custom_theme_presets": self.state.custom_theme_presets(),
         }
 
@@ -202,6 +225,8 @@ class Backend:
         payload["font"] = self.state.font()
         payload["font_options"] = self.FONT_OPTIONS
         payload["custom_theme_color"] = self.state.custom_theme_color()
+        payload["custom_theme_color_2"] = self.state.custom_theme_color_2()
+        payload["custom_theme_use_second_color"] = self.state.custom_theme_use_second_color()
         payload["custom_theme_presets"] = self.state.custom_theme_presets()
         return payload
 

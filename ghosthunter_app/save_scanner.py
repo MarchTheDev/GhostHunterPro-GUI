@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import glob
+import html
 import json
 import os
 import re
@@ -65,6 +66,28 @@ class SaveScanner:
                 r"{APPDATA}\IO Interactive\HITMAN3",
             ],
         },
+        "assettocorsa": {
+            "name": "Assetto Corsa",
+            "appid": "244210",
+            "aliases": ["Assetto Corsa", "assettocorsa"],
+            "patterns": [
+                r"{DOCS}\Assetto Corsa",
+                r"{DOCS}\Assetto Corsa\cfg",
+                r"{DOCS}\Assetto Corsa\setups",
+                r"{DOCS}\Assetto Corsa\replay",
+            ],
+        },
+        "assettocorsacompetizione": {
+            "name": "Assetto Corsa Competizione",
+            "appid": "805550",
+            "aliases": ["Assetto Corsa Competizione", "ACC"],
+            "patterns": [
+                r"{DOCS}\Assetto Corsa Competizione",
+                r"{DOCS}\Assetto Corsa Competizione\Config",
+                r"{DOCS}\Assetto Corsa Competizione\Savegames",
+                r"{DOCS}\Assetto Corsa Competizione\Customs",
+            ],
+        },
         "assettocorsaevo": {
             "name": "Assetto Corsa EVO",
             "appid": "3058630",
@@ -110,6 +133,112 @@ class SaveScanner:
                 r"{LOCAL}\Dinner\Saved\Config\Windows",
             ],
         },
+        "thelastofusparti": {
+            "name": "The Last of Us Part I",
+            "appid": "1888930",
+            "aliases": [
+                "The Last of Us Part 1",
+                "The Last of Us Part I",
+                "The Last of Us™ Part I",
+                "The Last of Us Part I Remake",
+                "TLOU1",
+                "TLOU Part I",
+            ],
+            "patterns": [
+                r"{SAVEDGAMES}\The Last of Us Part I",
+                r"{SAVEDGAMES}\The Last of Us Part I\users\*\savedata",
+                r"{SAVEDGAMES}\The Last of Us Part I\users\*\screeninfo.cfg",
+                r"{DOCS}\The Last of Us Part I",
+            ],
+        },
+        "thelastofuspart1": {
+            "name": "The Last of Us Part I",
+            "appid": "1888930",
+            "aliases": ["The Last of Us Part 1", "The Last of Us Part I", "The Last of Us™ Part I"],
+            "patterns": [
+                r"{SAVEDGAMES}\The Last of Us Part I",
+                r"{SAVEDGAMES}\The Last of Us Part I\users\*\savedata",
+                r"{SAVEDGAMES}\The Last of Us Part I\users\*\screeninfo.cfg",
+                r"{DOCS}\The Last of Us Part I",
+            ],
+        },
+        "thelastofuspartiiremastered": {
+            "name": "The Last of Us Part II Remastered",
+            "appid": "2531310",
+            "aliases": [
+                "The Last of Us Part II",
+                "The Last of Us Part 2",
+                "The Last of Us Part 2 Remastered",
+                "TLOU2",
+                "TLOU Part II",
+            ],
+            "patterns": [
+                r"{DOCS}\The Last of Us Part II",
+                r"{DOCS}\The Last of Us Part II\*\savedata",
+                r"{SAVEDGAMES}\The Last of Us Part II",
+                r"{SAVEDGAMES}\The Last of Us Part II\*\savedata",
+            ],
+        },
+        "thelastofuspartii": {
+            "name": "The Last of Us Part II Remastered",
+            "appid": "2531310",
+            "aliases": ["The Last of Us Part II", "The Last of Us Part 2"],
+            "patterns": [
+                r"{DOCS}\The Last of Us Part II",
+                r"{DOCS}\The Last of Us Part II\*\savedata",
+                r"{SAVEDGAMES}\The Last of Us Part II",
+                r"{SAVEDGAMES}\The Last of Us Part II\*\savedata",
+            ],
+        },
+        "kingdomcome2": {
+            "name": "Kingdom Come: Deliverance II",
+            "appid": "1771300",
+            "aliases": [
+                "Kingdom Come Deliverance 2",
+                "Kingdom Come Deliverance II",
+                "Kingdom Come: Deliverance 2",
+                "Kingdom Come: Deliverance II",
+                "kingdomcome2",
+                "KCD2",
+            ],
+            "patterns": [
+                r"{SAVEDGAMES}\kingdomcome2",
+                r"{SAVEDGAMES}\kingdomcome2\saves",
+                r"{SAVEDGAMES}\kingdomcome2\profiles\default",
+            ],
+        },
+        "kingdomcomedeliveranceii": {
+            "name": "Kingdom Come: Deliverance II",
+            "appid": "1771300",
+            "aliases": ["Kingdom Come Deliverance 2", "kingdomcome2", "KCD2"],
+            "patterns": [
+                r"{SAVEDGAMES}\kingdomcome2",
+                r"{SAVEDGAMES}\kingdomcome2\saves",
+                r"{SAVEDGAMES}\kingdomcome2\profiles\default",
+            ],
+        },
+        "cairn": {
+            "name": "Cairn",
+            "appid": "1588550",
+            "aliases": ["Cairn_RETAIL", "Cairn RETAIL", "TheGameBakers Cairn"],
+            "patterns": [
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL\SAVEGAMES\RETAIL\STORY",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL\PERSISTENT\PLAYER",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn\SAVEGAMES\STORY",
+            ],
+        },
+        "cairnretail": {
+            "name": "Cairn",
+            "appid": "1588550",
+            "aliases": ["Cairn_RETAIL", "Cairn RETAIL"],
+            "patterns": [
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL\SAVEGAMES\RETAIL\STORY",
+                r"{SAVEDGAMES}\TheGameBakers\Cairn_RETAIL\PERSISTENT\PLAYER",
+            ],
+        },
         "dispatch": {
             "name": "Dispatch",
             "aliases": ["Dispatch"],
@@ -126,11 +255,11 @@ class SaveScanner:
 
     NON_GAME_FOLDER_NAMES = {
         "achievements", "adobe", "amd", "apple", "atlauncher", "audacity", "blender foundation",
-        "brave", "cache", "code", "discord", "docker", "dropbox", "electron",
-        "epicgameslauncher", "githubdesktop", "google", "gog.com", "intel", "java",
+        "betterdiscord", "brave", "cache", "code", "discord", "docker", "dropbox", "electron",
+        "equicord", "epicgameslauncher", "githubdesktop", "google", "gog.com", "intel", "java",
         "jetbrains", "microsoft", "mozilla", "nodejs", "notepad++", "npm",
-        "nvidia", "obs-studio", "obsstudio", "opera software", "python", "qtproject",
-        "spotify", "telegram desktop", "telegramdesktop", "unity", "unreal engine",
+        "nvidia", "obs-studio", "obsstudio", "openasar", "opera software", "python", "qtproject",
+        "spotify", "telegram desktop", "telegramdesktop", "unity", "unreal engine", "vencord",
         "valve", "vlc", "vscode", "windows", "zoom",
     }
 
@@ -145,19 +274,74 @@ class SaveScanner:
             "{PUBLICDOCS}": os.path.join(os.environ.get("PUBLIC", r"C:\Users\Public"), "Documents"),
             "{PROGRAMDATA}": os.environ.get("PROGRAMDATA", r"C:\ProgramData"),
             "{USERPROFILE}": user,
+            "{HOME}": user,
             "{SAVEDGAMES}": os.path.join(user, "Saved Games"),
             "{STEAM}": r"C:\Program Files (x86)\Steam",
         }
 
     @classmethod
     def expand_vars(cls, value: str) -> str:
-        result = str(value or "")
-        for key, replacement in cls.env_map().items():
+        """Expand PCGamingWiki/Ludusavi-style save path placeholders."""
+        result = html.unescape(str(value or "").strip())
+        env = cls.env_map()
+        result = re.sub(r"\[\s*(%[A-Z_]+%)\s*\]", r"\1", result, flags=re.I)
+
+        placeholder_map = {
+            "<home>": env["{USERPROFILE}"],
+            "<winappdata>": env["{APPDATA}"],
+            "<winlocalappdata>": env["{LOCAL}"],
+            "<winlocalappdatalow>": env["{LOCALLOW}"],
+            "<windocuments>": env["{DOCS}"],
+            "<winpublic>": os.environ.get("PUBLIC", r"C:\Users\Public"),
+            "<winprogramdata>": env["{PROGRAMDATA}"],
+            "<steam>": env["{STEAM}"],
+            "<root>": "*",
+            "<base>": "*",
+            "<game>": "*",
+            "<osusername>": os.path.basename(env["{USERPROFILE}"].rstrip("\\/")) or "*",
+        }
+        for old, replacement in placeholder_map.items():
+            result = re.sub(re.escape(old), lambda _m, repl=replacement: repl, result, flags=re.I)
+
+        result = re.sub(
+            r"[\[\(]?\s*<\s*(?:user[-_ ]?id|store[-_ ]?user[-_ ]?id|steam[-_ ]?user[-_ ]?id|guid|uuid)\s*>\s*[\]\)]?",
+            "*",
+            result,
+            flags=re.I,
+        )
+
+        brace_replacements = {
+            "{{p|appdata}}": "{APPDATA}",
+            "{{p|localappdata}}": "{LOCAL}",
+            "{{p|localappdatalow}}": "{LOCALLOW}",
+            "{{p|userprofile}}": "{USERPROFILE}",
+            "{{p|documents}}": "{DOCS}",
+            "{{p|savedgames}}": "{SAVEDGAMES}",
+            "{{p|programdata}}": "{PROGRAMDATA}",
+            "{{p|public}}": os.environ.get("PUBLIC", r"C:\Users\Public"),
+            "{{p|steam}}": "{STEAM}",
+            "{{p|uid}}": "*",
+        }
+        for old, replacement in brace_replacements.items():
+            result = re.sub(re.escape(old), lambda _m, repl=replacement: repl, result, flags=re.I)
+
+        percent_replacements = {
+            "%APPDATA%": env["{APPDATA}"],
+            "%LOCALAPPDATA%": env["{LOCAL}"],
+            "%USERPROFILE%": env["{USERPROFILE}"],
+            "%PUBLIC%": os.environ.get("PUBLIC", r"C:\Users\Public"),
+            "%PROGRAMDATA%": env["{PROGRAMDATA}"],
+            "%HOMEPATH%": env["{USERPROFILE}"],
+        }
+        for old, replacement in percent_replacements.items():
+            result = re.sub(re.escape(old), lambda _m, repl=replacement: repl, result, flags=re.I)
+
+        for key, replacement in env.items():
             result = result.replace(key, replacement)
         result = os.path.expandvars(result)
         if os.sep == "/":
             result = result.replace("\\", os.sep)
-        return result
+        return os.path.normpath(result)
 
     @staticmethod
     def _dedupe(values: list[str], limit: int = 32) -> list[str]:
@@ -177,6 +361,53 @@ class SaveScanner:
         return out
 
     @classmethod
+    def _virtualized_candidates(cls, path: str) -> list[str]:
+        """Add Windows VirtualStore equivalent for exact protected paths."""
+        raw = str(path or "")
+        match = re.match(r"^([A-Z]):[\\/](Program Files(?: \(x86\))?|Windows|ProgramData)[\\/](.+)$", raw, flags=re.I)
+        if not match:
+            return []
+        local = cls.env_map()["{LOCAL}"]
+        tail = os.path.join(match.group(2), match.group(3).replace("/", os.sep).replace("\\", os.sep))
+        return [os.path.join(local, "VirtualStore", tail)]
+
+    @classmethod
+    def _steam_roots(cls) -> list[str]:
+        """Return installed Steam roots including libraryfolders.vdf entries."""
+        roots = [
+            cls.env_map()["{STEAM}"],
+            r"C:\Program Files (x86)\Steam",
+            r"C:\Program Files\Steam",
+            r"D:\Steam",
+            r"D:\Games\Steam",
+            r"E:\Steam",
+            r"E:\Games\Steam",
+        ]
+        for root in list(roots):
+            vdf = os.path.join(root, "steamapps", "libraryfolders.vdf")
+            if not os.path.isfile(vdf):
+                continue
+            try:
+                text = Path(vdf).read_text(encoding="utf-8", errors="ignore")
+                for match in re.finditer(r'"path"\s+"([^"]+)"', text):
+                    candidate = match.group(1).replace('\\\\', '\\')
+                    if os.path.isdir(candidate):
+                        roots.append(candidate)
+            except Exception:
+                pass
+        seen: set[str] = set()
+        out: list[str] = []
+        for root in roots:
+            if not root or not os.path.isdir(root):
+                continue
+            norm = os.path.normcase(os.path.normpath(root))
+            if norm in seen:
+                continue
+            seen.add(norm)
+            out.append(root)
+        return out
+
+    @classmethod
     def known_rule_for_name(cls, name: str) -> dict[str, Any] | None:
         norm = normalize_name(name)
         if not norm:
@@ -190,14 +421,154 @@ class SaveScanner:
         return None
 
     @classmethod
+    def known_rule_for_pattern(cls, pattern: str) -> dict[str, Any] | None:
+        wanted = str(pattern or "").lower()
+        if not wanted:
+            return None
+        for rule in cls.KNOWN_GAMES.values():
+            for candidate in rule.get("patterns") or []:
+                if str(candidate or "").lower() == wanted:
+                    return rule
+        return None
+
+    @classmethod
     def canonical_game_name(cls, name: str) -> str:
         rule = cls.known_rule_for_name(name)
         return str((rule or {}).get("name") or name or "").strip()
 
+    @staticmethod
+    def _title_save_folder_variants(name: str) -> list[str]:
+        """Generate conservative title variants used by save folders.
+
+        Store titles often include trademark symbols or edition suffixes that
+        folder names omit, and PC folders may use Roman numerals while Steam
+        titles use Arabic numerals. Keep this bounded to exact title variants so
+        Home search improves without reintroducing broad AppData scanning.
+        """
+        raw = str(name or "").strip()
+        if not raw:
+            return []
+        cleaned = re.sub(r"[™®©]", "", raw).replace("(TM)", "").strip()
+        variants = {raw, cleaned}
+        suffix_pattern = r"\s*[-:–—]?\s*(remastered|remake|definitive edition|complete edition|director'?s cut|game of the year edition|goty edition)$"
+        for value in list(variants):
+            stripped = re.sub(suffix_pattern, "", value, flags=re.I).strip()
+            if stripped and stripped != value:
+                variants.add(stripped)
+
+        roman_pairs = [
+            (r"\bPart\s+1\b", "Part I"),
+            (r"\bPart\s+I\b", "Part 1"),
+            (r"\bPart\s+2\b", "Part II"),
+            (r"\bPart\s+II\b", "Part 2"),
+            (r"\bII\b", "2"),
+            (r"\bIII\b", "3"),
+            (r"\bIV\b", "4"),
+        ]
+        for value in list(variants):
+            for pattern, replacement in roman_pairs:
+                converted = re.sub(pattern, replacement, value, flags=re.I).strip()
+                if converted and converted != value:
+                    variants.add(converted)
+        return [item for item in variants if item]
+
+    @classmethod
+    def _saved_games_folder_candidates(cls, game_name: str) -> list[str]:
+        """Candidate folders under Saved Games/Documents for one title.
+
+        These are still focused on a selected title, but they cover common
+        nested layouts:
+        - Saved Games/<Game>/users/<id>/savedata
+        - Saved Games/<Studio>/<Game>/SAVEGAMES
+        """
+        folders: list[str] = []
+        roots = [
+            r"{SAVEDGAMES}\{GAME}",
+            r"{SAVEDGAMES}\*\{GAME}",
+            r"{DOCS}\{GAME}",
+            r"{DOCS}\*\{GAME}",
+        ]
+        subfolders = [
+            "",
+            r"\savedata",
+            r"\SaveData",
+            r"\SAVEGAMES",
+            r"\SaveGames",
+            r"\savegames",
+            r"\saves",
+            r"\Saves",
+            r"\PERSISTENT",
+            r"\PERSISTENT\PLAYER",
+            r"\users\*",
+            r"\users\*\savedata",
+            r"\users\*\SaveData",
+            r"\users\*\saves",
+            r"\users\*\Saves",
+            r"\*\savedata",
+            r"\*\SaveData",
+            r"\*\SAVEGAMES",
+            r"\*\saves",
+            r"\*\Saves",
+        ]
+        for root in roots:
+            for subfolder in subfolders:
+                folders.append((root + subfolder).replace("{GAME}", game_name))
+        return folders
+
+    @staticmethod
+    def _clean_saved_games_name(name: str) -> str:
+        clean = re.sub(r"(?i)(?:[-_ ]?(old|backup|bak|copy|autosave|manualsave))+$", "", str(name or "")).strip(" -_()[]")
+        return clean or str(name or "").strip()
+
+    @classmethod
+    def _saved_games_child_game_dirs(cls, root: str) -> list[str]:
+        """Return likely game folders one/two levels below Saved Games.
+
+        This avoids treating a publisher folder like "TheGameBakers" as the
+        game when the real game is in a child folder such as "Cairn_RETAIL".
+        It also skips backup folders like "Game-old" so they do not become
+        separate Library entries.
+        """
+        if not os.path.isdir(root):
+            return []
+        save_tokens = {"save", "saves", "savedata", "savegames", "slot", "profile", "users", "persistent"}
+        out: list[str] = []
+        try:
+            for first in Path(root).iterdir():
+                if not first.is_dir():
+                    continue
+                first_name = first.name
+                first_norm = normalize_name(first_name)
+                if first_norm in {"desktop", "downloads", "documents"}:
+                    continue
+                # A top-level backup like "Game-old" belongs to the same game;
+                # don't create a second card for it.
+                if cls._clean_saved_games_name(first_name) != first_name:
+                    continue
+                child_dirs = []
+                try:
+                    child_dirs = [child for child in first.iterdir() if child.is_dir()]
+                except Exception:
+                    child_dirs = []
+                promoted = False
+                for child in child_dirs[:40]:
+                    child_norm = normalize_name(child.name)
+                    if child_norm in save_tokens or cls._clean_saved_games_name(child.name) != child.name:
+                        continue
+                    if cls._has_save_like_content(str(child)):
+                        out.append(str(child))
+                        promoted = True
+                if not promoted and cls._has_save_like_content(str(first)):
+                    out.append(str(first))
+        except Exception:
+            pass
+        return cls._dedupe(out, limit=300)
+
+
     @classmethod
     def folder_names_for_game(cls, game: dict[str, Any]) -> list[str]:
         raw = str(game.get("name") or "").strip()
-        values = [raw]
+        values = cls._title_save_folder_variants(raw)
         # Remove common non-game suffixes from store titles.
         if raw:
             values.append(re.sub(r"\s*[-+:|]?\s*(demo|playtest|soundtrack|dedicated server)$", "", raw, flags=re.I).strip())
@@ -250,10 +621,15 @@ class SaveScanner:
         source: str = "",
     ) -> None:
         expanded = cls.expand_vars(pattern)
-        try:
-            matches = glob.glob(expanded) if any(ch in expanded for ch in "*?") else ([expanded] if os.path.exists(expanded) else [])
-        except Exception:
-            matches = []
+        matches: list[str] = []
+        for candidate in [expanded, *cls._virtualized_candidates(expanded)]:
+            try:
+                if any(ch in candidate for ch in "*?"):
+                    matches.extend(glob.glob(candidate))
+                elif os.path.exists(candidate):
+                    matches.append(candidate)
+            except Exception:
+                continue
         for match in matches:
             entry = cls._path_entry(match, category, description, source)
             if not entry:
@@ -270,6 +646,15 @@ class SaveScanner:
         people = cls.people_for_game(game)
         results: list[dict[str, Any]] = []
         seen: set[str] = set()
+
+        # Steam cloud/userdata is an exact AppID-based signal. This mirrors the
+        # save-backup scanner's Steam userdata rule, but stays bounded to the
+        # selected game instead of scanning every userdata folder.
+        appid = str(game.get("appid") or "").strip()
+        if appid.isdigit():
+            for steam_root in cls._steam_roots():
+                cls._add_matches(results, seen, os.path.join(steam_root, "userdata", "*", appid, "remote"), "Save Files", "Steam Cloud save folder", "Known rule")
+                cls._add_matches(results, seen, os.path.join(steam_root, "userdata", "*", appid), "Save Files", "Steam userdata folder", "Known rule")
 
         # Curated patterns first. These solve folder-name mismatches like
         # HITMAN3 and ACE without guessing through unrelated software folders.
@@ -302,6 +687,8 @@ class SaveScanner:
             ]
             for template, category, description in templates:
                 cls._add_matches(results, seen, template.replace("{GAME}", game_name), category, description)
+            for candidate in cls._saved_games_folder_candidates(game_name):
+                cls._add_matches(results, seen, candidate, "Save Files", "Saved Games/Documents save folder")
 
             for person in people:
                 person_templates = [
@@ -316,13 +703,7 @@ class SaveScanner:
                     (r"{LOCAL}\{PERSON}\Epic\*\{GAME}", "Save Files", "Publisher Epic nested local save folder"),
                 ]
                 for template, category, description in person_templates:
-                    cls._add_matches(
-                        results,
-                        seen,
-                        template.replace("{PERSON}", person).replace("{GAME}", game_name),
-                        category,
-                        description,
-                    )
+                    cls._add_matches(results, seen, template.replace("{PERSON}", person).replace("{GAME}", game_name), category, description)
 
         results.sort(key=lambda item: (item["category"], item["path"].lower()))
         return results
@@ -388,27 +769,98 @@ class SaveScanner:
 
     @staticmethod
     def _strip_wiki_markup(text: str) -> str:
-        value = text or ""
+        value = html.unescape(text or "")
         replacements = {
             r"{{p|appdata}}": "{APPDATA}",
             r"{{p|localappdata}}": "{LOCAL}",
+            r"{{p|localappdatalow}}": "{LOCALLOW}",
             r"{{p|userprofile}}": "{USERPROFILE}",
             r"{{p|documents}}": "{DOCS}",
             r"{{p|savedgames}}": "{SAVEDGAMES}",
             r"{{p|programdata}}": "{PROGRAMDATA}",
             r"{{p|public}}": os.environ.get("PUBLIC", r"C:\Users\Public"),
             r"{{p|steam}}": "{STEAM}",
+            r"{{p|uid}}": "*",
         }
         for old, new in replacements.items():
             # Lambda avoids re.sub interpreting Windows paths as escapes (\U).
-            value = re.sub(re.escape(old), lambda _m, replacement=new: replacement, value, flags=re.I)
+            value = re.sub(re.escape(old), lambda _match, replacement=new: replacement, value, flags=re.I)
+        # Markdown links from copied PCGW text, MediaWiki external links, and wiki links.
+        value = re.sub(r"\[([^\]]+)\]\([^)]*\)", r"\1", value)
         value = re.sub(r"\[https?://[^\s\]]+\s+([^\]]+)\]", r"\1", value)
         value = re.sub(r"\[\[([^\]|]+\|)?([^\]]+)\]\]", r"\2", value)
         value = value.replace("&lt;", "<").replace("&gt;", ">")
-        value = re.sub(r"<[^>]+>", "*", value)
+        protected: dict[str, str] = {}
+        def protect_placeholder(match: re.Match[str]) -> str:
+            key = f"__GHP_PLACEHOLDER_{len(protected)}__"
+            protected[key] = match.group(0)
+            return key
+        value = re.sub(r"<(?:home|winAppData|winLocalAppData|winLocalAppDataLow|winDocuments|winPublic|winProgramData|steam|user[-_ ]?id|store[-_ ]?user[-_ ]?id|steam[-_ ]?user[-_ ]?id|guid|uuid)>", protect_placeholder, value, flags=re.I)
+        value = re.sub(r"<br\s*/?>", "\n", value, flags=re.I)
+        value = re.sub(r"<[^>]+>", " ", value)
+        for key, original in protected.items():
+            value = value.replace(key, original)
         value = re.sub(r"{{[^{}]*}}", "", value)
         value = value.replace("[*]", "*")
         return value.strip()
+
+    @staticmethod
+    def _looks_like_windows_save_path(value: str) -> bool:
+        low = str(value or "").lower()
+        if any(token in low for token in ("macos", "os x", "linux", "android", "ios", "switch", "playstation")):
+            return False
+        return any(token in low for token in (
+            "{appdata}", "{local}", "{locallow}", "{docs}", "{userprofile}", "{savedgames}",
+            "{programdata}", "{steam}", "%appdata%", "%localappdata%", "%userprofile%",
+            "%programdata%", "<win", "<home>", "c:\\", "c:/",
+        ))
+
+    @classmethod
+    def _clean_path_candidate(cls, value: str) -> str:
+        candidate = cls._strip_wiki_markup(value)
+        candidate = re.sub(r"\s+", " ", candidate).strip().strip(" .;,:|\"'")
+        # PCGW often wraps placeholder notes in square brackets, e.g. [<user-id>].
+        candidate = re.sub(r"\[\s*(<[^>]+>|%[A-Z_]+%)\s*\]", r"\1", candidate, flags=re.I)
+        candidate = candidate.replace("/", "\\")
+        return candidate
+
+    @classmethod
+    def _extract_path_candidates_from_text(cls, text: str, context: str = "") -> list[tuple[str, str]]:
+        cleaned = cls._strip_wiki_markup(text)
+        if not cls._looks_like_windows_save_path(cleaned):
+            return []
+        results: list[tuple[str, str]] = []
+        pattern = re.compile(
+            r"(?:\{(?:APPDATA|LOCAL|LOCALLOW|DOCS|USERPROFILE|SAVEDGAMES|PROGRAMDATA|STEAM|HOME)\}|%[A-Z_]+%|<(?:home|winAppData|winLocalAppData|winLocalAppDataLow|winDocuments|winPublic|winProgramData|steam)>|[A-Z]:[\\/])[^|\n\r}]*",
+            flags=re.I,
+        )
+        for match in pattern.finditer(cleaned):
+            candidate = cls._clean_path_candidate(match.group(0))
+            candidate = re.split(r"\s{2,}|\t|</td>|</tr>", candidate)[0].strip()
+            if len(candidate) < 5 or not cls._looks_like_windows_save_path(candidate):
+                continue
+            low = f"{context} {cleaned} {candidate}".lower()
+            is_config = any(token in low for token in ("config", "configuration", "settings", ".ini", ".cfg"))
+            kind = "Config Files" if is_config else "Save Files"
+            results.append((candidate, kind))
+        return results
+
+    @staticmethod
+    def _dedupe_path_kinds(results: list[tuple[str, str]], limit: int = 24) -> list[tuple[str, str]]:
+        seen: set[str] = set()
+        out: list[tuple[str, str]] = []
+        for path, kind in results:
+            path = str(path or "").strip()
+            if not path:
+                continue
+            key = path.lower()
+            if key in seen:
+                continue
+            seen.add(key)
+            out.append((path, kind))
+            if len(out) >= limit:
+                break
+        return out
 
     @classmethod
     def _extract_pcgw_paths(cls, wikitext: str) -> list[tuple[str, str]]:
@@ -423,30 +875,49 @@ class SaveScanner:
         results: list[tuple[str, str]] = []
         for raw_line in section.splitlines():
             line = raw_line.strip()
-            low = line.lower()
-            if not any(token in low for token in ("{{p|", "%appdata%", "%localappdata%", "%userprofile%", "windows")):
+            if line:
+                results.extend(cls._extract_path_candidates_from_text(line, line))
+        return cls._dedupe_path_kinds(results)
+
+    @classmethod
+    def _pcgw_sections(cls, title: str) -> list[dict[str, Any]]:
+        if not title:
+            return []
+        data = cls._pcgw_api_json({"action": "parse", "format": "json", "page": title, "prop": "sections", "formatversion": "2"})
+        try:
+            return list(data["parse"]["sections"])
+        except Exception:
+            return []
+
+    @classmethod
+    def _pcgw_section_html(cls, title: str, section_index: str) -> str:
+        if not title or not section_index:
+            return ""
+        data = cls._pcgw_api_json({"action": "parse", "format": "json", "page": title, "section": str(section_index), "formatversion": "2"})
+        try:
+            return str(data["parse"]["text"])
+        except Exception:
+            return ""
+
+    @classmethod
+    def _extract_pcgw_paths_from_html(cls, section_html: str) -> list[tuple[str, str]]:
+        if not section_html:
+            return []
+        text = re.sub(r"<br\s*/?>", "\n", section_html, flags=re.I)
+        text = re.sub(r"</t[dh]>", "\n", text, flags=re.I)
+        text = re.sub(r"<[^>]+>", " ", text)
+        text = html.unescape(text)
+        return cls._dedupe_path_kinds(cls._extract_path_candidates_from_text(text, text))
+
+    @classmethod
+    def _pcgw_html_save_paths(cls, title: str) -> list[tuple[str, str]]:
+        results: list[tuple[str, str]] = []
+        for section in cls._pcgw_sections(title):
+            line = str(section.get("line") or "").lower()
+            if "save game data location" not in line and "configuration file" not in line:
                 continue
-            cleaned = cls._strip_wiki_markup(line)
-            candidates = re.findall(
-                r"(?:\{(?:APPDATA|LOCAL|LOCALLOW|DOCS|USERPROFILE|SAVEDGAMES|PROGRAMDATA|STEAM)\}|%[A-Z_]+%|[A-Z]:\\)[^|\n\r}]+",
-                cleaned,
-                flags=re.I,
-            )
-            for candidate in candidates:
-                candidate = candidate.strip().strip(" .;,:|").replace("/", "\\")
-                if len(candidate) < 5:
-                    continue
-                kind = "Config Files" if "config" in low else "Save Files"
-                results.append((candidate, kind))
-        seen: set[str] = set()
-        out: list[tuple[str, str]] = []
-        for path, kind in results:
-            key = path.lower()
-            if key in seen:
-                continue
-            seen.add(key)
-            out.append((path, kind))
-        return out[:16]
+            results.extend(cls._extract_pcgw_paths_from_html(cls._pcgw_section_html(title, str(section.get("index") or ""))))
+        return cls._dedupe_path_kinds(results)
 
     @classmethod
     def pcgw_save_paths(cls, game: dict[str, Any], fetch_missing: bool = True) -> list[dict[str, Any]]:
@@ -456,7 +927,10 @@ class SaveScanner:
             raw_paths = cache.get(key) or []
         elif fetch_missing:
             title = cls._pcgw_page_title(game)
-            raw_paths = cls._extract_pcgw_paths(cls._pcgw_wikitext(title))
+            raw_paths = cls._dedupe_path_kinds([
+                *cls._extract_pcgw_paths(cls._pcgw_wikitext(title)),
+                *cls._pcgw_html_save_paths(title),
+            ])
             if isinstance(cache, dict):
                 cache[key] = raw_paths
                 safe_write_json(PCGW_CACHE_FILE, cache)
@@ -563,7 +1037,10 @@ class SaveScanner:
             (r"{LOCAL}\*\Saved\Config\Windows", "unreal_config"),
             (r"{LOCAL}\*\*\SaveGames", "publisher_savegames"),
             (r"{APPDATA}\*", "top_appdata"),
-            (r"{SAVEDGAMES}\*", "savedgames"),
+            # Do not enumerate every Saved Games/Documents folder into the
+            # Library. Those locations are useful for focused Home searches, but
+            # Library-wide discovery must stay curated or it will turn backups,
+            # Discord mods, and utility folders into game cards.
             (r"{DOCS}\My Games\*", "mygames"),
             (r"{LOCALLOW}\*\*", "locallow"),
         ])
@@ -578,13 +1055,25 @@ class SaveScanner:
             current = current.parent
             name = current.name
             norm = normalize_name(name)
-        if norm in {"saved", "savegames", "config"}:
+        if norm in {"saved", "savegames", "savedata", "saves", "config", "profiles", "profile", "persistent", "player", "story", "retail"}:
             parent = current.parent
-            if norm == "savegames" and normalize_name(parent.name) == "saved":
+            parent_norm = normalize_name(parent.name)
+            if norm in {"savegames", "config"} and parent_norm == "saved":
                 parent = parent.parent
-            elif norm == "config" and normalize_name(parent.name) == "saved":
+            elif norm in {"savedata", "saves"} and normalize_name(parent.parent.name) == "users":
+                parent = parent.parent.parent
+            elif norm == "story" and parent_norm == "retail" and normalize_name(parent.parent.name) in {"savegames", "savedata", "saves"}:
+                parent = parent.parent.parent
+            elif norm in {"story", "retail"} and parent_norm in {"savegames", "savedata", "saves"}:
+                parent = parent.parent
+            elif norm in {"player"} and normalize_name(parent.name) == "persistent":
+                parent = parent.parent
+            elif parent_norm in {"users", "user", "profiles", "profile"}:
                 parent = parent.parent
             name = parent.name
+        elif norm in {"users", "user"}:
+            name = current.parent.name
+        name = cls._clean_saved_games_name(name)
         rule = cls.known_rule_for_name(name)
         return str((rule or {}).get("name") or name)
 
@@ -622,32 +1111,53 @@ class SaveScanner:
         return False
 
     @classmethod
-    def _resolve_library_game(cls, name: str, steam_api=None, known: bool = False) -> dict[str, Any] | None:
+    def _resolve_library_game(
+        cls,
+        name: str,
+        steam_api=None,
+        known: bool = False,
+        allow_safe_local: bool = False,
+        allow_steam_lookup: bool = False,
+    ) -> dict[str, Any] | None:
         if not name or cls._is_blocked_folder(name):
             return None
         rule = cls.known_rule_for_name(name)
 
-        # Unknown folders are not enough to create Library cards. This prevents
-        # normal app folders such as "Achievements" being converted into an
-        # unrelated Steam result like "Achievements City". If a game is not in
-        # installed catalogs or curated rules, Home search can still find it, but
-        # Library will not auto-create a card for it.
-        if not rule:
+        # Unknown AppData/LocalLow folders are not enough to create Library
+        # cards. For Windows "Saved Games" and Documents folders, however, the
+        # location itself is already a strong save signal, so we allow a bounded
+        # Steam lookup or a local-only card.
+        if not rule and not allow_safe_local and not allow_steam_lookup:
             return None
 
-        canonical = str(rule.get("name") or name).strip()
-        appid = str(rule.get("appid") or "").strip()
+        canonical = str((rule or {}).get("name") or name).strip()
+        appid = str((rule or {}).get("appid") or "").strip()
 
         resolved = None
         if steam_api is not None:
             try:
                 if appid.isdigit():
                     resolved = steam_api.get_app_details(appid, timeout=2) or steam_api.seed_cache_entry(appid, canonical)
+                elif allow_steam_lookup:
+                    resolved = steam_api.search_game(canonical, timeout=2)
+                    if resolved:
+                        resolved_name = str(resolved.get("name") or "")
+                        resolved_norm = normalize_name(resolved_name)
+                        canonical_norm = normalize_name(canonical)
+                        if not resolved_norm or (
+                            resolved_norm != canonical_norm
+                            and canonical_norm not in resolved_norm
+                            and resolved_norm not in canonical_norm
+                        ):
+                            resolved = None
             except Exception:
                 resolved = None
 
         if resolved:
             return dict(resolved)
+
+        if not rule and not allow_safe_local:
+            return None
 
         header = ""
         if appid.isdigit() and steam_api is not None:
@@ -694,7 +1204,22 @@ class SaveScanner:
                     continue
                 seen_paths.add(norm_path)
 
-                candidate_name = cls._name_from_candidate_path(match)
+                pattern_rule = cls.known_rule_for_pattern(pattern) if kind == "known" else None
+                if pattern_rule:
+                    # Curated patterns may point at nested implementation folders
+                    # such as Documents\The Last of Us Part II\<id>\savedata or
+                    # Documents\Assetto Corsa\cfg. Keep those paths attached to
+                    # the curated game instead of treating the leaf folder as a
+                    # separate game card.
+                    candidate_name = str(pattern_rule.get("name") or cls._name_from_candidate_path(match))
+                else:
+                    candidate_name = cls._name_from_candidate_path(match)
+                    cleaned_candidate_name = cls._clean_saved_games_name(candidate_name)
+                    if kind.startswith("savedgames") and cleaned_candidate_name != candidate_name:
+                        # Backup folders such as "Game-old" are part of the same
+                        # game's save data, not a second game card.
+                        continue
+                    candidate_name = cleaned_candidate_name
                 known = kind == "known" or cls.known_rule_for_name(candidate_name) is not None
                 if cls._is_blocked_folder(candidate_name):
                     continue
@@ -709,7 +1234,17 @@ class SaveScanner:
                     # under that alias.
                     continue
 
-                game = cls._resolve_library_game(candidate_name, steam_api=steam_api, known=known)
+                # Library auto-discovery is intentionally strict: only
+                # curated known rules may create save-only cards. Focused Home
+                # search still checks generic Saved Games/Documents patterns for
+                # the selected title.
+                game = cls._resolve_library_game(
+                    candidate_name,
+                    steam_api=steam_api,
+                    known=known,
+                    allow_safe_local=known,
+                    allow_steam_lookup=False,
+                )
                 if not game:
                     continue
 

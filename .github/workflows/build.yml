@@ -1,4 +1,4 @@
-name: Build Multi-Platform
+name: Build Windows Release
 
 on:
   push:
@@ -44,6 +44,34 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements.txt pyinstaller pyinstaller-hooks-contrib
 
+      - name: Validate source before packaging
+        shell: bash
+        run: |
+          python -m py_compile ghosthunter_app/*.py
+          python - <<'PY'
+          from pathlib import Path
+          html = Path('ghosthunter_app/ui/ghost_hunter_ui.html').read_text(encoding='utf-8')
+          start = html.index('<script>') + len('<script>')
+          end = html.rindex('</script>')
+          Path('ghp_ui_check.js').write_text(html[start:end], encoding='utf-8')
+          PY
+          node --check ghp_ui_check.js
+
+      - name: Check critical app files are present
+        shell: bash
+        run: |
+          test -f ghosthunter_app/save_scanner.py
+          test -f ghosthunter_app/ui/ghost_hunter_ui.html
+          test -f ghosthunter_app/ui/fonts/dm-mono-regular.ttf
+          test -f ghosthunter_app/ui/fonts/dm-mono-medium.ttf
+          test -f ghosthunter_app/ui/fonts/jetbrains-mono-regular.ttf
+          test -f ghosthunter_app/ui/fonts/jetbrains-mono-bold.ttf
+          test -f ghosthunter_app/ui/fonts/roboto-condensed-regular.ttf
+          test -f ghosthunter_app/ui/fonts/roboto-condensed-bold.ttf
+          test -f ghosthunter_app/ui/fonts/unifrakturmaguntia-regular.ttf
+          echo "Critical files included in checkout:"
+          find ghosthunter_app -maxdepth 3 -type f | sort
+
       - name: Build Windows EXE
         shell: bash
         run: |
@@ -55,7 +83,10 @@ jobs:
             --noconfirm --onefile --windowed \
             --name "GhostHunterPro" \
             --collect-all webview \
-            --add-data "ghosthunter_app/ui/ghost_hunter_ui.html;ghosthunter_app/ui" \
+            --collect-submodules ghosthunter_app \
+            --collect-data ghosthunter_app \
+            --hidden-import ghosthunter_app.save_scanner \
+            --add-data "ghosthunter_app;ghosthunter_app" \
             $ICON_ARG \
             ghost_hunter.py
 
@@ -91,158 +122,9 @@ jobs:
           name: windows-installer-${{ env.VERSION }}
           path: GhostHunterPro-Setup-*.exe
 
-  build-linux:
-    name: Build Linux (.deb + portable)
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Read version
-        shell: bash
-        run: |
-          RAW=$(cat VERSION | tr -d '\r\n')
-          echo "VERSION=${RAW#v}" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt pyinstaller pyinstaller-hooks-contrib
-          sudo apt-get update
-          sudo apt-get install -y dpkg-dev
-
-      - name: Build Linux binary
-        shell: bash
-        run: |
-          python -m PyInstaller \
-            --noconfirm --onefile --windowed \
-            --name "GhostHunterPro" \
-            --collect-all webview \
-            --add-data "ghosthunter_app/ui/ghost_hunter_ui.html:ghosthunter_app/ui" \
-            ghost_hunter.py
-
-      - name: Build portable tar.gz
-        shell: bash
-        run: |
-          mkdir -p linux-portable
-          cp dist/GhostHunterPro linux-portable/GhostHunterPro
-          chmod +x linux-portable/GhostHunterPro
-          tar -czf "GhostHunterPro-${{ env.VERSION }}-linux.tar.gz" -C linux-portable .
-
-      - name: Build .deb package
-        shell: bash
-        run: |
-          PKGROOT="ghosthunterpro_${{ env.VERSION }}_amd64"
-          mkdir -p "$PKGROOT/DEBIAN"
-          mkdir -p "$PKGROOT/opt/GhostHunterPro"
-          mkdir -p "$PKGROOT/usr/bin"
-          cat > "$PKGROOT/DEBIAN/control" <<EOF
-          Package: ghosthunterpro
-          Version: ${{ env.VERSION }}
-          Section: utils
-          Priority: optional
-          Architecture: amd64
-          Maintainer: GhostHunterPro
-          Depends: libgtk-3-0
-          Description: Ghost Hunter Pro
-           Desktop tool for finding and cleaning leftover game files.
-          EOF
-          cp dist/GhostHunterPro "$PKGROOT/opt/GhostHunterPro/GhostHunterPro"
-          chmod 755 "$PKGROOT/opt/GhostHunterPro/GhostHunterPro"
-          cat > "$PKGROOT/usr/bin/ghosthunterpro" <<'EOF'
-          #!/bin/sh
-          exec /opt/GhostHunterPro/GhostHunterPro "$@"
-          EOF
-          chmod 755 "$PKGROOT/usr/bin/ghosthunterpro"
-          dpkg-deb --build "$PKGROOT"
-
-      - name: Upload Linux portable tar.gz
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-portable-${{ env.VERSION }}
-          path: GhostHunterPro-${{ env.VERSION }}-linux.tar.gz
-
-      - name: Upload Linux .deb
-        uses: actions/upload-artifact@v4
-        with:
-          name: linux-deb-${{ env.VERSION }}
-          path: ghosthunterpro_${{ env.VERSION }}_amd64.deb
-
-  build-macos:
-    name: Build macOS
-    runs-on: macos-latest
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Cache pip
-        uses: actions/cache@v4
-        with:
-          path: ~/Library/Caches/pip
-          key: ${{ runner.os }}-pip-${{ hashFiles('requirements.txt') }}
-          restore-keys: |
-            ${{ runner.os }}-pip-
-
-      - name: Read version
-        shell: bash
-        run: |
-          RAW=$(cat VERSION | tr -d '\r\n')
-          echo "VERSION=${RAW#v}" >> $GITHUB_ENV
-
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements.txt pyinstaller pyinstaller-hooks-contrib
-
-      - name: Build macOS app
-        shell: bash
-        run: |
-          ICON_ARG=""
-          if [[ -f ghosthunter.icns ]]; then
-            ICON_ARG="--icon ghosthunter.icns"
-          fi
-          python -m PyInstaller \
-            --noconfirm --windowed \
-            --name "GhostHunterPro" \
-            --collect-all webview \
-            --add-data "ghosthunter_app/ui/ghost_hunter_ui.html:ghosthunter_app/ui" \
-            $ICON_ARG \
-            ghost_hunter.py
-
-      - name: Build macOS zip
-        shell: bash
-        run: |
-          ditto -c -k --sequesterRsrc --keepParent "dist/GhostHunterPro.app" "GhostHunterPro-${{ env.VERSION }}-macOS.zip"
-
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: macos-${{ env.VERSION }}
-          path: GhostHunterPro-${{ env.VERSION }}-macOS.zip
-
   release:
     name: Create Draft Release
-    needs: [build-windows, build-linux, build-macos]
+    needs: [build-windows]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -257,7 +139,7 @@ jobs:
           RAW=$(cat VERSION | tr -d '\r\n')
           echo "VERSION=${RAW#v}" >> $GITHUB_ENV
 
-      - name: Download all artifacts
+      - name: Download Windows artifacts
         uses: actions/download-artifact@v4
         with:
           path: release-assets
@@ -271,4 +153,7 @@ jobs:
           tag_name: ${{ env.VERSION }}
           name: Ghost Hunter Pro v${{ env.VERSION }}
           draft: true
+          overwrite_files: true
+          fail_on_unmatched_files: true
+          target_commitish: ${{ github.sha }}
           files: release-assets/**/*

@@ -134,11 +134,47 @@ class UpdateManager:
             return {"ok": False, "error": str(exc)}
 
     def download_installer_update(self, url: str) -> dict[str, Any]:
-        result = self.download_asset(url)
+        # Installer updates are temporary hand-off files. Keep them out of the
+        # user's Downloads folder so a normal update does not leave behind a
+        # GhostHunterPro folder/setup EXE.
+        result = self.download_asset(url, to_temp=True)
         if not result.get("ok"):
             return result
         path = str(result["path"])
-        return {"ok": True, "path": path, "folder": result.get("folder", "")}
+        return {"ok": True, "path": path, "folder": result.get("folder", ""), "temporary": True}
+
+    def _schedule_temp_cleanup(self, target: Path) -> None:
+        """Best-effort cleanup for the temporary installer folder.
+
+        The installer may keep the EXE locked briefly while UAC/NSIS starts, so
+        cleanup runs in a detached helper process with retries. If the installer
+        is still using the file, the helper waits and tries again.
+        """
+        folder = target.parent
+        try:
+            if os.name == "nt":
+                folder_arg = str(folder)
+                script = (
+                    "$p = " + json.dumps(folder_arg) + "; "
+                    "for ($i = 0; $i -lt 40; $i++) { "
+                    "Start-Sleep -Seconds 15; "
+                    "try { if (Test-Path -LiteralPath $p) { Remove-Item -LiteralPath $p -Recurse -Force -ErrorAction Stop }; break } catch {} "
+                    "}"
+                )
+                subprocess.Popen(
+                    ["powershell", "-NoProfile", "-WindowStyle", "Hidden", "-Command", script],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                    creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+                )
+            else:
+                subprocess.Popen(
+                    ["/bin/sh", "-c", f"sleep 120; rm -rf -- {json.dumps(str(folder))}"],
+                    stdout=subprocess.DEVNULL,
+                    stderr=subprocess.DEVNULL,
+                )
+        except Exception:
+            pass
 
     def launch_installer(self, path: str) -> dict[str, Any]:
         try:
@@ -149,7 +185,9 @@ class UpdateManager:
                 os.startfile(str(target))  # type: ignore[attr-defined]
             else:
                 subprocess.Popen([str(target)])
-            return {"ok": True}
+            if target.parent.name.startswith("ghosthunter_update_"):
+                self._schedule_temp_cleanup(target)
+            return {"ok": True, "cleanup_scheduled": target.parent.name.startswith("ghosthunter_update_")}
         except Exception as exc:
             return {"ok": False, "error": f"Could not launch installer: {exc}"}
 

@@ -37,6 +37,62 @@
       src: url('./fonts/atkinson-hyperlegible-bold.ttf') format('truetype');
     }
 
+    @font-face {
+      font-family: 'GH DM Mono';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('./fonts/dm-mono-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH DM Mono';
+      font-style: normal;
+      font-weight: 500 700;
+      font-display: swap;
+      src: url('./fonts/dm-mono-medium.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH JetBrains Mono';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('./fonts/jetbrains-mono-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH JetBrains Mono';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('./fonts/jetbrains-mono-bold.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH Roboto Condensed';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url('./fonts/roboto-condensed-regular.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH Roboto Condensed';
+      font-style: normal;
+      font-weight: 700;
+      font-display: swap;
+      src: url('./fonts/roboto-condensed-bold.ttf') format('truetype');
+    }
+
+    @font-face {
+      font-family: 'GH Fraktur';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url('./fonts/unifrakturmaguntia-regular.ttf') format('truetype');
+    }
+
     :root {
       --bg: #070b14;
       --panel: rgba(18, 25, 42, 0.82);
@@ -135,19 +191,24 @@
       border-radius: 12px;
       margin-bottom: 9px;
       border: 1px solid rgba(255,255,255,.07);
-      background: linear-gradient(135deg, #0a1322, var(--preset-color), color-mix(in srgb, var(--preset-color) 65%, #fb7185));
+      background: linear-gradient(135deg, #0a1322, var(--preset-color), var(--preset-color2, color-mix(in srgb, var(--preset-color) 65%, #fb7185)));
     }
 
     .preset-card-name {
       font-size: 13px;
       font-weight: 900;
-      padding-right: 26px;
+      padding-right: 32px;
+    }
+
+    .preset-card .theme-card-main {
+      min-height: 0;
+      display: block;
     }
 
     .preset-delete {
       position: absolute;
       right: 8px;
-      bottom: 8px;
+      top: 8px;
       width: 25px;
       height: 25px;
       border: 1px solid rgba(255,255,255,.1);
@@ -160,17 +221,67 @@
     }
 
     .custom-edit-btn {
+      position: relative;
+      isolation: isolate;
+      overflow: hidden;
       margin-top: 12px;
       width: 100%;
       justify-content: center;
       color: #fff;
-      border-color: color-mix(in srgb, var(--cyan) 34%, transparent);
-      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
-      box-shadow: 0 0 20px var(--glow-cyan), inset 0 0 0 1px rgba(255,255,255,.05);
+      border-color: color-mix(in srgb, var(--cyan) 44%, transparent);
+      background:
+        radial-gradient(circle at 18% 50%, color-mix(in srgb, var(--cyan) 28%, transparent), transparent 34%),
+        linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--cyan) 10%, transparent),
+        0 0 26px var(--glow-cyan),
+        0 0 20px var(--glow-purple),
+        inset 0 0 0 1px rgba(255,255,255,.06);
+      animation: customEditGlow 2.4s ease-in-out infinite;
+    }
+
+    .custom-edit-btn::after {
+      content: "";
+      position: absolute;
+      inset: -40% auto -40% -55%;
+      width: 54%;
+      z-index: -1;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.20), transparent);
+      transform: rotate(18deg);
+      transition: .24s ease;
     }
 
     .custom-edit-btn:hover {
-      box-shadow: 0 0 28px var(--glow-cyan), 0 0 18px var(--glow-purple), inset 0 0 0 1px rgba(255,255,255,.08);
+      transform: translateY(-1px);
+      border-color: color-mix(in srgb, var(--cyan) 64%, transparent);
+      box-shadow:
+        0 0 0 1px color-mix(in srgb, var(--cyan) 18%, transparent),
+        0 0 38px var(--glow-cyan),
+        0 0 28px var(--glow-purple),
+        inset 0 0 0 1px rgba(255,255,255,.10);
+    }
+
+    .custom-edit-btn:hover::after {
+      left: 110%;
+    }
+
+    @keyframes customEditGlow {
+      0%, 100% { filter: brightness(1); }
+      50% { filter: brightness(1.16); }
+    }
+
+    .second-color-toggle {
+      border-color: color-mix(in srgb, var(--cyan) 22%, rgba(255,255,255,.08));
+      background: rgba(255,255,255,.045);
+      color: var(--text);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.035), 0 0 12px color-mix(in srgb, var(--cyan) 10%, transparent);
+    }
+
+    .second-color-toggle.active {
+      color: #fff;
+      border-color: color-mix(in srgb, var(--cyan) 36%, transparent);
+      background: linear-gradient(90deg, var(--surface-cyan-strong), var(--surface-purple-strong));
+      box-shadow: 0 0 18px var(--glow-cyan), inset 0 0 0 1px rgba(255,255,255,.06);
     }
 
     .custom-theme-modal-card {
@@ -202,6 +313,18 @@
       padding: 18px;
       display: grid;
       gap: 16px;
+    }
+
+    .custom-theme-modal-preview {
+      width: 100%;
+      height: 124px;
+      min-height: 124px;
+      border-radius: 18px;
+      border: 1px solid color-mix(in srgb, var(--cyan) 20%, rgba(255,255,255,.08));
+      background:
+        radial-gradient(circle at 18% 26%, color-mix(in srgb, var(--custom-accent, #d946ef) 48%, transparent), transparent 34%),
+        linear-gradient(135deg, #0a1322, var(--custom-accent, #d946ef) 58%, var(--custom-shade-accent, var(--custom-accent-2, #fb7185)));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06), 0 0 30px var(--glow-cyan);
     }
 
     * { box-sizing: border-box; }
@@ -312,7 +435,7 @@
     }
 
     body[data-font="dm-mono"] {
-      --app-font-stack: "DM Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+      --app-font-stack: "GH DM Mono", "DM Mono", ui-monospace, monospace;
     }
 
     body[data-font="trebuchet"] {
@@ -324,7 +447,15 @@
     }
 
     body[data-font="mono"] {
-      --app-font-stack: "Cascadia Mono", "JetBrains Mono", "Fira Code", Consolas, ui-monospace, monospace;
+      --app-font-stack: "GH JetBrains Mono", "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+    }
+
+    body[data-font="roboto-condensed"] {
+      --app-font-stack: "GH Roboto Condensed", "Roboto Condensed", "Arial Narrow", sans-serif;
+    }
+
+    body[data-font="fraktur"] {
+      --app-font-stack: "GH Fraktur", "UnifrakturMaguntia", "Old English Text MT", serif;
     }
 
     body[data-font="roboto-slab"] {
@@ -951,7 +1082,7 @@
     .tag.purple { background: rgba(142,115,255,.14); color: #e0d9ff; }
     .tag.orange { background: rgba(255,157,77,.14); color: #ffe2c8; }
     .tag.red { background: rgba(255,91,87,.18); color: #ffe0df; }
-    .tag.legit { background: rgba(26,199,255,.16); color: #dff8ff; border-color: rgba(26,199,255,.22); }
+    .tag.legit { background: linear-gradient(90deg, var(--surface-cyan), var(--surface-purple)); color: #e9fbff; border-color: color-mix(in srgb, var(--cyan) 20%, transparent); box-shadow: 0 0 14px var(--glow-cyan); }
 
     .summary-line {
       color: var(--muted);
@@ -1242,6 +1373,7 @@
     .theme-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+      align-items: stretch;
       gap: 12px;
     }
 
@@ -1258,9 +1390,9 @@
       background: rgba(255,255,255,.03);
       color: var(--text);
       text-align: left;
-      cursor: pointer;
+      cursor: default;
       transition: .16s ease;
-      min-height: 188px;
+      min-height: 196px;
       display: flex;
       flex-direction: column;
       justify-content: stretch;
@@ -1282,6 +1414,7 @@
       display: flex;
       flex-direction: column;
       min-width: 0;
+      min-height: 148px;
       font: inherit;
     }
 
@@ -1298,15 +1431,21 @@
 
     .theme-preview {
       display: block;
-      width: 100%;
-      height: 72px;
-      min-height: 72px;
-      max-height: 72px;
+      inline-size: 100%;
+      block-size: 76px;
+      width: 100% !important;
+      height: 76px !important;
+      min-height: 76px !important;
+      max-height: 76px !important;
+      align-self: stretch;
       border-radius: 12px;
       margin-bottom: 12px;
-      border: 1px solid rgba(255,255,255,.06);
-      flex: 0 0 72px;
+      border: 1px solid rgba(255,255,255,.08);
+      flex: 0 0 76px;
       box-sizing: border-box;
+      overflow: hidden;
+      background-clip: padding-box;
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.035);
     }
 
     .theme-preview.neon {
@@ -1394,7 +1533,7 @@
       height: 46px;
       border-radius: 14px;
       border: 1px solid rgba(255,255,255,.08);
-      background: linear-gradient(90deg, var(--custom-accent, #d946ef), var(--custom-accent-2, #fb7185));
+      background: linear-gradient(90deg, var(--custom-accent, #d946ef), var(--custom-shade-accent, var(--custom-accent-2, #fb7185)));
       box-shadow: 0 0 18px color-mix(in srgb, var(--custom-accent, #d946ef) 24%, transparent);
     }
 
@@ -1444,8 +1583,9 @@
     }
 
     .font-preview.dm-mono {
-      font-family: "DM Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+      font-family: "GH DM Mono", "DM Mono", ui-monospace, monospace;
       font-size: 21px;
+      letter-spacing: .01em;
     }
 
     .font-preview.trebuchet {
@@ -1457,8 +1597,20 @@
     }
 
     .font-preview.mono {
-      font-family: "Cascadia Mono", Consolas, ui-monospace, monospace;
-      font-size: 21px;
+      font-family: "GH JetBrains Mono", "JetBrains Mono", "Fira Code", ui-monospace, monospace;
+      font-size: 20px;
+      letter-spacing: -.04em;
+    }
+
+    .font-preview.roboto-condensed {
+      font-family: "GH Roboto Condensed", "Roboto Condensed", "Arial Narrow", sans-serif;
+      font-stretch: condensed;
+      letter-spacing: -.06em;
+    }
+
+    .font-preview.fraktur {
+      font-family: "GH Fraktur", "UnifrakturMaguntia", "Old English Text MT", serif;
+      letter-spacing: .01em;
     }
 
     .font-preview.roboto-slab {
@@ -1509,6 +1661,62 @@
       font-size: 14px;
       line-height: 1.6;
       white-space: pre-line;
+    }
+
+    .markdown-note {
+      white-space: normal;
+      color: #b9c6dc;
+    }
+
+    .markdown-note h1,
+    .markdown-note h2,
+    .markdown-note h3 {
+      margin: 12px 0 8px;
+      color: var(--text);
+      line-height: 1.2;
+    }
+
+    .markdown-note h1 { font-size: 22px; }
+    .markdown-note h2 { font-size: 18px; }
+    .markdown-note h3 { font-size: 16px; }
+
+    .markdown-note p {
+      margin: 8px 0;
+    }
+
+    .markdown-note ul,
+    .markdown-note ol {
+      margin: 8px 0 8px 22px;
+      padding: 0;
+    }
+
+    .markdown-note li {
+      margin: 5px 0;
+    }
+
+    .markdown-note strong {
+      color: #eef7ff;
+      font-weight: 900;
+    }
+
+    .markdown-note em {
+      color: #dbe8ff;
+    }
+
+    .markdown-note code {
+      padding: 2px 6px;
+      border-radius: 7px;
+      border: 1px solid rgba(255,255,255,.08);
+      background: rgba(0,0,0,.22);
+      color: #dff8ff;
+      font-family: "GH JetBrains Mono", ui-monospace, monospace;
+      font-size: .92em;
+    }
+
+    .markdown-note a {
+      color: var(--cyan);
+      text-decoration: none;
+      border-bottom: 1px solid color-mix(in srgb, var(--cyan) 35%, transparent);
     }
 
     .settings-section-title {
@@ -1869,13 +2077,18 @@
 
     .modal-overlay.show { display: flex; }
 
+    #custom-theme-overlay { z-index: 50; }
+    #preset-overlay { z-index: 70; }
+
 
     .modal-overlay.closing {
       display: flex;
       animation: overlayFadeOut .18s ease-in forwards;
     }
 
-    .modal-overlay.closing .modal-card {
+    .modal-overlay.closing .modal-card,
+    .modal-overlay.closing .custom-theme-modal-card,
+    .modal-overlay.closing .preset-modal-card {
       animation: tvClose .18s ease-in forwards;
     }
 
@@ -2281,7 +2494,7 @@
         <div class="brand-icon"><svg class="lucide-icon" viewBox="0 0 24 24" aria-hidden="true"><path d="M9 10h.01"></path><path d="M15 10h.01"></path><path d="M12 2a8 8 0 0 0-8 8v10l2.4-1.8L8.8 20l2.4-1.8L13.6 20l2.4-1.8L18.4 20V10a8 8 0 0 0-8-8Z"></path></svg></div>
         <div>
           <div class="brand-title">Ghost Hunter Pro</div>
-          <div class="brand-sub"><span id="app-version-label">v2.3.8</span> • <span class="desktop">Desktop Mode</span></div>
+          <div class="brand-sub"><span id="app-version-label">v3.1</span> • <span class="desktop">Desktop Mode</span></div>
         </div>
       </div>
       <div class="tabs">
@@ -2297,7 +2510,7 @@
     </div>
 
     <footer class="footer">
-      <span id="app-footer-version">Ghost Hunter Pro v2.3.8</span> • Not affiliated with Valve or Steam<br />
+      <span id="app-footer-version">Ghost Hunter Pro v3.1</span> • Not affiliated with Valve or Steam<br />
       Paths are generated based on common known locations. Always verify before deleting.
     </footer>
   </div>
@@ -2321,6 +2534,7 @@
       homeSuggestions: [],
       homeHistory: [],
       libraryLoading: false,
+      libraryPreloading: false,
       libraryLoaded: false,
       libraryItems: [],
       libraryQuery: '',
@@ -2331,6 +2545,7 @@
       settingsTab: 'about',
       updateInfo: null,
       updateNotice: null,
+      updateNoticeDismissed: false,
       bulkReviewOpen: false,
       bulkExpandedAppIds: [],
       modalGameId: null,
@@ -2339,9 +2554,11 @@
       presetDialogOpen: false,
       presetName: '',
       customThemeEditorOpen: false,
+      customThemeEditorClosing: false,
     };
 
     let suggestionTimer = null;
+    let customThemeSaveTimer = null;
     let confirmResolver = null;
 
     const $home = document.getElementById('view-home');
@@ -2386,6 +2603,67 @@
         '"': '&quot;',
         "'": '&#39;'
       }[char]));
+    }
+
+    function markdownInline(value) {
+      let text = escapeHtml(value);
+      text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+      text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+      text = text.replace(/__([^_]+)__/g, '<strong>$1</strong>');
+      text = text.replace(/(^|\s)\*([^*\n]+)\*/g, '$1<em>$2</em>');
+      text = text.replace(/(^|\s)_([^_\n]+)_/g, '$1<em>$2</em>');
+      text = text.replace(/\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)/g, '<a href="$2">$1</a>');
+      return text;
+    }
+
+    function markdownToHtml(markdown) {
+      const lines = String(markdown || '').replace(/\r\n/g, '\n').split('\n');
+      const html = [];
+      let listType = null;
+      const closeList = () => {
+        if (listType) {
+          html.push(`</${listType}>`);
+          listType = null;
+        }
+      };
+      for (const rawLine of lines) {
+        const line = rawLine.trimEnd();
+        if (!line.trim()) {
+          closeList();
+          continue;
+        }
+        const heading = line.match(/^(#{1,3})\s+(.+)$/);
+        if (heading) {
+          closeList();
+          const level = heading[1].length;
+          html.push(`<h${level}>${markdownInline(heading[2].trim())}</h${level}>`);
+          continue;
+        }
+        const unordered = line.match(/^[-*+]\s+(.+)$/);
+        if (unordered) {
+          if (listType !== 'ul') {
+            closeList();
+            listType = 'ul';
+            html.push('<ul>');
+          }
+          html.push(`<li>${markdownInline(unordered[1])}</li>`);
+          continue;
+        }
+        const ordered = line.match(/^\d+[.)]\s+(.+)$/);
+        if (ordered) {
+          if (listType !== 'ol') {
+            closeList();
+            listType = 'ol';
+            html.push('<ol>');
+          }
+          html.push(`<li>${markdownInline(ordered[1])}</li>`);
+          continue;
+        }
+        closeList();
+        html.push(`<p>${markdownInline(line.trim())}</p>`);
+      }
+      closeList();
+      return html.join('');
     }
 
     function formatSize(size) {
@@ -2597,7 +2875,7 @@
       }
       const ok = await showConfirm({
         title: 'Download installer update',
-        message: 'The installer update will be downloaded and then launched. The installer may close the app while updating. Continue?',
+        message: 'The installer update will be downloaded to a temporary folder and then launched. Ghost Hunter Pro will automatically clean up the temporary setup file after the installer starts. Continue?',
         confirmText: 'Download & Launch',
         cancelText: 'Cancel',
       });
@@ -2612,7 +2890,7 @@
         toast(launch.error || 'Could not launch installer');
         return;
       }
-      toast('Installer launched');
+      toast('Installer launched — temporary setup file will be cleaned up automatically');
     }
 
     async function downloadPortableUpdate() {
@@ -2712,14 +2990,23 @@
       return '#' + shifted.map(channel => channel.toString(16).padStart(2, '0')).join('');
     }
 
-    function applyCustomThemeColor(color) {
+    function applyCustomThemeColor(color, color2 = null, useSecond = null) {
       const accent = normalizeHexColor(color);
+      const secondEnabled = useSecond === null
+        ? !!(state.settingsInfo && state.settingsInfo.custom_theme_use_second_color)
+        : !!useSecond;
+      const second = normalizeHexColor(color2 || (state.settingsInfo && state.settingsInfo.custom_theme_color_2) || shiftHexColor(accent));
       document.body.style.setProperty('--custom-accent', accent);
-      document.body.style.setProperty('--custom-accent-2', shiftHexColor(accent));
+      document.body.style.setProperty('--custom-accent-2', second);
+      document.body.style.setProperty('--custom-shade-accent', secondEnabled ? second : shiftHexColor(accent));
     }
 
     function applyTheme(themeName) {
-      applyCustomThemeColor(state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef');
+      applyCustomThemeColor(
+        state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef',
+        state.settingsInfo && state.settingsInfo.custom_theme_color_2 ? state.settingsInfo.custom_theme_color_2 : '#fb7185',
+        state.settingsInfo && state.settingsInfo.custom_theme_use_second_color
+      );
       document.body.dataset.theme = themeName || 'neon';
     }
 
@@ -2751,19 +3038,23 @@
 
     async function setCustomThemeColor(color, options = {}) {
       const normalized = normalizeHexColor(color);
+      const second = normalizeHexColor(options.color2 || (state.settingsInfo && state.settingsInfo.custom_theme_color_2) || '#fb7185');
+      const useSecond = options.useSecond !== undefined ? !!options.useSecond : !!(state.settingsInfo && state.settingsInfo.custom_theme_use_second_color);
       try {
-        const response = await apiCall('set_custom_theme_color', normalized);
+        const response = await apiCall('set_custom_theme_color', normalized, second, useSecond);
         if (!response.ok) throw new Error(response.error || 'Invalid color');
         if (!state.settingsInfo) state.settingsInfo = {};
         state.settingsInfo.custom_theme_color = response.custom_theme_color;
+        state.settingsInfo.custom_theme_color_2 = response.custom_theme_color_2 || second;
+        state.settingsInfo.custom_theme_use_second_color = !!response.custom_theme_use_second_color;
         state.settingsInfo.theme = response.theme || 'custom';
-        applyCustomThemeColor(response.custom_theme_color);
+        applyCustomThemeColor(response.custom_theme_color, state.settingsInfo.custom_theme_color_2, state.settingsInfo.custom_theme_use_second_color);
         applyTheme(response.theme || 'custom');
         if (options.render !== false) {
           renderSettings();
           renderTabs();
         }
-        if (state.customThemeEditorOpen) {
+        if (options.refreshEditor !== false && state.customThemeEditorOpen) {
           renderCustomThemeEditor();
         }
       } catch (error) {
@@ -2771,19 +3062,39 @@
       }
     }
 
+    function scheduleCustomThemeColorSave(color) {
+      clearTimeout(customThemeSaveTimer);
+      customThemeSaveTimer = setTimeout(() => {
+        setCustomThemeColor(color, {
+          color2: state.settingsInfo && state.settingsInfo.custom_theme_color_2,
+          useSecond: state.settingsInfo && state.settingsInfo.custom_theme_use_second_color,
+          render: false,
+          refreshEditor: false,
+        });
+      }, 260);
+    }
+
     async function saveCustomThemePreset(name, color) {
       try {
-        const response = await apiCall('save_custom_theme_preset', name, color);
+        const response = await apiCall(
+          'save_custom_theme_preset',
+          name,
+          color,
+          state.settingsInfo && state.settingsInfo.custom_theme_color_2 ? state.settingsInfo.custom_theme_color_2 : '#fb7185',
+          !!(state.settingsInfo && state.settingsInfo.custom_theme_use_second_color)
+        );
         if (!response.ok) throw new Error(response.error || 'Could not save preset');
         if (!state.settingsInfo) state.settingsInfo = {};
         state.settingsInfo.custom_theme_color = response.custom_theme_color;
+        state.settingsInfo.custom_theme_color_2 = response.custom_theme_color_2 || state.settingsInfo.custom_theme_color_2 || '#fb7185';
+        state.settingsInfo.custom_theme_use_second_color = !!response.custom_theme_use_second_color;
         state.settingsInfo.custom_theme_presets = response.custom_theme_presets || [];
         state.settingsInfo.theme = response.theme || 'custom';
         state.presetDialogOpen = false;
         state.presetName = '';
-        applyCustomThemeColor(response.custom_theme_color);
+        applyCustomThemeColor(response.custom_theme_color, state.settingsInfo.custom_theme_color_2, state.settingsInfo.custom_theme_use_second_color);
         applyTheme(response.theme || 'custom');
-        renderAll();
+        renderAll({ refreshCustomThemeEditor: true });
         toast('Theme preset saved');
       } catch (error) {
         toast(error.message || 'Could not save preset');
@@ -2817,7 +3128,7 @@
     }
 
     function applyVersionLabels() {
-      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '2.3.8';
+      const version = state.settingsInfo && state.settingsInfo.current_version ? state.settingsInfo.current_version : '3.1';
       const top = document.getElementById('app-version-label');
       const footer = document.getElementById('app-footer-version');
       if (top) top.textContent = `v${version}`;
@@ -2830,7 +3141,7 @@
       } catch (error) {
         state.updateInfo = { ok: false, configured: false, error: error.message || 'Update check failed.' };
       }
-      if (state.updateInfo && state.updateInfo.ok && state.updateInfo.update_available) {
+      if (state.updateInfo && state.updateInfo.ok && state.updateInfo.update_available && !state.updateNoticeDismissed) {
         state.updateNotice = state.updateInfo;
       } else if (!options.preserveNotice) {
         state.updateNotice = null;
@@ -2845,7 +3156,7 @@
         const update = await apiCall('check_for_updates');
         if (update && update.ok) {
           state.updateInfo = update;
-          if (update.update_available) {
+          if (update.update_available && !state.updateNoticeDismissed) {
             state.updateNotice = update;
           }
         }
@@ -2879,7 +3190,7 @@
                   <span class="history-icon">${icon('ghost')}</span>
                   <span>${escapeHtml(item.name)}</span>
                 </button>
-                <button class="history-remove" title="Remove from history" data-action="history-remove" data-appid="${escapeHtml(item.appid)}">✕</button>
+                <button class="history-remove" title="Remove from history" data-action="history-remove" data-appid="${escapeHtml(item.appid)}">${icon('x')}</button>
               </div>
             `).join('')}
           </div>
@@ -2967,7 +3278,7 @@
             <button class="btn hero-link" data-action="switch-tab" data-tab="library">Browse Library</button>
           </div>
         </div>
-        ${result ? `<div class="home-tools"><button class="btn primary" data-action="home-clear">✕ Close</button></div>` : ""}
+        ${result ? `<div class="home-tools"><button class="btn primary" data-action="home-clear">${icon('x')} Close</button></div>` : ""}
         ${resultsHtml}
         ${!result && state.homeLoading ? `
           <div class="loading-state card">
@@ -3051,7 +3362,7 @@
             <label class="search-inline">
               <span style="color:#75839c;">${icon('search')}</span>
               <input id="library-filter-input" value="${escapeHtml(state.libraryQuery)}" placeholder="Filter games by name or AppID..." />
-              ${state.libraryQuery ? `<button class="search-clear-btn" type="button" data-action="library-clear-search" title="Clear search" aria-label="Clear library search">✕</button>` : ''}
+              ${state.libraryQuery ? `<button class="search-clear-btn" type="button" data-action="library-clear-search" title="Clear search" aria-label="Clear library search">${icon('x')}</button>` : ''}
             </label>
             <div class="toolbar-actions">
               <button class="btn filter ${state.libraryFilter === 'visible' ? 'active' : ''}" data-action="library-filter" data-filter="visible">${icon('eye')} Show Visible (${activeCount})</button>
@@ -3079,35 +3390,54 @@
 
     function customThemeEditorHtml() {
       const info = state.settingsInfo || {};
+      const color1 = normalizeHexColor(info.custom_theme_color || '#d946ef');
+      const color2 = normalizeHexColor(info.custom_theme_color_2 || '#fb7185');
+      const useSecond = !!info.custom_theme_use_second_color;
       return `
         <div class="custom-theme-controls" style="margin-top:0;">
-          <div class="settings-section-title" style="margin-bottom:0;">Accent Color</div>
-          <div class="settings-panel-sub" style="margin-bottom:0;">Pick a color or type a hex code. Changes apply instantly to the Custom theme.</div>
+          <div class="settings-section-title" style="margin-bottom:0;">Accent Colors</div>
+          <div class="settings-panel-sub" style="margin-bottom:0;">Pick a main color and optionally enable a second shade color. Changes apply instantly to the Custom theme.</div>
           <div class="custom-color-preview"></div>
           <div class="custom-theme-row">
-            <input type="color" value="${escapeHtml(normalizeHexColor(info.custom_theme_color || '#d946ef'))}" data-action="custom-theme-color-input" aria-label="Custom theme color" />
-            <input class="hex-input" value="${escapeHtml(normalizeHexColor(info.custom_theme_color || '#d946ef'))}" data-action="custom-theme-hex-input" maxlength="7" aria-label="Custom theme hex color" />
+            <input type="color" value="${escapeHtml(color1)}" data-action="custom-theme-color-input" aria-label="Custom theme color" />
+            <input class="hex-input" value="${escapeHtml(color1)}" data-action="custom-theme-hex-input" maxlength="7" aria-label="Custom theme hex color" />
+            <button class="settings-tab second-color-toggle ${useSecond ? 'active' : ''}" type="button" data-action="toggle-custom-second-color">${useSecond ? 'Second Color: On' : 'Second Color: Off'}</button>
+            <input type="color" value="${escapeHtml(color2)}" data-action="custom-theme-color2-input" aria-label="Custom theme second color" ${useSecond ? '' : 'disabled'} />
+            <input class="hex-input" value="${escapeHtml(color2)}" data-action="custom-theme-hex2-input" maxlength="7" aria-label="Custom theme second hex color" ${useSecond ? '' : 'disabled'} />
+            <button class="settings-tab" type="button" data-action="apply-custom-theme">Apply Theme</button>
             <button class="settings-tab active" type="button" data-action="open-preset-dialog">Save Preset</button>
           </div>
         </div>
         <div class="custom-theme-controls" style="margin-top:0;">
           <div class="settings-section-title" style="margin-bottom:0;">Saved Presets</div>
           ${(info.custom_theme_presets || []).length ? `<div class="preset-list">
-            ${(info.custom_theme_presets || []).map(preset => `<div class="preset-card" style="--preset-color:${escapeHtml(preset.color)}"><button class="theme-card-main" data-action="load-theme-preset" data-color="${escapeHtml(preset.color)}"><div class="preset-card-preview"></div><div class="preset-card-name">${escapeHtml(preset.name)}</div></button><button class="preset-delete" data-action="delete-theme-preset" data-preset-name="${escapeHtml(preset.name)}" title="Delete preset">${icon('x')}</button></div>`).join('')}
+            ${(info.custom_theme_presets || []).map(preset => `<div class="preset-card" style="--preset-color:${escapeHtml(preset.color)};--preset-color2:${escapeHtml(preset.color2 || preset.color)}"><button class="theme-card-main" data-action="load-theme-preset" data-color="${escapeHtml(preset.color)}" data-color2="${escapeHtml(preset.color2 || '#fb7185')}" data-use-second="${preset.use_second ? '1' : '0'}"><div class="preset-card-preview"></div><div class="preset-card-name">${escapeHtml(preset.name)}</div></button><button class="preset-delete" data-action="delete-theme-preset" data-preset-name="${escapeHtml(preset.name)}" title="Delete preset">${icon('x')}</button></div>`).join('')}
           </div>` : `<div class="settings-panel-sub" style="margin-bottom:0;">No saved presets yet. Choose a color and click Save Preset.</div>`}
         </div>
       `;
     }
 
+    function closeCustomThemeEditorAnimated() {
+      if (!state.customThemeEditorOpen || state.customThemeEditorClosing) return;
+      state.customThemeEditorClosing = true;
+      renderCustomThemeEditor();
+      setTimeout(() => {
+        state.customThemeEditorOpen = false;
+        state.customThemeEditorClosing = false;
+        renderCustomThemeEditor();
+      }, 190);
+    }
+
     function renderCustomThemeEditor() {
-      if (!state.customThemeEditorOpen) {
-        $customTheme.classList.remove('show');
+      if (!state.customThemeEditorOpen && !state.customThemeEditorClosing) {
+        $customTheme.classList.remove('show', 'closing');
         $customTheme.innerHTML = '';
         return;
       }
       const info = state.settingsInfo || {};
       const color = normalizeHexColor(info.custom_theme_color || '#d946ef');
       $customTheme.classList.add('show');
+      $customTheme.classList.toggle('closing', !!state.customThemeEditorClosing);
       $customTheme.innerHTML = `
         <div class="custom-theme-modal-card card" role="dialog" aria-modal="true">
           <div class="custom-theme-modal-head">
@@ -3118,7 +3448,7 @@
             <button class="modal-close" data-action="close-custom-theme-editor">${icon('x')}</button>
           </div>
           <div class="custom-theme-modal-body">
-            <div class="theme-preview custom" style="height:120px; min-height:120px; max-height:120px; flex-basis:120px;"></div>
+            <div class="custom-theme-modal-preview"></div>
             <div class="settings-note">Current custom color: ${escapeHtml(color)}</div>
             ${customThemeEditorHtml()}
           </div>
@@ -3186,7 +3516,7 @@ Current color: ${escapeHtml(color)}</div>
                 <div class="update-notice-title">A new version is available</div>
                 <div class="update-notice-sub">Current: ${escapeHtml(update.current_version || '')} • Latest: ${escapeHtml(update.latest_version || '')}</div>
               </div>
-              <button class="update-notice-close" data-action="dismiss-update-notice">✕</button>
+              <button class="update-notice-close" data-action="dismiss-update-notice">${icon('x')}</button>
             </div>
             <div class="update-notice-sub">Open the Updates tab to download the latest build or check the release page.</div>
             <div class="update-notice-actions">
@@ -3218,7 +3548,7 @@ Current color: ${escapeHtml(color)}</div>
               <h3 class="selection-title">Selected Games</h3>
               <div class="selection-sub">Review the games you selected, remove any by mistake, expand them to inspect paths, and decide whether to delete one game at a time or everything at once.</div>
             </div>
-            <button class="modal-close" data-action="close-selection-review">✕</button>
+            <button class="modal-close" data-action="close-selection-review">${icon('x')}</button>
           </div>
           <div class="selection-actions">
             <button class="btn primary" data-action="selection-delete-all">Delete All Selected</button>
@@ -3340,7 +3670,7 @@ Current color: ${escapeHtml(color)}</div>
                     <span class="tag">${formatSize(game.total_size)}</span>
                   </div>
                 </div>
-                <button class="modal-close" data-action="close-modal">✕</button>
+                <button class="modal-close" data-action="close-modal">${icon('x')}</button>
               </div>
               <div class="modal-actions">
                 <button class="btn" data-action="open-steamdb" data-appid="${escapeHtml(game.appid)}">Open on SteamDB</button>
@@ -3418,7 +3748,7 @@ Current color: ${escapeHtml(color)}</div>
                 <button class="btn" data-action="settings-download-portable" ${update.portable_url ? '' : 'disabled'}>Download Portable Package</button>
                 <button class="btn" data-action="settings-open-releases" ${configured ? '' : 'disabled'}>Open Releases</button>
               </div>
-              ${update.release_notes ? `<div class="settings-note">${escapeHtml(update.release_notes)}</div>` : ''}
+              ${update.release_notes ? `<div class="settings-note markdown-note">${markdownToHtml(update.release_notes)}</div>` : ''}
             </div>
           `;
         } else if (update.ok) {
@@ -3462,7 +3792,7 @@ Current color: ${escapeHtml(color)}</div>
                     <div class="theme-card-title">${escapeHtml(theme.label)}</div>
                     <div class="theme-card-sub">${escapeHtml(theme.description || '')}</div>
                   </button>
-                  ${theme.id === 'custom' ? `<button class="settings-tab custom-edit-btn" type="button" data-action="open-custom-theme-editor">Edit Custom Theme</button>` : ''}
+                  ${theme.id === 'custom' ? `<button class="settings-tab custom-edit-btn" type="button" data-action="open-custom-theme-editor">${icon('palette')} Edit Custom Theme</button>` : ''}
                 </div>
               `).join('')}
             </div>
@@ -3531,7 +3861,7 @@ Current color: ${escapeHtml(color)}</div>
       `;
     }
 
-    function renderAll() {
+    function renderAll(options = {}) {
       renderHome();
       renderLibrary();
       renderSettings();
@@ -3540,15 +3870,26 @@ Current color: ${escapeHtml(color)}</div>
       renderSelectionReview();
       renderConfirm();
       renderPresetDialog();
-      renderCustomThemeEditor();
+      // Do not rebuild the custom theme editor during unrelated full-page
+      // refreshes, such as the background Library scan finishing. Rebuilding the
+      // modal while the native color picker is open makes the editor look like it
+      // refreshed/reloaded on the first color selection in packaged builds.
+      if (options.refreshCustomThemeEditor || !state.customThemeEditorOpen || state.customThemeEditorClosing) {
+        renderCustomThemeEditor();
+      }
       renderUpdateNotice();
     }
 
     async function refreshLibrary(options = {}) {
       const keepModal = options.keepModal !== false;
       const forceRescan = options.forceRescan === true;
-      state.libraryLoading = true;
-      renderAll();
+      const background = options.background === true;
+      if (background) {
+        state.libraryPreloading = true;
+      } else {
+        state.libraryLoading = true;
+        renderAll();
+      }
       try {
         const response = await apiCall(forceRescan ? 'rescan_library' : 'scan_library');
         if (!response.ok) throw new Error(response.error || 'Failed to scan library');
@@ -3558,6 +3899,7 @@ Current color: ${escapeHtml(color)}</div>
         toast(error.message || 'Library scan failed');
       } finally {
         state.libraryLoading = false;
+        state.libraryPreloading = false;
         syncSelectedLibraryIds();
         if (keepModal && state.modalGameId && !state.libraryItems.some(item => String(item.appid) === String(state.modalGameId))) {
           state.modalGameId = null;
@@ -3677,9 +4019,9 @@ Current color: ${escapeHtml(color)}</div>
         if (!state.settingsInfo) state.settingsInfo = {};
         state.settingsInfo.custom_theme_color = color;
         state.settingsInfo.theme = 'custom';
-        applyCustomThemeColor(color);
+        applyCustomThemeColor(color, state.settingsInfo.custom_theme_color_2 || '#fb7185', state.settingsInfo.custom_theme_use_second_color);
         applyTheme('custom');
-        setCustomThemeColor(color, { render: false });
+        scheduleCustomThemeColorSave(color);
       }
       if (target.dataset.action === 'custom-theme-hex-input') {
         const raw = String(target.value || '').trim();
@@ -3691,8 +4033,34 @@ Current color: ${escapeHtml(color)}</div>
           if (!state.settingsInfo) state.settingsInfo = {};
           state.settingsInfo.custom_theme_color = color;
           state.settingsInfo.theme = 'custom';
+          applyCustomThemeColor(color, state.settingsInfo.custom_theme_color_2 || '#fb7185', state.settingsInfo.custom_theme_use_second_color);
           applyTheme('custom');
-          setCustomThemeColor(color, { render: false });
+          scheduleCustomThemeColorSave(color);
+        }
+      }
+      if (target.dataset.action === 'custom-theme-color2-input') {
+        const color = normalizeHexColor(target.value);
+        const hex = document.querySelector('[data-action="custom-theme-hex2-input"]');
+        if (hex) hex.value = color;
+        if (!state.settingsInfo) state.settingsInfo = {};
+        state.settingsInfo.custom_theme_color_2 = color;
+        state.settingsInfo.custom_theme_use_second_color = true;
+        state.settingsInfo.theme = 'custom';
+        applyTheme('custom');
+        scheduleCustomThemeColorSave(state.settingsInfo.custom_theme_color || '#d946ef');
+      }
+      if (target.dataset.action === 'custom-theme-hex2-input') {
+        const raw = String(target.value || '').trim();
+        if (/^#?[0-9a-fA-F]{3}$/.test(raw) || /^#?[0-9a-fA-F]{6}$/.test(raw)) {
+          const color = normalizeHexColor(raw);
+          const picker = document.querySelector('[data-action="custom-theme-color2-input"]');
+          if (picker) picker.value = color;
+          if (!state.settingsInfo) state.settingsInfo = {};
+          state.settingsInfo.custom_theme_color_2 = color;
+          state.settingsInfo.custom_theme_use_second_color = true;
+          state.settingsInfo.theme = 'custom';
+          applyTheme('custom');
+          scheduleCustomThemeColorSave(state.settingsInfo.custom_theme_color || '#d946ef');
         }
       }
     });
@@ -3720,8 +4088,7 @@ Current color: ${escapeHtml(color)}</div>
           renderPresetDialog();
         }
         if (event.target === $customTheme) {
-          state.customThemeEditorOpen = false;
-          renderCustomThemeEditor();
+          closeCustomThemeEditorAnimated();
         }
         return;
       }
@@ -3860,6 +4227,35 @@ Current color: ${escapeHtml(color)}</div>
         case 'set-theme':
           await setTheme(actionEl.dataset.themeId || 'neon');
           break;
+        case 'apply-custom-theme': {
+          const color = state.settingsInfo && state.settingsInfo.custom_theme_color ? state.settingsInfo.custom_theme_color : '#d946ef';
+          await setCustomThemeColor(color, {
+            color2: state.settingsInfo && state.settingsInfo.custom_theme_color_2 ? state.settingsInfo.custom_theme_color_2 : '#fb7185',
+            useSecond: !!(state.settingsInfo && state.settingsInfo.custom_theme_use_second_color),
+            refreshEditor: false,
+          });
+          toast('Custom theme applied');
+          break;
+        }
+        case 'toggle-custom-second-color': {
+          if (!state.settingsInfo) state.settingsInfo = {};
+          state.settingsInfo.custom_theme_use_second_color = !state.settingsInfo.custom_theme_use_second_color;
+          state.settingsInfo.theme = 'custom';
+          applyTheme('custom');
+          await setCustomThemeColor(state.settingsInfo.custom_theme_color || '#d946ef', {
+            color2: state.settingsInfo.custom_theme_color_2 || '#fb7185',
+            useSecond: state.settingsInfo.custom_theme_use_second_color,
+            render: false,
+            refreshEditor: false,
+          });
+          const btn = actionEl;
+          btn.classList.toggle('active', !!state.settingsInfo.custom_theme_use_second_color);
+          btn.textContent = state.settingsInfo.custom_theme_use_second_color ? 'Second Color: On' : 'Second Color: Off';
+          document.querySelectorAll('[data-action="custom-theme-color2-input"], [data-action="custom-theme-hex2-input"]').forEach(input => {
+            input.disabled = !state.settingsInfo.custom_theme_use_second_color;
+          });
+          break;
+        }
         case 'open-preset-dialog':
           state.presetName = '';
           state.presetDialogOpen = true;
@@ -3877,7 +4273,10 @@ Current color: ${escapeHtml(color)}</div>
           break;
         }
         case 'load-theme-preset':
-          await setCustomThemeColor(actionEl.dataset.color || '#d946ef');
+          await setCustomThemeColor(actionEl.dataset.color || '#d946ef', {
+            color2: actionEl.dataset.color2 || '#fb7185',
+            useSecond: actionEl.dataset.useSecond === '1',
+          });
           break;
         case 'delete-theme-preset':
           await deleteCustomThemePreset(actionEl.dataset.presetName || '');
@@ -3887,8 +4286,7 @@ Current color: ${escapeHtml(color)}</div>
           renderCustomThemeEditor();
           break;
         case 'close-custom-theme-editor':
-          state.customThemeEditorOpen = false;
-          renderCustomThemeEditor();
+          closeCustomThemeEditorAnimated();
           break;
         case 'set-font':
           await setFont(actionEl.dataset.fontId || 'inter');
@@ -3898,10 +4296,13 @@ Current color: ${escapeHtml(color)}</div>
           await refreshUpdateInfo({ preserveNotice: true });
           break;
         case 'dismiss-update-notice':
+          state.updateNoticeDismissed = true;
           state.updateNotice = null;
           renderUpdateNotice();
           break;
         case 'open-update-settings':
+          state.updateNoticeDismissed = true;
+          state.updateNotice = null;
           state.activeTab = 'settings';
           state.settingsTab = 'updates';
           renderAll();
@@ -3987,6 +4388,7 @@ Current color: ${escapeHtml(color)}</div>
       await loadSettingsInfo();
       renderAll();
       updateLibraryScrollButton();
+      refreshLibrary({ background: true, keepModal: false });
       checkStartupUpdateNotice();
     }
 
